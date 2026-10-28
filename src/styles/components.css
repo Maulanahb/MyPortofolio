@@ -2341,7 +2341,7 @@ footer {
 .app-cuciin {
   width: 96%;
   max-width: 480px;
-  height: 310px;
+  height: 280px;
   margin: 0 auto;
   background: #ffffff;
   border: 2.5px solid var(--ink);
@@ -2353,113 +2353,95 @@ footer {
   font-family: 'DM Sans', system-ui, sans-serif;
 }
 
-/* View Switcher / Slide Navigation Bar */
-.ci-slide-nav {
+/* Discreet Minimalist Screen Stepper in Browser Bar (No Clunky Boxes) */
+.ci-screen-stepper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #083344;
-  padding: 3.5px 8px;
-  border-bottom: 1.5px solid #0e7490;
-  user-select: none;
-}
-
-.ci-tab-group {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.ci-tab-btn {
-  display: inline-flex;
   align-items: center;
   gap: 3.5px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(15, 23, 42, 0.5);
-  color: #94a3b8;
-  font-size: 5.5px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  font-family: inherit;
-}
-
-.ci-tab-btn:hover {
-  background: rgba(14, 116, 144, 0.4);
-  color: #ffffff;
-  border-color: #38bdf8;
-}
-
-.ci-tab-btn.active {
-  background: #0e7490;
-  color: #ffffff;
-  border-color: #38bdf8;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-}
-
-.ci-tab-icon {
-  font-size: 6px;
-}
-
-.ci-slide-controls {
-  display: flex;
-  align-items: center;
-  gap: 3px;
+  margin-left: auto;
+  z-index: 2;
 }
 
 .ci-nav-arrow {
   width: 14px;
   height: 14px;
   border-radius: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(15, 23, 42, 0.6);
-  color: #ffffff;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
   display: grid;
   place-items: center;
-  font-size: 8px;
+  font-size: 9px;
+  line-height: 1;
   cursor: pointer;
   padding: 0;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .ci-nav-arrow:hover {
   background: #0e7490;
-  border-color: #38bdf8;
+  color: #ffffff;
+  border-color: #0e7490;
 }
 
-.ci-slide-indicator {
-  font-size: 5.2px;
-  color: #38bdf8;
-  font-weight: 800;
-  padding: 0 2px;
+.ci-slide-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
-/* Panes Viewport */
+.ci-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ci-dot:hover {
+  background: #0e7490;
+}
+
+.ci-dot.active {
+  width: 12px;
+  border-radius: 99px;
+  background: #0e7490;
+}
+
+/* Panes Viewport & Slidable Carousel Track */
 .ci-slides-viewport {
   flex: 1;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  touch-action: pan-y pinch-zoom;
+  cursor: grab;
+  user-select: none;
+}
+
+.ci-slides-viewport:active {
+  cursor: grabbing;
+}
+
+.ci-slides-track {
+  display: flex;
+  flex-direction: row;
+  width: 300%;
+  height: 100%;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .ci-slide-pane {
-  display: none;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-}
-
-.ci-slide-pane.active {
+  width: 33.333333%;
+  flex-shrink: 0;
+  min-width: 0;
+  box-sizing: border-box;
   display: flex;
-  animation: fadeInPane 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeInPane {
-  from { opacity: 0.3; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
+  flex-direction: column;
+  height: 100%;
 }
 
 .ci-quick-switch {
@@ -2823,6 +2805,85 @@ footer {
   color: #ffffff;
 }
 
+/* SLIDE 1 & 2: App Layout Container & Authentic Sidebar */
+.ci-app-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.ci-sidebar {
+  width: 72px;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 5px 4px;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.ci-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 2px 4px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ci-sidebar-logo {
+  width: 11px;
+  height: 11px;
+  border-radius: 2.5px;
+  object-fit: contain;
+}
+
+.ci-sidebar-title {
+  font-family: var(--font-display, inherit);
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #0e7490;
+  letter-spacing: -0.2px;
+}
+
+.ci-sidebar-title span {
+  color: #0284c7;
+}
+
+.ci-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+}
+
+.ci-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2.8px 4.5px;
+  border-radius: 4px;
+  font-size: 6px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ci-nav-item.active {
+  background: #0e7490;
+  color: #ffffff;
+}
+
+.ci-nav-item:hover:not(.active) {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
 /* SLIDE 1: Dashboard Admin Layout */
 .ci-admin-wrap {
   flex: 1;
@@ -2864,10 +2925,54 @@ footer {
 }
 
 .ci-admin-role {
-  font-size: 4.8px;
-  color: #0e7490;
-  font-weight: 800;
+  font-size: 4.5px;
+  color: #64748b;
   display: block;
+}
+
+.ci-btn-add-trx kbd {
+  background: #155e75;
+  color: #ffffff;
+  padding: 0.5px 2.5px;
+  border-radius: 2px;
+  font-size: 4px;
+  margin-left: 2px;
+}
+
+/* Master Data Strip (admin/dashboard.blade.php & customer/dashboard.blade.php) */
+.ci-master-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+}
+
+.ci-master-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.ci-master-label {
+  font-size: 4.4px;
+  color: #64748b;
+  display: block;
+}
+
+.ci-master-num {
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 1px 0;
+}
+
+.ci-master-sub,
+.ci-master-link {
+  font-size: 4.2px;
+  color: #0e7490;
+  display: block;
+  font-weight: 600;
 }
 
 .ci-admin-title {
@@ -4608,6 +4713,295 @@ footer {
   padding: 6px 14px !important;
   border-radius: 6px !important;
   margin-top: 6px !important;
+}
+
+/* Scaled Multi-Screen Mockup for CUCI.IN in Modal */
+.dialog-preview .project-art.pos {
+  height: auto !important;
+  min-height: 500px !important;
+  max-height: none !important;
+  padding: 20px 16px !important;
+}
+
+.dialog-preview .app-cuciin {
+  width: 100% !important;
+  max-width: 820px !important;
+  height: 480px !important;
+  min-height: 480px !important;
+  margin: 0 auto !important;
+  border-radius: 10px !important;
+  box-shadow: 7px 7px 0 var(--ink) !important;
+  overflow: hidden !important;
+}
+
+.dialog-preview .ci-screen-stepper {
+  gap: 6px !important;
+}
+
+.dialog-preview .ci-nav-arrow {
+  width: 22px !important;
+  height: 22px !important;
+  font-size: 13px !important;
+  border-radius: 5px !important;
+}
+
+.dialog-preview .ci-slide-dots {
+  gap: 5px !important;
+}
+
+.dialog-preview .ci-dot {
+  width: 7px !important;
+  height: 7px !important;
+}
+
+.dialog-preview .ci-dot.active {
+  width: 18px !important;
+}
+
+.dialog-preview .ci-slides-viewport {
+  width: 100% !important;
+  height: calc(100% - 38px) !important;
+  overflow: hidden !important;
+  position: relative !important;
+  touch-action: pan-y pinch-zoom !important;
+}
+
+.dialog-preview .ci-slides-track {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 300% !important;
+  height: 100% !important;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dialog-preview .ci-slide-pane {
+  width: 33.333333% !important;
+  flex-shrink: 0 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+
+.dialog-preview .ci-master-strip {
+  gap: 8px !important;
+}
+
+.dialog-preview .ci-master-card {
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+}
+
+.dialog-preview .ci-master-label {
+  font-size: 9px !important;
+}
+
+.dialog-preview .ci-master-num {
+  font-size: 16px !important;
+  margin: 2px 0 !important;
+}
+
+.dialog-preview .ci-master-sub,
+.dialog-preview .ci-master-link {
+  font-size: 9px !important;
+}
+
+/* Scaled Authentic Sidebar in Modal */
+.dialog-preview .ci-sidebar {
+  width: 130px !important;
+  padding: 12px 8px !important;
+  gap: 10px !important;
+}
+
+.dialog-preview .ci-sidebar-brand {
+  gap: 6px !important;
+  padding: 4px 4px 8px !important;
+}
+
+.dialog-preview .ci-sidebar-logo {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.dialog-preview .ci-sidebar-title {
+  font-size: 13px !important;
+}
+
+.dialog-preview .ci-sidebar-nav {
+  gap: 4px !important;
+}
+
+.dialog-preview .ci-nav-item {
+  padding: 5px 8px !important;
+  font-size: 10px !important;
+  border-radius: 6px !important;
+  gap: 6px !important;
+}
+
+.dialog-preview .ci-nav-item svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* Scaled Admin Dashboard in Modal */
+.dialog-preview .ci-admin-wrap {
+  padding: 16px 20px !important;
+  gap: 12px !important;
+}
+
+.dialog-preview .ci-admin-header {
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+}
+
+.dialog-preview .ci-admin-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 11px !important;
+}
+
+.dialog-preview .ci-admin-role {
+  font-size: 9.5px !important;
+}
+
+.dialog-preview .ci-admin-title {
+  font-size: 14px !important;
+}
+
+.dialog-preview .ci-chip-status {
+  font-size: 10px !important;
+  padding: 4px 10px !important;
+  gap: 5px !important;
+}
+
+.dialog-preview .ci-btn-add-trx {
+  font-size: 10.5px !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+}
+
+.dialog-preview .ci-kpi-grid {
+  gap: 10px !important;
+}
+
+.dialog-preview .ci-kpi-card {
+  padding: 10px 12px !important;
+  border-radius: 8px !important;
+}
+
+.dialog-preview .ci-kpi-label {
+  font-size: 9.5px !important;
+}
+
+.dialog-preview .ci-kpi-val {
+  font-size: 17px !important;
+  margin: 3px 0 !important;
+}
+
+.dialog-preview .ci-kpi-trend,
+.dialog-preview .ci-kpi-sub {
+  font-size: 9.5px !important;
+}
+
+.dialog-preview .ci-table-box {
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+}
+
+.dialog-preview .ci-table-title {
+  font-size: 11px !important;
+}
+
+.dialog-preview .ci-live-badge {
+  font-size: 10px !important;
+}
+
+.dialog-preview .ci-tr {
+  font-size: 10.5px !important;
+  padding: 6px 8px !important;
+}
+
+.dialog-preview .ci-tr.ci-th {
+  font-size: 10px !important;
+}
+
+.dialog-preview .ci-step-pill {
+  font-size: 9.5px !important;
+  padding: 3px 8px !important;
+}
+
+/* Scaled Customer Portal in Modal */
+.dialog-preview .ci-cust-wrap {
+  padding: 16px 20px !important;
+  gap: 12px !important;
+}
+
+.dialog-preview .ci-cust-top {
+  padding: 10px 16px !important;
+  border-radius: 10px !important;
+}
+
+.dialog-preview .ci-cust-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 16px !important;
+}
+
+.dialog-preview .ci-cust-greeting {
+  font-size: 13px !important;
+}
+
+.dialog-preview .ci-cust-tier {
+  font-size: 10px !important;
+}
+
+.dialog-preview .ci-saldo-label {
+  font-size: 9.5px !important;
+}
+
+.dialog-preview .ci-saldo-val {
+  font-size: 14px !important;
+}
+
+.dialog-preview .ci-cust-card {
+  padding: 14px 18px !important;
+  border-radius: 10px !important;
+}
+
+.dialog-preview .ci-card-label {
+  font-size: 10px !important;
+}
+
+.dialog-preview .ci-cust-nota {
+  font-size: 16px !important;
+}
+
+.dialog-preview .ci-cust-order-detail {
+  font-size: 12px !important;
+  padding: 6px 10px !important;
+  margin: 6px 0 !important;
+}
+
+.dialog-preview .ci-cust-progress-eta {
+  font-size: 10.5px !important;
+  padding: 6px 10px !important;
+}
+
+.dialog-preview .ci-cust-action-row {
+  gap: 8px !important;
+}
+
+.dialog-preview .ci-cust-btn {
+  font-size: 10.5px !important;
+  padding: 8px 14px !important;
+  border-radius: 6px !important;
+  gap: 6px !important;
+}
+
+.dialog-preview .ci-cust-btn svg {
+  width: 13px !important;
+  height: 13px !important;
 }
 
 .dialog-grid {

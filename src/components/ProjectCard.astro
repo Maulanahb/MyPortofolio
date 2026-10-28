@@ -96,7 +96,10 @@ const { project } = Astro.props;
               <div class="bh-weather-box">
                 <div class="bh-weather-head">
                   <span>Info Cuaca</span>
-                  <span class="bh-loc-tag">📍 Nganjuk</span>
+                  <span class="bh-loc-tag">
+                    <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Nganjuk
+                  </span>
                 </div>
                 <div class="bh-weather-body">
                   <div class="bh-weather-temp">29°C</div>
@@ -184,7 +187,7 @@ const { project } = Astro.props;
                   <div class="lk-user-info">
                     <img src="./projects/lapangku-icon.png" alt="Lapangku Icon" class="lk-app-icon" loading="lazy" />
                     <div>
-                      <div class="lk-hello">Halo, Sobat Maulana 👋</div>
+                      <div class="lk-hello">Halo, Sobat Maulana</div>
                       <div class="lk-loc">
                         <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#1B6B3A"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         Malang, Jawa Timur
@@ -238,8 +241,14 @@ const { project } = Astro.props;
                         <strong>Rp 120.000</strong><span> / jam</span>
                       </div>
                       <div class="lk-meta-row">
-                        <span class="lk-meta-item">📍 1.2 km</span>
-                        <span class="lk-meta-item lk-rating">⭐ 4.9 (128)</span>
+                        <span class="lk-meta-item">
+                          <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#1B6B3A" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                          1.2 km
+                        </span>
+                        <span class="lk-meta-item lk-rating">
+                          <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#ECC94B" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                          4.9 (128)
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -260,8 +269,14 @@ const { project } = Astro.props;
                         <strong>Rp 350.000</strong><span> / jam</span>
                       </div>
                       <div class="lk-meta-row">
-                        <span class="lk-meta-item">📍 2.4 km</span>
-                        <span class="lk-meta-item lk-rating">⭐ 4.8 (94)</span>
+                        <span class="lk-meta-item">
+                          <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#1B6B3A" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                          2.4 km
+                        </span>
+                        <span class="lk-meta-item lk-rating">
+                          <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#ECC94B" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="m12 17.27 6.18 3.73-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                          4.8 (94)
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -342,7 +357,7 @@ const { project } = Astro.props;
                   <div class="lk-pass-match">
                     <div class="lk-match-venue">CHAMPIONS ARENA MALANG</div>
                     <div class="lk-match-court">Lapangan Futsal Vinyl A</div>
-                    <div class="lk-match-time mono">📅 Rabu, 28 Okt 2026 • 19:00 - 20:00 WIB</div>
+                    <div class="lk-match-time mono">Rabu, 28 Okt 2026 • 19:00 - 20:00 WIB</div>
                   </div>
 
                   {/* Perforated Divider */}
@@ -494,10 +509,10 @@ const { project } = Astro.props;
       </div>
     )}
 
-    {/* 4. CUCI.IN: Multi-Screen Showcase (Landing & Lacak, Dashboard Admin POS, Portal Pelanggan) */}
+    {/* 4. CUCI.IN: Replika Akurat Multi-Screen Sesuai Source Code Resmi (welcome.blade.php, admin/dashboard.blade.php & customer/dashboard.blade.php) */}
     {project.theme === 'pos' && (
       <div class="app-cuciin web-window" aria-label="Pratinjau antarmuka CUCI.IN Laundry Management & Tracking">
-        {/* Clean Web Browser Window Bar */}
+        {/* Clean Web Browser Window Bar with Discreet Slide Dots & Arrows */}
         <div class="web-window-bar">
           <div class="web-window-dots" aria-hidden="true">
             <span class="w-dot red"></span>
@@ -509,311 +524,427 @@ const { project } = Astro.props;
               <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
-            <span class="ci-window-url-text">cuciin.app/portal</span>
+            <span class="ci-window-url-text">cuciin.app</span>
+          </div>
+          <div class="ci-screen-stepper">
+            <button type="button" class="ci-nav-arrow prev" title="Layar sebelumnya" aria-label="Layar sebelumnya">‹</button>
+            <div class="ci-slide-dots">
+              <span class="ci-dot active" data-slide="0" title="Landing Page & Lacak"></span>
+              <span class="ci-dot" data-slide="1" title="Dashboard Admin POS"></span>
+              <span class="ci-dot" data-slide="2" title="Dashboard Pelanggan"></span>
+            </div>
+            <button type="button" class="ci-nav-arrow next" title="Layar berikutnya" aria-label="Layar berikutnya">›</button>
           </div>
         </div>
 
-        {/* View Switcher / Slide Navigation Bar */}
-        <div class="ci-slide-nav">
-          <div class="ci-tab-group">
-            <button type="button" class="ci-tab-btn active" data-slide="0" aria-label="Buka Tampilan Landing & Lacak Nota">
-              <span class="ci-tab-icon">🌐</span>
-              <span class="ci-tab-label">Landing &amp; Lacak</span>
-            </button>
-            <button type="button" class="ci-tab-btn" data-slide="1" aria-label="Buka Dashboard Admin POS">
-              <span class="ci-tab-icon">📊</span>
-              <span class="ci-tab-label">Dashboard Admin</span>
-            </button>
-            <button type="button" class="ci-tab-btn" data-slide="2" aria-label="Buka Portal Pelanggan">
-              <span class="ci-tab-icon">👤</span>
-              <span class="ci-tab-label">Portal Pelanggan</span>
-            </button>
-          </div>
-          <div class="ci-slide-controls">
-            <button type="button" class="ci-nav-arrow prev" title="Slide sebelumnya" aria-label="Slide sebelumnya">‹</button>
-            <span class="ci-slide-indicator mono" aria-live="polite">1 / 3</span>
-            <button type="button" class="ci-nav-arrow next" title="Slide berikutnya" aria-label="Slide berikutnya">›</button>
-          </div>
-        </div>
-
-        {/* Slides Viewport */}
-        <div class="ci-slides-viewport">
-          {/* SLIDE 0: Landing Page & Public Tracking (resources/views/welcome.blade.php & lookup/index.blade.php) */}
-          <div class="ci-slide-pane active" data-pane="0">
-            {/* Sticky White Navbar */}
-            <header class="ci-navbar">
-              <div class="ci-brand">
-                <img src="./projects/cuciin-logo.svg" alt="Logo CUCI.IN" class="ci-logo-img" loading="lazy" />
-                <span class="ci-brand-text">CUCI<span>.IN</span></span>
-              </div>
-
-              <nav class="ci-nav-links">
-                <span>Fitur Layanan</span>
-                <span>Tarif Kiloan</span>
-                <span>Standar Higienis</span>
-              </nav>
-
-              <div class="ci-nav-actions">
-                <span class="ci-btn-outline ci-reset-btn" role="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                  Lacak Nota
-                </span>
-                <span class="ci-btn-solid ci-quick-switch" data-target="1" role="button" tabindex="0">Login POS</span>
-              </div>
-            </header>
-
-            {/* Hero Section */}
-            <div class="ci-hero">
-              {/* Stage 1: Pencarian Nota */}
-              <div class="ci-search-stage">
-                <div class="ci-hero-h1">
-                  Laundry Bersih, Higienis &amp;<br/>
-                  <span class="ci-gradient-text">Terpantau Real-Time</span>
+        {/* Slides Viewport dengan Track Horisontal Geser (Swipeable Carousel) */}
+        <div class="ci-slides-viewport" tabindex="0" role="region" aria-label="Slideshow Antarmuka CUCI.IN">
+          <div class="ci-slides-track">
+            {/* SLIDE 0: Landing Page & Public Tracking (resources/views/welcome.blade.php & lookup/_content.blade.php) */}
+            <div class="ci-slide-pane active" data-pane="0">
+              {/* Sticky White Glassmorphism Header */}
+              <header class="ci-navbar">
+                <div class="ci-brand">
+                  <img src="./projects/cuciin-logo.svg" alt="Logo CUCI.IN" class="ci-logo-img" loading="lazy" />
+                  <span class="ci-brand-text">CUCI<span>.IN</span></span>
                 </div>
-                <p class="ci-hero-sub">
-                  Pantau status cucian langsung dari ponsel menggunakan kode nota tanpa perlu registrasi atau login.
-                </p>
 
-                {/* Quick Tracking Box */}
-                <div class="ci-tracking-box">
-                  <div class="ci-tracking-input-wrap">
-                    <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/><path d="M9 14h6"/><path d="M9 10h6"/></svg>
-                    <input 
-                      type="text" 
-                      class="ci-tracking-input mono" 
-                      value="TRX-20261024-0001" 
-                      placeholder="Ketik TRX-XXXX..." 
-                      aria-label="Ketik kode nota transaksi untuk simulasi live tracking"
-                    />
+                <nav class="ci-nav-links">
+                  <span>Fitur Layanan</span>
+                  <span>Kalkulator Tarif</span>
+                  <span>Keunggulan</span>
+                  <span>Cara Kerja</span>
+                </nav>
+
+                <div class="ci-nav-actions">
+                  <span class="ci-btn-outline ci-reset-btn" role="button" tabindex="0">
+                    <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    Lacak Cucian
+                  </span>
+                  <span class="ci-btn-solid ci-quick-switch" data-target="1" role="button" tabindex="0">Buka Dashboard</span>
+                </div>
+              </header>
+
+              {/* Hero Section */}
+              <div class="ci-hero">
+                {/* Stage 1: Pencarian Nota */}
+                <div class="ci-search-stage">
+                  <div class="ci-hero-h1">
+                    Laundry Bersih, Higienis &amp;<br/>
+                    <span class="ci-gradient-text">Terpantau Real-Time</span>
                   </div>
-                  <button type="button" class="ci-tracking-btn">
-                    Lacak Sekarang
-                    <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  <p class="ci-hero-sub">
+                    Nikmati kemudahan mencuci tanpa rasa cemas. Timbangan presisi, pakaian tidak pernah dicampur, dan Anda dapat memantau status cucian langsung dari ponsel menggunakan kode nota.
+                  </p>
+
+                  {/* Quick Tracking Box Form */}
+                  <div class="ci-tracking-box">
+                    <div class="ci-tracking-input-wrap">
+                      <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/><path d="M9 14h6"/><path d="M9 10h6"/></svg>
+                      <input 
+                        type="text" 
+                        class="ci-tracking-input mono" 
+                        value="TRX-20261024-0001" 
+                        placeholder="Masukkan kode nota (contoh: TRX-20261024-0001)..." 
+                        aria-label="Ketik kode nota transaksi untuk simulasi live tracking"
+                      />
+                    </div>
+                    <button type="button" class="ci-tracking-btn">
+                      Lacak Sekarang
+                      <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                  <div class="ci-tracking-hint">
+                    Tanpa perlu login. Cukup ketik kode transaksi yang tercetak pada struk thermal Anda.
+                  </div>
+
+                  {/* Trust Value Badges (welcome.blade.php) */}
+                  <div class="ci-trust-pills">
+                    <span class="ci-pill">
+                      <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      1 Mesin 1 Pelanggan
+                    </span>
+                    <span class="ci-pill">
+                      <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                      Timbangan Desimal Akurat
+                    </span>
+                    <span class="ci-pill">
+                      <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      Estimasi Tepat Waktu
+                    </span>
+                    <span class="ci-pill">
+                      <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                      Struk Thermal Resmi
+                    </span>
+                  </div>
+                </div>
+
+                {/* Stage 2: Hasil Live Tracking Real-Time (lookup/_content.blade.php) */}
+                <div class="ci-result-stage" style="display: none;">
+                  <div class="ci-result-top">
+                    <div>
+                      <span class="ci-result-label mono">STATUS CUCIAN NOTA</span>
+                      <div class="ci-result-nota mono">TRX-20261024-0001</div>
+                    </div>
+                    <span class="ci-status-badge mono">
+                      <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
+                    </span>
+                  </div>
+
+                  {/* Signature 4-Stage Stepper: Diterima -> Diproses -> Selesai -> Diambil */}
+                  <div class="ci-stepper-row">
+                    <div class="ci-step done">
+                      <div class="ci-step-circle">✓</div>
+                      <div class="ci-step-text"><b>Diterima</b><small>10:15 WIB</small></div>
+                    </div>
+                    <div class="ci-step-line done"></div>
+                    <div class="ci-step in-progress">
+                      <div class="ci-step-circle">●</div>
+                      <div class="ci-step-text"><b>Diproses</b><small>Sedang Cuci</small></div>
+                    </div>
+                    <div class="ci-step-line"></div>
+                    <div class="ci-step">
+                      <div class="ci-step-circle">3</div>
+                      <div class="ci-step-text"><b>Selesai</b><small>Siap Ambil</small></div>
+                    </div>
+                    <div class="ci-step-line"></div>
+                    <div class="ci-step">
+                      <div class="ci-step-circle">4</div>
+                      <div class="ci-step-text"><b>Diambil</b><small>Selesai</small></div>
+                    </div>
+                  </div>
+
+                  <div class="ci-result-meta">
+                    <span>Budi Santoso • Cuci Kering Setrika Reguler (4.20 Kg)</span>
+                    <strong>Rp 33.600 (Lunas - QRIS)</strong>
+                  </div>
+
+                  <div class="ci-result-estimasi mono">
+                    <span>Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong></span>
+                    <span class="ci-badge-ontime">Tepat Waktu</span>
+                  </div>
+
+                  <button type="button" class="ci-reset-btn mono">
+                    ← Coba Nomor Lain
                   </button>
                 </div>
-                <div class="ci-tracking-hint">
-                  💡 Klik <strong>Lacak Sekarang</strong> untuk melihat signature 4-stage tracking!
-                </div>
-
-                {/* Trust Pills */}
-                <div class="ci-trust-pills">
-                  <span class="ci-pill">1 Mesin 1 Pelanggan</span>
-                  <span class="ci-pill">Timbangan Desimal Akurat</span>
-                  <span class="ci-pill">Struk Thermal 58mm</span>
-                </div>
-              </div>
-
-              {/* Stage 2: Hasil Live Tracking Real-Time */}
-              <div class="ci-result-stage" style="display: none;">
-                <div class="ci-result-top">
-                  <div>
-                    <span class="ci-result-label mono">NOMOR NOTA TRANSAKSI</span>
-                    <div class="ci-result-nota mono">TRX-20261024-0001</div>
-                  </div>
-                  <span class="ci-status-badge mono">
-                    <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
-                  </span>
-                </div>
-
-                {/* Signature 4-Stage Stepper: Diterima -> Diproses -> Selesai -> Diambil */}
-                <div class="ci-stepper-row">
-                  <div class="ci-step done">
-                    <div class="ci-step-circle">✓</div>
-                    <div class="ci-step-text"><b>Diterima</b><small>10:15 WIB</small></div>
-                  </div>
-                  <div class="ci-step-line done"></div>
-                  <div class="ci-step in-progress">
-                    <div class="ci-step-circle">●</div>
-                    <div class="ci-step-text"><b>Diproses</b><small>Sedang Cuci</small></div>
-                  </div>
-                  <div class="ci-step-line"></div>
-                  <div class="ci-step">
-                    <div class="ci-step-circle">3</div>
-                    <div class="ci-step-text"><b>Selesai</b><small>Siap Ambil</small></div>
-                  </div>
-                  <div class="ci-step-line"></div>
-                  <div class="ci-step">
-                    <div class="ci-step-circle">4</div>
-                    <div class="ci-step-text"><b>Diambil</b><small>Selesai</small></div>
-                  </div>
-                </div>
-
-                <div class="ci-result-meta">
-                  <span>Budi S*****o • Cuci Komplit Wangi (4.20 Kg)</span>
-                  <strong>Rp 33.600 (LUNAS - QRIS)</strong>
-                </div>
-
-                <div class="ci-result-estimasi mono">
-                  <span>📅 Perkiraan Selesai: <strong>Hari ini, 17:00 WIB</strong></span>
-                  <span class="ci-badge-ontime">Tepat Waktu</span>
-                </div>
-
-                <button type="button" class="ci-reset-btn mono">
-                  ← LACAK KODE NOTA LAIN
-                </button>
               </div>
             </div>
-          </div>
 
-          {/* SLIDE 1: Dashboard Admin / Owner (admin/dashboard.blade.php) */}
-          <div class="ci-slide-pane" data-pane="1">
-            <div class="ci-admin-wrap">
-              {/* Admin Top Bar */}
-              <div class="ci-admin-header">
-                <div class="ci-admin-user">
-                  <div class="ci-admin-avatar">ADM</div>
-                  <div>
-                    <span class="ci-admin-role mono">KASIR / OWNER SHIFT 1</span>
-                    <strong class="ci-admin-title">CUCI.IN Laundry POS System</strong>
+            {/* SLIDE 1: Dashboard Admin / Owner (resources/views/admin/dashboard.blade.php) */}
+            <div class="ci-slide-pane" data-pane="1">
+              <div class="ci-app-container">
+                {/* Authentic Left Sidebar */}
+                <aside class="ci-sidebar">
+                  <div class="ci-sidebar-brand">
+                    <img src="./projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" loading="lazy" />
+                    <span class="ci-sidebar-title">CUCI<span>.IN</span></span>
                   </div>
-                </div>
-                <div class="ci-admin-actions">
-                  <span class="ci-chip-status"><span class="ci-dot-online"></span> Kasir Aktif</span>
-                  <button type="button" class="ci-btn-add-trx mono">+ Nota Baru (F2)</button>
-                </div>
-              </div>
+                  <nav class="ci-sidebar-nav">
+                    <div class="ci-nav-item active">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
+                      <span>Dashboard</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16m8-8H4"/></svg>
+                      <span>Kasir POS</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5h10M9 12h10M9 19h10M4 5h.01M4 12h.01M4 19h.01"/></svg>
+                      <span>Transaksi</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                      <span>Verifikasi</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                      <span>Pelanggan</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                      <span>Layanan</span>
+                    </div>
+                  </nav>
+                </aside>
 
-              {/* KPI Stat Cards (4 Cards) */}
-              <div class="ci-kpi-grid">
-                <div class="ci-kpi-card highlight">
-                  <span class="ci-kpi-label mono">OMZET HARI INI</span>
-                  <div class="ci-kpi-val mono">Rp 1.480.000</div>
-                  <div class="ci-kpi-trend green">↑ 18.4% vs kemarin</div>
-                </div>
-                <div class="ci-kpi-card">
-                  <span class="ci-kpi-label mono">TOTAL TRANSAKSI</span>
-                  <div class="ci-kpi-val mono">28 Nota</div>
-                  <div class="ci-kpi-sub">12 Cuci • 9 Kering • 7 Rak</div>
-                </div>
-                <div class="ci-kpi-card">
-                  <span class="ci-kpi-label mono">TOTAL TONASE</span>
-                  <div class="ci-kpi-val mono">185.4 Kg</div>
-                  <div class="ci-kpi-sub">Rata-rata 4.6 Kg/nota</div>
-                </div>
-                <div class="ci-kpi-card">
-                  <span class="ci-kpi-label mono">UTILISASI MESIN</span>
-                  <div class="ci-kpi-val mono">6/8 Unit</div>
-                  <div class="ci-kpi-trend teal">● 75% Kapasitas</div>
-                </div>
-              </div>
+                <div class="ci-admin-wrap">
+                  {/* Banner Sapaan Administrator & Aksi Cepat */}
+                  <div class="ci-admin-header">
+                    <div class="ci-admin-user">
+                      <div class="ci-admin-avatar">ADM</div>
+                      <div>
+                        <strong class="ci-admin-title">Selamat Datang, Admin Utama!</strong>
+                        <span class="ci-admin-role">Pantau kesehatan finansial, antrean pengerjaan cucian, dan kelola master data.</span>
+                      </div>
+                    </div>
+                    <div class="ci-admin-actions">
+                      <span class="ci-chip-status"><span class="ci-dot-online"></span> Shift Aktif</span>
+                      <button type="button" class="ci-btn-add-trx mono">+ Transaksi Baru <kbd>F2</kbd></button>
+                    </div>
+                  </div>
 
-              {/* Monitoring Transaksi Berjalan (Table) */}
-              <div class="ci-table-box">
-                <div class="ci-table-head">
-                  <span class="ci-table-title mono">MONITORING NOTA TRANSAKSI TERAKHIR</span>
-                  <span class="ci-live-badge mono"><span class="live-demo-pulse green"></span> LIVE MONITOR</span>
-                </div>
-                <div class="ci-mini-table">
-                  <div class="ci-tr ci-th mono">
-                    <span>NOTA</span>
-                    <span>PELANGGAN</span>
-                    <span>LAYANAN / KG</span>
-                    <span>STATUS PROSES</span>
-                    <span>PEMBAYARAN</span>
+                  {/* Ringkasan Data Operasional / Master Data Strip */}
+                  <div class="ci-master-strip">
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Total Pengguna</span>
+                      <div class="ci-master-num mono">8</div>
+                      <span class="ci-master-sub">Admin &amp; Kasir</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Total Pelanggan</span>
+                      <div class="ci-master-num mono">142</div>
+                      <span class="ci-master-link">Lihat direktori →</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Layanan Aktif</span>
+                      <div class="ci-master-num mono">12</div>
+                      <span class="ci-master-link">Katalog paket →</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Total Transaksi</span>
+                      <div class="ci-master-num mono">1.284</div>
+                      <span class="ci-master-link">Riwayat nota →</span>
+                    </div>
                   </div>
-                  <div class="ci-tr">
-                    <span class="mono bold text-cyan">TRX-0001</span>
-                    <span>Budi Santoso</span>
-                    <span>Komplit • 4.2 Kg</span>
-                    <span><span class="ci-step-pill processing">Diproses (Cuci)</span></span>
-                    <span class="text-green bold">Rp 33.600 (QRIS)</span>
+
+                  {/* KPI Keuangan Utama */}
+                  <div class="ci-kpi-grid">
+                    <div class="ci-kpi-card highlight">
+                      <span class="ci-kpi-label">Pemasukan Hari Ini</span>
+                      <div class="ci-kpi-val mono">Rp 1.480.000</div>
+                      <div class="ci-kpi-trend green">↑ 18.4% dibanding kemarin</div>
+                    </div>
+                    <div class="ci-kpi-card">
+                      <span class="ci-kpi-label">Pemasukan Bulan Ini</span>
+                      <div class="ci-kpi-val mono">Rp 38.650.000</div>
+                      <div class="ci-kpi-sub">Pembayaran sah berjalan</div>
+                    </div>
+                    <div class="ci-kpi-card">
+                      <span class="ci-kpi-label">Piutang Berjalan</span>
+                      <div class="ci-kpi-val mono">Rp 320.000</div>
+                      <div class="ci-kpi-sub">Sisa tagihan belum lunas</div>
+                    </div>
+                    <div class="ci-kpi-card">
+                      <span class="ci-kpi-label">Transaksi Hari Ini</span>
+                      <div class="ci-kpi-val mono">28 Nota</div>
+                      <div class="ci-kpi-sub">Rata-rata Rp 52.800/nota</div>
+                    </div>
                   </div>
-                  <div class="ci-tr">
-                    <span class="mono bold text-cyan">TRX-0002</span>
-                    <span>Siti Aminah</span>
-                    <span>Bedcover King • 1 Pcs</span>
-                    <span><span class="ci-step-pill ready">Selesai (Rak B-04)</span></span>
-                    <span class="text-green bold">Rp 65.000 (Tunai)</span>
-                  </div>
-                  <div class="ci-tr">
-                    <span class="mono bold text-cyan">TRX-0003</span>
-                    <span>Ahmad Ridho</span>
-                    <span>Setrika Wangi • 3.0 Kg</span>
-                    <span><span class="ci-step-pill queue">Antrean Cuci</span></span>
-                    <span class="text-amber bold">Rp 21.000 (Pending)</span>
+
+                  {/* Monitoring Antrean Workshop (Tabel Transaksi Berjalan) */}
+                  <div class="ci-table-box">
+                    <div class="ci-table-head">
+                      <span class="ci-table-title mono">ANTREAN PENGERJAAN CUCIAN WORKSHOP</span>
+                      <span class="ci-live-badge mono"><span class="live-demo-pulse green"></span> LIVE WORKSHOP</span>
+                    </div>
+                    <div class="ci-mini-table">
+                      <div class="ci-tr ci-th mono">
+                        <span>NOTA</span>
+                        <span>PELANGGAN</span>
+                        <span>LAYANAN / KG</span>
+                        <span>STATUS PROSES</span>
+                        <span>PEMBAYARAN</span>
+                      </div>
+                      <div class="ci-tr">
+                        <span class="mono bold text-cyan">TRX-20261024-0001</span>
+                        <span>Budi Santoso</span>
+                        <span>Cuci Komplit • 4.2 Kg</span>
+                        <span><span class="ci-step-pill processing">Diproses (Cuci)</span></span>
+                        <span class="text-green bold">Rp 33.600 (QRIS)</span>
+                      </div>
+                      <div class="ci-tr">
+                        <span class="mono bold text-cyan">TRX-20261024-0002</span>
+                        <span>Siti Aminah</span>
+                        <span>Bedcover King • 1 Pcs</span>
+                        <span><span class="ci-step-pill ready">Selesai (Rak B-04)</span></span>
+                        <span class="text-green bold">Rp 65.000 (Tunai)</span>
+                      </div>
+                      <div class="ci-tr">
+                        <span class="mono bold text-cyan">TRX-20261024-0003</span>
+                        <span>Ahmad Ridho</span>
+                        <span>Setrika Rapi • 3.0 Kg</span>
+                        <span><span class="ci-step-pill queue">Antrean Cuci</span></span>
+                        <span class="text-amber bold">Rp 18.000 (Pending)</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* SLIDE 2: Portal Pelanggan / Customer Dashboard (customer/dashboard.blade.php) */}
-          <div class="ci-slide-pane" data-pane="2">
-            <div class="ci-cust-wrap">
-              {/* Customer Top Header */}
-              <div class="ci-cust-top">
-                <div class="ci-cust-user">
-                  <div class="ci-cust-avatar">👤</div>
-                  <div>
-                    <div class="ci-cust-greeting">Selamat Datang, <strong>Kak Budi Santoso</strong></div>
-                    <span class="ci-cust-tier mono">⭐ MEMBER SILVER • 340 POIN</span>
+            {/* SLIDE 2: Dashboard Pelanggan (resources/views/customer/dashboard.blade.php) */}
+            <div class="ci-slide-pane" data-pane="2">
+              <div class="ci-app-container">
+                {/* Authentic Left Sidebar for Customer */}
+                <aside class="ci-sidebar">
+                  <div class="ci-sidebar-brand">
+                    <img src="./projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" loading="lazy" />
+                    <span class="ci-sidebar-title">CUCI<span>.IN</span></span>
+                  </div>
+                  <nav class="ci-sidebar-nav">
+                    <div class="ci-nav-item active">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
+                      <span>Beranda</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>
+                      <span>Riwayat</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      <span>Pengaduan</span>
+                    </div>
+                    <div class="ci-nav-item">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                      <span>Lacak Nota</span>
+                    </div>
+                  </nav>
+                </aside>
+
+                <div class="ci-cust-wrap">
+                  {/* Banner Sapaan Pelanggan & Aksi Cepat */}
+                  <div class="ci-cust-top">
+                    <div class="ci-cust-user">
+                      <div class="ci-cust-avatar">
+                        <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      </div>
+                      <div>
+                        <div class="ci-cust-greeting">Selamat Datang, <strong>Budi Santoso</strong></div>
+                        <span class="ci-cust-tier">Pantau status pengerjaan pakaian laundry Anda secara langsung.</span>
+                      </div>
+                    </div>
+                    <div class="ci-cust-saldo">
+                      <span class="ci-saldo-label mono">TAGIHAN BELUM LUNAS</span>
+                      <span class="ci-saldo-val mono">Rp 0 (Semua Lunas)</span>
+                    </div>
+                  </div>
+
+                  {/* Kartu Ringkasan Statistik Monolitik (FR-27) */}
+                  <div class="ci-master-strip">
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Cucian Berjalan</span>
+                      <div class="ci-master-num mono text-teal">1</div>
+                      <span class="ci-master-sub">Nota Aktif di workshop</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Menunggu Pelunasan</span>
+                      <div class="ci-master-num mono">Rp 0</div>
+                      <span class="ci-master-sub">Semua tagihan lunas</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Total Riwayat Nota</span>
+                      <div class="ci-master-num mono">14</div>
+                      <span class="ci-master-sub">Nota sejak terdaftar</span>
+                    </div>
+                    <div class="ci-master-card">
+                      <span class="ci-master-label">Pengaduan Aktif</span>
+                      <div class="ci-master-num mono">0</div>
+                      <span class="ci-master-sub">Tidak ada komplain</span>
+                    </div>
+                  </div>
+
+                  {/* Kartu Pesanan Aktif Berjalan */}
+                  <div class="ci-cust-card">
+                    <div class="ci-cust-card-header">
+                      <div>
+                        <span class="ci-card-label mono">CUCIAN SEDANG DIKERJAKAN</span>
+                        <strong class="ci-cust-nota mono">TRX-20261024-0001</strong>
+                      </div>
+                      <span class="ci-status-badge mono">
+                        <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
+                      </span>
+                    </div>
+
+                    <div class="ci-cust-order-detail">
+                      <span>Paket Cuci Kering Setrika Reguler (4.20 Kg)</span>
+                      <span class="text-teal bold mono">Rp 33.600 (LUNAS)</span>
+                    </div>
+
+                    {/* Customer 4-Stage Stepper */}
+                    <div class="ci-stepper-row cust-scale">
+                      <div class="ci-step done">
+                        <div class="ci-step-circle">✓</div>
+                        <div class="ci-step-text"><b>Diterima</b><small>10:15 WIB</small></div>
+                      </div>
+                      <div class="ci-step-line done"></div>
+                      <div class="ci-step in-progress">
+                        <div class="ci-step-circle">●</div>
+                        <div class="ci-step-text"><b>Diproses</b><small>Cuci &amp; Kering</small></div>
+                      </div>
+                      <div class="ci-step-line"></div>
+                      <div class="ci-step">
+                        <div class="ci-step-circle">3</div>
+                        <div class="ci-step-text"><b>Selesai</b><small>Siap Ambil</small></div>
+                      </div>
+                      <div class="ci-step-line"></div>
+                      <div class="ci-step">
+                        <div class="ci-step-circle">4</div>
+                        <div class="ci-step-text"><b>Diambil</b><small>Selesai</small></div>
+                      </div>
+                    </div>
+
+                    <div class="ci-cust-progress-eta mono">
+                      <span>Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong> (~2 Jam Lagi)</span>
+                      <span class="text-teal">Higienis 1 Mesin 1 Pelanggan</span>
+                    </div>
+                  </div>
+
+                  {/* Quick Customer Action Buttons */}
+                  <div class="ci-cust-action-row">
+                    <button type="button" class="ci-cust-btn">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Unduh E-Struk Thermal
+                    </button>
+                    <button type="button" class="ci-cust-btn outline">
+                      <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                      Bantuan WhatsApp CS
+                    </button>
+                    <button type="button" class="ci-cust-btn highlight">
+                      Semua Riwayat Transaksi
+                    </button>
                   </div>
                 </div>
-                <div class="ci-cust-saldo">
-                  <span class="ci-saldo-label mono">SALDO REWARD</span>
-                  <span class="ci-saldo-val mono">Rp 15.000</span>
-                </div>
-              </div>
-
-              {/* Active Order Card */}
-              <div class="ci-cust-card">
-                <div class="ci-cust-card-header">
-                  <div>
-                    <span class="ci-card-label mono">PESANAN SEDANG BERJALAN</span>
-                    <strong class="ci-cust-nota mono">TRX-20261024-0001</strong>
-                  </div>
-                  <span class="ci-status-badge mono">
-                    <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
-                  </span>
-                </div>
-
-                <div class="ci-cust-order-detail">
-                  <span>Paket Cuci Komplit Wangi (4.20 Kg)</span>
-                  <span class="text-teal bold mono">Rp 33.600 (LUNAS)</span>
-                </div>
-
-                {/* Customer 4-Stage Stepper */}
-                <div class="ci-stepper-row cust-scale">
-                  <div class="ci-step done">
-                    <div class="ci-step-circle">✓</div>
-                    <div class="ci-step-text"><b>Diterima</b><small>10:15</small></div>
-                  </div>
-                  <div class="ci-step-line done"></div>
-                  <div class="ci-step in-progress">
-                    <div class="ci-step-circle">●</div>
-                    <div class="ci-step-text"><b>Diproses</b><small>Sedang Cuci</small></div>
-                  </div>
-                  <div class="ci-step-line"></div>
-                  <div class="ci-step">
-                    <div class="ci-step-circle">3</div>
-                    <div class="ci-step-text"><b>Selesai</b><small>Lipat</small></div>
-                  </div>
-                  <div class="ci-step-line"></div>
-                  <div class="ci-step">
-                    <div class="ci-step-circle">4</div>
-                    <div class="ci-step-text"><b>Diambil</b><small>Siap</small></div>
-                  </div>
-                </div>
-
-                <div class="ci-cust-progress-eta mono">
-                  <span>⏱ Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong> (~2 Jam Lagi)</span>
-                  <span class="text-teal">Higienis 1 Mesin 1 Pelanggan</span>
-                </div>
-              </div>
-
-              {/* Quick Customer Action Buttons */}
-              <div class="ci-cust-action-row">
-                <button type="button" class="ci-cust-btn">
-                  <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  Unduh E-Struk Thermal
-                </button>
-                <button type="button" class="ci-cust-btn outline">
-                  <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                  WhatsApp Admin
-                </button>
-                <button type="button" class="ci-cust-btn highlight">
-                  Layanan Antar-Jemput
-                </button>
               </div>
             </div>
           </div>

@@ -35,7 +35,56 @@ export function initLiveDemo(): void {
       return;
     }
 
-    // 2. CUCI.IN: Lacak Status Cucian Publik & Reset
+    // 2. CUCI.IN: Multi-Screen Slideshow & Lacak Status Cucian Publik
+    // A. Switch slide by Dot Click
+    const ciDot = target.closest<HTMLElement>('.ci-dot');
+    if (ciDot) {
+      e.preventDefault();
+      const preview = ciDot.closest<HTMLElement>('.app-cuciin');
+      if (!preview) return;
+
+      const targetIndex = parseInt(ciDot.getAttribute('data-slide') || '0', 10);
+      switchCuciinSlide(preview, targetIndex);
+      return;
+    }
+
+    // B. Switch slide by Prev/Next Arrow Controls
+    const ciNavArrow = target.closest<HTMLElement>('.ci-nav-arrow');
+    if (ciNavArrow) {
+      e.preventDefault();
+      const preview = ciNavArrow.closest<HTMLElement>('.app-cuciin');
+      if (!preview) return;
+
+      const panes = preview.querySelectorAll<HTMLElement>('.ci-slide-pane');
+      let currentIndex = 0;
+      panes.forEach((p, idx) => {
+        if (p.classList.contains('active')) currentIndex = idx;
+      });
+
+      const totalSlides = panes.length || 3;
+      let nextIndex = 0;
+      if (ciNavArrow.classList.contains('prev')) {
+        nextIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      } else {
+        nextIndex = (currentIndex + 1) % totalSlides;
+      }
+
+      switchCuciinSlide(preview, nextIndex);
+      return;
+    }
+
+    // C. Quick Switch button (e.g. "Buka Dashboard" in Navbar)
+    const ciQuick = target.closest<HTMLElement>('.ci-quick-switch');
+    if (ciQuick) {
+      e.preventDefault();
+      const preview = ciQuick.closest<HTMLElement>('.app-cuciin');
+      if (!preview) return;
+      const targetIdx = parseInt(ciQuick.getAttribute('data-target') || '1', 10);
+      switchCuciinSlide(preview, targetIdx);
+      return;
+    }
+
+    // D. Lacak Status Cucian Publik & Reset
     const trackBtn = target.closest<HTMLElement>('.ci-tracking-btn');
     if (trackBtn) {
       e.preventDefault();
@@ -132,5 +181,105 @@ export function initLiveDemo(): void {
       }
     }
   });
+
+  // Swipe / Drag Gesture Support for CUCI.IN Multi-Screen Carousel ("bisa digeser-geser")
+  let startX = 0;
+  let startY = 0;
+  let activeViewport: HTMLElement | null = null;
+  let isDragging = false;
+
+  document.addEventListener('touchstart', (e: TouchEvent) => {
+    const vp = (e.target as HTMLElement | null)?.closest<HTMLElement>('.ci-slides-viewport');
+    if (!vp) return;
+    activeViewport = vp;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e: TouchEvent) => {
+    if (!activeViewport) return;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    handleSwipe(activeViewport, endX - startX, endY - startY);
+    activeViewport = null;
+  }, { passive: true });
+
+  document.addEventListener('mousedown', (e: MouseEvent) => {
+    const target = e.target as HTMLElement | null;
+    if (target?.closest('button, input, select, a')) return;
+    const vp = target?.closest<HTMLElement>('.ci-slides-viewport');
+    if (!vp) return;
+    activeViewport = vp;
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+
+  document.addEventListener('mouseup', (e: MouseEvent) => {
+    if (!isDragging || !activeViewport) {
+      isDragging = false;
+      activeViewport = null;
+      return;
+    }
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+    handleSwipe(activeViewport, deltaX, deltaY);
+    isDragging = false;
+    activeViewport = null;
+  });
+
+  function handleSwipe(viewport: HTMLElement, diffX: number, diffY: number): void {
+    if (Math.abs(diffX) < 30 || Math.abs(diffX) < Math.abs(diffY)) return;
+    const preview = viewport.closest<HTMLElement>('.app-cuciin');
+    if (!preview) return;
+
+    const panes = preview.querySelectorAll<HTMLElement>('.ci-slide-pane');
+    let currentIndex = 0;
+    panes.forEach((p, idx) => {
+      if (p.classList.contains('active')) currentIndex = idx;
+    });
+
+    const total = panes.length || 3;
+    if (diffX < 0) {
+      // Geser ke Kiri -> Slide Berikutnya
+      const nextIdx = (currentIndex + 1) % total;
+      switchCuciinSlide(preview, nextIdx);
+    } else {
+      // Geser ke Kanan -> Slide Sebelumnya
+      const prevIdx = (currentIndex - 1 + total) % total;
+      switchCuciinSlide(preview, prevIdx);
+    }
+  }
+}
+
+/**
+ * Switch active slide pane and update track transform, dots, and URL bar for CUCI.IN
+ */
+export function switchCuciinSlide(preview: HTMLElement, index: number): void {
+  const dots = preview.querySelectorAll<HTMLElement>('.ci-dot');
+  const panes = preview.querySelectorAll<HTMLElement>('.ci-slide-pane');
+  const track = preview.querySelector<HTMLElement>('.ci-slides-track');
+  const urlText = preview.querySelector<HTMLElement>('.ci-window-url-text');
+
+  const totalPanes = panes.length || 3;
+  const safeIndex = Math.max(0, Math.min(index, totalPanes - 1));
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === safeIndex);
+  });
+
+  panes.forEach((pane, i) => {
+    pane.classList.toggle('active', i === safeIndex);
+  });
+
+  if (track) {
+    track.style.transform = `translateX(-${safeIndex * (100 / totalPanes)}%)`;
+  }
+
+  if (urlText) {
+    if (safeIndex === 0) urlText.textContent = 'cuciin.app';
+    else if (safeIndex === 1) urlText.textContent = 'cuciin.app/admin/dashboard';
+    else if (safeIndex === 2) urlText.textContent = 'cuciin.app/customer/dashboard';
+  }
 }
 
