@@ -10,6 +10,7 @@ import { initBackgroundWanderers } from './wanderer';
 import { initMangaUIFX } from './manga-fx';
 import { prefersReducedMotion } from './motion';
 import { initLiveDemo } from './live-demo';
+import { techIconIds } from '../data/tech-icon-ids';
 
 // State
 const overlayStack: HTMLElement[] = [];
@@ -103,7 +104,26 @@ export function showProjectDetail(key: string): void {
       ...project.stack.map(tech => {
         const tag = document.createElement('span');
         tag.className = 'tag mono';
-        tag.textContent = tech;
+
+        for (const id of techIconIds(tech)) {
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('class', 'tag-icon');
+          svg.setAttribute('data-icon', id);
+          svg.setAttribute('viewBox', '0 0 24 24');
+          svg.setAttribute('aria-hidden', 'true');
+          svg.setAttribute('focusable', 'false');
+
+          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          use.setAttribute('href', `#tech-${id}`);
+          svg.appendChild(use);
+          tag.appendChild(svg);
+        }
+
+        const label = document.createElement('span');
+        label.className = 'tag-label';
+        label.textContent = tech;
+        tag.appendChild(label);
+
         return tag;
       })
     );

@@ -103,6 +103,12 @@ Stylesheet berada di **`src/styles/`** dan diimpor berurutan lewat `src/styles/s
 - **`components.css`**: Seluruh komponen UI — ticker, header & navigasi, tombol, panel komik Hero, photo panel, comic strip, project card beserta miniatur UI aplikasi, Process, About, Contact, dialog, command palette, toast, SFX manga, serta seluruh media query responsif.
 - **`style.css`**: Titik masuk (*entry point*) yang mengimpor ketiga modul di atas.
 
+Catatan **Training Arc (Chapter 02)**: setiap tahap dibungkus `.step-wrap` supaya panah alur `.step-arrow` bisa diletakkan di celah antar kartu — di luar `.step` yang memakai `overflow: hidden`. Kartu memakai flex column dengan `.step-output` ber-`margin-top: auto`, jadi baris hasil selalu menempel di dasar sementara label `CH. 0N` dan lipatan halaman tetap di pojok kiri/kanan bawah.
+
+Catatan **Sertifikasi**: data `CERTIFICATIONS` dirender sebagai strip di dalam About (`.cert-block`), bukan section tersendiri, karena jumlahnya sedikit. Bila `credentialUrl` kosong, tautan VERIFY tidak dirender.
+
+Catatan **`.section.shell`**: beberapa section memakai kedua class itu. Karena spesifisitasnya sama, `padding: 73px 0` pada `.section` menimpa padding horizontal `.shell` dan membuat konten menempel ke tepi layar. Aturan `.section.shell` (beserta variannya di media query 860 px dan 580 px) mengembalikan padding tersebut.
+
 ---
 
 ## 5. 🎞️ Lapisan Interaksi & Motion
@@ -113,7 +119,9 @@ Seluruh interaksi klien diinisialisasi dari satu entry point di `src/layouts/Lay
 | :--- | :--- |
 | `src/scripts/portfolio.ts` | Orkestrator utama: siklus palet, modal studi kasus, command palette (Ctrl/Cmd + K), focus trap, menu mobile, upload pratinjau foto, tombol kontak, tahun footer. |
 | `src/scripts/wanderer.ts` | Menggerakkan 12 ikon `BackgroundElements.astro` dengan fisika inersia + pantulan viewport memakai `requestAnimationFrame` dan `translate3d`. |
-| `src/scripts/manga-fx.ts` | Memunculkan popup SFX onomatope (`ゴゴゴ`, `ドン!!`, `DUARR!!`) hanya pada kartu proyek dan tombol CTA utama, dengan cooldown global 650 ms + 1600 ms per elemen agar tidak berulang saat pointer bergerak di dalam kartu. |
+| `src/scripts/manga-fx.ts` | Memunculkan popup SFX onomatope (`ゴゴゴ`, `ドン!!`, `DUARR!!`) saat pointer **masuk** ke kartu proyek, panel foto, strip komik, kartu About, atau tombol CTA utama. Pergerakan di dalam elemen yang sama diabaikan dan jarak antar popup minimal 180 ms, jadi responsif tanpa spam. |
+
+Ikon teknologi pada tag (`.tag-row` di kartu dan `.dialog-stack` di modal) berasal dari satu sprite SVG `TechIconSprite.astro` yang dirender sekali di `Layout.astro`. Path logo disimpan build-time di `src/data/tech-icons.ts` (Simple Icons, CC0, plus ikon garis generik untuk entri tanpa logo resmi), sedangkan klien hanya menerima peta kecil `src/data/tech-icon-ids.ts`. Ikon dirender lewat `<use href="#tech-*">` sehingga nol request jaringan dan bundle JS tidak ikut membengkak. Warna default mengikuti tinta (`currentColor`); warna brand hanya muncul saat tag di-hover lewat `--tech-hover` per `data-icon`.
 
 Aturan motion:
 - Preferensi `prefers-reduced-motion: reduce` dinilai lewat helper `src/scripts/motion.ts` dan mematikan **siklus palet otomatis, popup SFX, serta kanvas ikon melayang**. Palet manual (klik badge), modal, dan Command Palette tetap berfungsi karena dipicu pengguna.

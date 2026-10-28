@@ -1,5 +1,6 @@
 ---
 import type { ProjectItem } from '../data/projects';
+import TechTag from './TechTag.astro';
 
 interface Props {
   project: ProjectItem;
@@ -12,110 +13,149 @@ const { project } = Astro.props;
   <div class={`project-art ${project.theme}`} data-art={project.id}>
     <span class={`project-sfx ${project.sfxClass || ''} display`} aria-hidden="true">{project.sfx}</span>
     <span class="art-corner mono">{project.badge}</span>
-    {project.id !== 'bawanghub' && (
-      <span class="live-demo-pill mono" title="Live Interactive Demo: Coba klik dan rasakan fiturnya!">
-        <span class="live-demo-pulse"></span> LIVE DEMO
-      </span>
-    )}
+    <span class="art-preview-pill mono" title="Simulasi pratinjau antarmuka proyek">
+      <span class="preview-pulse-dot"></span>
+      {project.id === 'cuciin' ? 'LIVE DEMO PREVIEW' : 'PRATINJAU / PREVIEW'}
+    </span>
 
-    {/* 1. BAWANGHUB: Supply Chain & Commodity Logistics Dashboard (Clean Static UI) */}
+    {/* 1. BAWANGHUB: Smart Agriculture & Gemini AI Dashboard (Google Juara Vibe Coding) */}
     {project.theme === 'agri' && (
-      <div class="app-bawanghub browser-frame" aria-label="Pratinjau antarmuka BawangHub Supply Chain & Logistics Dashboard">
-        {/* Browser Top Window Bar */}
-        <div class="browser-titlebar">
-          <div class="browser-dots" aria-hidden="true">
-            <span class="b-dot red"></span>
-            <span class="b-dot yellow"></span>
-            <span class="b-dot green"></span>
+      <div class="app-bawanghub web-window" aria-label="Pratinjau antarmuka BawangHub Smart Agriculture Dashboard">
+        {/* Clean Web Browser Window Bar (No black bar, no 'web online' tags) */}
+        <div class="web-window-bar">
+          <div class="web-window-dots" aria-hidden="true">
+            <span class="w-dot red"></span>
+            <span class="w-dot yellow"></span>
+            <span class="w-dot green"></span>
           </div>
-          <div class="browser-url mono">bawanghub.internal/supply-chain/inventory</div>
-          <div class="browser-status mono">PROD ● ONLINE</div>
+          <div class="web-window-url mono">
+            <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>bawanghub.app</span>
+          </div>
         </div>
 
-        {/* Browser Content Canvas */}
-        <div class="bawang-canvas">
-          {/* Top Operational Navigation Bar */}
-          <div class="bawang-topbar">
-            <div class="bawang-brand">
-              <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#059669" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                <line x1="12" y1="22.08" x2="12" y2="12"/>
+        {/* Dashboard Layout: Sidebar + Main Content */}
+        <div class="bh-desktop-layout">
+          {/* Sidebar */}
+          <aside class="bh-side-nav">
+            <div class="bh-nav-brand">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
               </svg>
-              <span>BAWANG<strong>HUB</strong></span>
-              <span class="bawang-hub-tag mono">HUB UTAMA</span>
+              <span>Bawang<strong>Hub</strong></span>
             </div>
-            <div class="bawang-top-meta mono">
-              <span>MUTASI HARI INI: <strong>+12.4 TON</strong></span>
-              <span class="bawang-user-pill">Admin Logistik</span>
+            <nav class="bh-nav-links">
+              <div class="bh-link active">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                <span>Dashboard</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
+                <span>Klinik Bawang</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/></svg>
+                <span>Kalkulator</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                <span>Jadwal Tanam</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                <span>Buku Tani</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/></svg>
+                <span>Tanya Agri AI</span>
+              </div>
+            </nav>
+            <div class="bh-side-footer">
+              <span class="bh-farmer-pill">Petani Bawang</span>
             </div>
-          </div>
+          </aside>
 
-          {/* KPI Summary Metric Cards (3 Columns) */}
-          <div class="bawang-kpi-row">
-            <div class="bawang-kpi-card">
-              <div class="kpi-header">
-                <span class="kpi-title">TOTAL STOK KOMODITAS</span>
-                <span class="kpi-trend up">+8.2%</span>
+          {/* Main Dashboard Canvas */}
+          <main class="bh-main-canvas">
+            {/* Top Grid: Hero Box + Weather Card */}
+            <div class="bh-top-row">
+              <div class="bh-hero-card">
+                <div class="bh-hero-badge">Google Juara Vibe Coding</div>
+                <div class="bh-hero-title">Halo, <strong>Petani Bawang!</strong></div>
+                <div class="bh-hero-desc">Platform cerdas diagnosis penyakit daun &amp; estimasi panen.</div>
+                <div class="bh-hero-btns">
+                  <span class="bh-btn-green">Mulai Tanya AI</span>
+                  <span class="bh-btn-outline">Cek Jadwal</span>
+                </div>
               </div>
-              <div class="kpi-val">14.850 <span>Kg</span></div>
-              <div class="kpi-sub">Kapasitas Gudang 92% (Aman)</div>
+
+              <div class="bh-weather-box">
+                <div class="bh-weather-head">
+                  <span>Info Cuaca</span>
+                  <span class="bh-loc-tag">📍 Nganjuk</span>
+                </div>
+                <div class="bh-weather-body">
+                  <div class="bh-weather-temp">29°C</div>
+                  <div class="bh-weather-stat">Cerah Berawan</div>
+                </div>
+                <div class="bh-weather-ai-tip">
+                  <span>Saran AI:</span> Optimal untuk pemupukan.
+                </div>
+              </div>
             </div>
 
-            <div class="bawang-kpi-card">
-              <div class="kpi-header">
-                <span class="kpi-title">ARMADA PENGIRIMAN</span>
-                <span class="kpi-trend badge-blue">4 Truk</span>
+            {/* Core Feature Cards (4 Columns) */}
+            <div class="bh-cards-grid">
+              <div class="bh-card">
+                <div class="bh-card-icon green">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
+                </div>
+                <div class="bh-card-title">Klinik Bawang</div>
+                <div class="bh-card-desc">Diagnosis hama daun via Gemini Vision.</div>
+                <div class="bh-card-action green">Buka Klinik →</div>
               </div>
-              <div class="kpi-val">6 <span>Dispatch</span></div>
-              <div class="kpi-sub">3 Rute Antar Kota Aktif</div>
-            </div>
 
-            <div class="bawang-kpi-card">
-              <div class="kpi-header">
-                <span class="kpi-title">INDEKS HARGA PASAR</span>
-                <span class="kpi-trend stable">Stabil</span>
+              <div class="bh-card">
+                <div class="bh-card-icon blue">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/></svg>
+                </div>
+                <div class="bh-card-title">Kalkulator</div>
+                <div class="bh-card-desc">Estimasi tonase &amp; margin laba panen.</div>
+                <div class="bh-card-action blue">Hitung Panen →</div>
               </div>
-              <div class="kpi-val">Rp 28.500 <span>/Kg</span></div>
-              <div class="kpi-sub">Benchmark Pasar Induk</div>
-            </div>
-          </div>
 
-          {/* Recent Dispatch Order Table */}
-          <div class="bawang-table-card">
-            <div class="bawang-table-head mono">
-              <span>SURAT JALAN &amp; LOGISTIK GUDANG REAL-TIME</span>
-              <span>STATUS</span>
-            </div>
-            <div class="bawang-table-body">
-              <div class="bawang-table-row">
-                <span class="bawang-sj mono">#SJ-8841</span>
-                <span class="bawang-route">Gudang Hub Timur ➔ Pasar Induk Kramat Jati</span>
-                <span class="bawang-vol mono">3.400 Kg</span>
-                <span class="bawang-status green">TERKIRIM</span>
+              <div class="bh-card">
+                <div class="bh-card-icon amber">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div class="bh-card-title">Jadwal Tanam</div>
+                <div class="bh-card-desc">Kalender semprot &amp; rotasi pemupukan.</div>
+                <div class="bh-card-action amber">Lihat Jadwal →</div>
               </div>
-              <div class="bawang-table-row">
-                <span class="bawang-sj mono">#SJ-8842</span>
-                <span class="bawang-route">Gudang Hub Barat ➔ Pusat Distribusi Cirebon</span>
-                <span class="bawang-vol mono">1.950 Kg</span>
-                <span class="bawang-status amber">PROSES MUAT</span>
-              </div>
-              <div class="bawang-table-row">
-                <span class="bawang-sj mono">#SJ-8843</span>
-                <span class="bawang-route">Gudang Hub Selatan ➔ Retailer Semarang</span>
-                <span class="bawang-vol mono">850 Kg</span>
-                <span class="bawang-status blue">EN ROUTE</span>
+
+              <div class="bh-card">
+                <div class="bh-card-icon purple">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                </div>
+                <div class="bh-card-title">Buku Tani</div>
+                <div class="bh-card-desc">Catatan kas harian &amp; stok saprotan.</div>
+                <div class="bh-card-action purple">Buka Buku →</div>
               </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
     )}
 
-    {/* 2. LAPANGKU: Replika Akurat Halaman Utama Flutter (customer_home_page.dart — Material Icons) */}
+    {/* 2. LAPANGKU: Replika Akurat Flutter Multi-Role (customer_home_page.dart & booking_detail_page.dart) */}
     {project.theme === 'sport' && (
       <div class="phone-mockup-wrap">
-        <div class="phone-mockup-chassis">
+        {/* Phone 1: Customer Home & Venue Discovery */}
+        <div class="phone-mockup-chassis phone-screen-main">
           {/* Side Hardware Buttons */}
           <span class="phone-hw-btn volume-up" aria-hidden="true"></span>
           <span class="phone-hw-btn volume-down" aria-hidden="true"></span>
@@ -129,8 +169,8 @@ const { project } = Astro.props;
 
           {/* Screen Glass Area */}
           <div class="phone-screen-glass">
-            <div class="app-lapangku" aria-label="Pratinjau halaman Beranda aplikasi Flutter Lapangku">
-              {/* Sticky White Header */}
+            <div class="app-lapangku" aria-label="Pratinjau aplikasi Flutter Lapangku - Eksplorasi & Reservasi Lapangan">
+              {/* Sticky White Header (customer_home_page.dart) */}
               <div class="lk-white-header">
                 <div class="lk-status-bar">
                   <span class="lk-status-time mono">09:41</span>
@@ -139,196 +179,244 @@ const { project } = Astro.props;
                     <svg viewBox="0 0 24 24" width="7" height="7" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
                   </div>
                 </div>
+
                 <div class="lk-greeting-row">
-                  <div>
-                    <div class="lk-hello">Halo, Sobat</div>
-                    <div class="lk-loc">
-                      <svg viewBox="0 0 24 24" width="7" height="7" fill="#1B6B3A"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                      Malang, Jawa Timur
+                  <div class="lk-user-info">
+                    <img src="./projects/lapangku-icon.png" alt="Lapangku Icon" class="lk-app-icon" loading="lazy" />
+                    <div>
+                      <div class="lk-hello">Halo, Sobat Maulana 👋</div>
+                      <div class="lk-loc">
+                        <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="#1B6B3A"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        Malang, Jawa Timur
+                      </div>
                     </div>
                   </div>
                   <div class="lk-header-actions">
                     <span class="lk-bell-btn">
-                      <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="#2D3748"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+                      <svg viewBox="0 0 24 24" width="8" height="8" fill="#2D3748"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
                     </span>
-                    <span class="lk-avatar">S</span>
+                    <span class="lk-avatar">M</span>
                   </div>
                 </div>
+
                 <div class="lk-search-pill">
                   <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="#A0AEC0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                  Cari lapangan, lokasi, atau olahraga...
+                  <span>Cari venue atau lapangan di Malang...</span>
                 </div>
               </div>
 
-              {/* Tab View 1: Beranda (Default) */}
-              <div class="lk-body lk-tab-view" data-view-name="beranda">
-                <div class="lk-section-title">Kategori Olahraga</div>
-                <div class="lk-cat-row">
-                  <span class="lk-cat-chip active" data-lk-cat="all" role="button" tabindex="0">Semua</span>
-                  <span class="lk-cat-chip" data-lk-cat="futsal" role="button" tabindex="0">Futsal</span>
-                  <span class="lk-cat-chip" data-lk-cat="soccer" role="button" tabindex="0">Mini Soccer</span>
-                  <span class="lk-cat-chip" data-lk-cat="badminton" role="button" tabindex="0">Badminton</span>
-                  <span class="lk-cat-chip" data-lk-cat="basket" role="button" tabindex="0">Basket</span>
+              {/* Body Content */}
+              <div class="lk-body">
+                {/* Category Chips */}
+                <div class="lk-cat-section">
+                  <div class="lk-section-title">Kategori</div>
+                  <div class="lk-cat-row">
+                    <span class="lk-cat-chip active">Semua</span>
+                    <span class="lk-cat-chip">Futsal</span>
+                    <span class="lk-cat-chip">Mini Soccer</span>
+                    <span class="lk-cat-chip">Badminton</span>
+                    <span class="lk-cat-chip">Basket</span>
+                  </div>
                 </div>
 
-                <div class="lk-section-title">Rekomendasi Lapangan (Klik untuk pilih)</div>
-                <div class="lk-field-grid">
-                  {/* Field Card 1 (Futsal) */}
-                  <div class="lk-field-card" data-field-cat="futsal" role="button" tabindex="0" title="Klik untuk simulasi booking slot">
-                    <div class="lk-field-img futsal-bg">
-                      <span class="lk-badge-cat">FUTSAL</span>
-                      <span class="lk-badge-type">
-                        <svg viewBox="0 0 24 24" width="5.5" height="5.5" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                        INDOOR
-                      </span>
+                {/* Venue List */}
+                <div class="lk-section-title" style="margin-top: 2px;">Rekomendasi Terdekat</div>
+                <div class="lk-field-list">
+                  {/* Card 1: Champions Futsal Malang with Real Photo Asset */}
+                  <div class="lk-field-card">
+                    <div class="lk-field-banner">
+                      <img src="./projects/futsal.jpg" alt="Foto Lapangan Futsal" class="lk-banner-photo" loading="lazy" />
+                      <div class="lk-banner-badges">
+                        <span class="lk-badge-cat">FUTSAL</span>
+                        <span class="lk-badge-type">INDOOR</span>
+                      </div>
                     </div>
                     <div class="lk-field-info">
-                      <div class="lk-venue-name">CHAMPIONS ARENA</div>
-                      <div class="lk-court-name">Lapangan Futsal A</div>
+                      <div class="lk-venue-name">CHAMPIONS ARENA MALANG</div>
+                      <div class="lk-court-name">Lapangan Futsal Vinyl A</div>
                       <div class="lk-price-row">
-                        <strong>Rp 120rb</strong><span>/ jam</span>
+                        <strong>Rp 120.000</strong><span> / jam</span>
                       </div>
                       <div class="lk-meta-row">
-                        <span class="lk-meta-item">
-                          <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="2"/><path d="m7 21 3-6 2 2v4"/><path d="m10 9 3 2 3-1"/><path d="m7 12 3-3"/></svg>
-                          1.2 km
-                        </span>
-                        <span class="lk-meta-item">
-                          <svg viewBox="0 0 24 24" width="6" height="6" fill="#F6AD55"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                          4.9
-                        </span>
+                        <span class="lk-meta-item">📍 1.2 km</span>
+                        <span class="lk-meta-item lk-rating">⭐ 4.9 (128)</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Field Card 2 (Mini Soccer) */}
-                  <div class="lk-field-card" data-field-cat="soccer" role="button" tabindex="0" title="Klik untuk simulasi booking slot">
-                    <div class="lk-field-img soccer-bg">
-                      <span class="lk-badge-cat">MINI SOCCER</span>
-                      <span class="lk-badge-type">
-                        <svg viewBox="0 0 24 24" width="5.5" height="5.5" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
-                        OUTDOOR
-                      </span>
+                  {/* Card 2: Stadion Gajayana Mini Soccer with Real Photo Asset */}
+                  <div class="lk-field-card">
+                    <div class="lk-field-banner">
+                      <img src="./projects/minisoccer.jpg" alt="Foto Stadion Gajayana" class="lk-banner-photo" loading="lazy" />
+                      <div class="lk-banner-badges">
+                        <span class="lk-badge-cat">MINI SOCCER</span>
+                        <span class="lk-badge-type">OUTDOOR</span>
+                      </div>
                     </div>
                     <div class="lk-field-info">
                       <div class="lk-venue-name">STADION GAJAYANA</div>
-                      <div class="lk-court-name">Mini Soccer Utama</div>
+                      <div class="lk-court-name">Mini Soccer Rumput Sintetis</div>
                       <div class="lk-price-row">
-                        <strong>Rp 350rb</strong><span>/ jam</span>
+                        <strong>Rp 350.000</strong><span> / jam</span>
                       </div>
                       <div class="lk-meta-row">
-                        <span class="lk-meta-item">
-                          <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="2"/><path d="m7 21 3-6 2 2v4"/><path d="m10 9 3 2 3-1"/><path d="m7 12 3-3"/></svg>
-                          2.4 km
-                        </span>
-                        <span class="lk-meta-item">
-                          <svg viewBox="0 0 24 24" width="6" height="6" fill="#F6AD55"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                          4.8
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Field Card 3 (Badminton) */}
-                  <div class="lk-field-card" data-field-cat="badminton" style="display: none;" role="button" tabindex="0" title="Klik untuk simulasi booking slot">
-                    <div class="lk-field-img" style="background: #2563eb;">
-                      <span class="lk-badge-cat">BADMINTON</span>
-                      <span class="lk-badge-type">INDOOR</span>
-                    </div>
-                    <div class="lk-field-info">
-                      <div class="lk-venue-name">SMASH ARENA</div>
-                      <div class="lk-court-name">Lapangan Karpet A</div>
-                      <div class="lk-price-row">
-                        <strong>Rp 45rb</strong><span>/ jam</span>
-                      </div>
-                      <div class="lk-meta-row">
-                        <span class="lk-meta-item">0.8 km</span>
-                        <span class="lk-meta-item" style="color: #F6AD55;">★ 4.9</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Field Card 4 (Basket) */}
-                  <div class="lk-field-card" data-field-cat="basket" style="display: none;" role="button" tabindex="0" title="Klik untuk simulasi booking slot">
-                    <div class="lk-field-img" style="background: #ea580c;">
-                      <span class="lk-badge-cat">BASKET</span>
-                      <span class="lk-badge-type">INDOOR</span>
-                    </div>
-                    <div class="lk-field-info">
-                      <div class="lk-venue-name">DBL SPORT HALL</div>
-                      <div class="lk-court-name">Main Court 01</div>
-                      <div class="lk-price-row">
-                        <strong>Rp 180rb</strong><span>/ jam</span>
-                      </div>
-                      <div class="lk-meta-row">
-                        <span class="lk-meta-item">3.1 km</span>
-                        <span class="lk-meta-item" style="color: #F6AD55;">★ 5.0</span>
+                        <span class="lk-meta-item">📍 2.4 km</span>
+                        <span class="lk-meta-item lk-rating">⭐ 4.8 (94)</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Tab View 2: Pesanan Aktif */}
-              <div class="lk-body lk-tab-view" data-view-name="pesanan" style="display: none;">
-                <div class="lk-section-title">Riwayat &amp; Pesanan Aktif</div>
-                <div class="lk-order-card">
-                  <div class="lk-order-head">
-                    <span class="lk-order-code mono">LPK-20261028-09</span>
-                    <span class="lk-order-status-badge">LUNAS • QRIS</span>
-                  </div>
-                  <div class="lk-order-venue">Champions Arena (Futsal A)</div>
-                  <div class="lk-order-time mono">📅 Hari ini, 19:00 - 20:00 WIB</div>
-                  <div class="lk-order-countdown">⏳ Sisa 2 jam sebelum kick-off</div>
-                  <div class="lk-order-action">Tunjukkan QR Masuk Lapangan →</div>
-                </div>
-              </div>
-
-              {/* Tab View 3: Favorit */}
-              <div class="lk-body lk-tab-view" data-view-name="favorit" style="display: none;">
-                <div class="lk-section-title">Lapangan Favorit Tersimpan</div>
-                <div class="lk-fav-list">
-                  <div class="lk-fav-item">
-                    <span>★ Champions Arena (Futsal)</span>
-                    <small>1.2 km • Rp 120rb/jam</small>
-                  </div>
-                  <div class="lk-fav-item">
-                    <span>★ Stadion Gajayana (Mini Soccer)</span>
-                    <small>2.4 km • Rp 350rb/jam</small>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tab View 4: Profil */}
-              <div class="lk-body lk-tab-view" data-view-name="profil" style="display: none;">
-                <div class="lk-section-title">Akun Pengguna</div>
-                <div class="lk-profile-card">
-                  <div class="lk-profile-avatar">S</div>
-                  <div>
-                    <div class="lk-profile-name">Sobat Maulana</div>
-                    <div class="lk-profile-tier mono">MEMBER GOLD TIER ✦</div>
-                    <div class="lk-profile-stats">14 Pertandingan • 420 Poin Loyalty</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* BottomNavigationBar (customer_main_page.dart — Material Icons) */}
+              {/* Bottom Navigation Bar (customer_main_page.dart) */}
               <div class="lk-bottom-nav">
-                <div class="lk-nav-tab active" data-lk-tab="beranda" role="button" tabindex="0">
+                <div class="lk-nav-tab active">
                   <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                   <b>Beranda</b>
                 </div>
-                <div class="lk-nav-tab" data-lk-tab="pesanan" role="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg>
+                <div class="lk-nav-tab">
+                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg>
                   <b>Pesanan</b>
                 </div>
-                <div class="lk-nav-tab" data-lk-tab="favorit" role="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                <div class="lk-nav-tab">
+                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                   <b>Favorit</b>
                 </div>
-                <div class="lk-nav-tab" data-lk-tab="profil" role="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <div class="lk-nav-tab">
+                  <svg viewBox="0 0 24 24" width="8.5" height="8.5" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   <b>Profil</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Home Indicator Bar */}
+          <div class="phone-home-indicator" aria-hidden="true"></div>
+        </div>
+
+        {/* Phone 2: E-Ticket Digital & QR Code Check-In (booking_detail_page.dart — Showcase in Dialog) */}
+        <div class="phone-mockup-chassis phone-screen-ticket">
+          {/* Side Hardware Buttons */}
+          <span class="phone-hw-btn volume-up" aria-hidden="true"></span>
+          <span class="phone-hw-btn volume-down" aria-hidden="true"></span>
+          <span class="phone-hw-btn power-lock" aria-hidden="true"></span>
+
+          {/* Top Dynamic Island Notch */}
+          <div class="phone-dynamic-island" aria-hidden="true">
+            <span class="phone-camera-lens"></span>
+            <span class="phone-speaker-slit"></span>
+          </div>
+
+          {/* Screen Glass Area */}
+          <div class="phone-screen-glass">
+            <div class="app-lapangku lk-ticket-view" aria-label="Pratinjau E-Ticket Digital Lapangku dengan validasi QR Code">
+              {/* App Bar */}
+              <div class="lk-ticket-appbar">
+                <div class="lk-status-bar">
+                  <span class="lk-status-time mono">09:41</span>
+                  <div class="lk-status-icons">
+                    <svg viewBox="0 0 24 24" width="7" height="7" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.57 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                    <svg viewBox="0 0 24 24" width="7" height="7" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+                  </div>
+                </div>
+                <div class="lk-ticket-header-title">
+                  <span class="lk-back-icon">‹</span>
+                  <b>E-Ticket Resmi</b>
+                  <span class="lk-share-icon">⤴</span>
+                </div>
+              </div>
+
+              {/* Digital E-Ticket Pass */}
+              <div class="lk-ticket-body">
+                <div class="lk-ticket-pass">
+                  {/* Ticket Header */}
+                  <div class="lk-pass-head">
+                    <div class="lk-pass-brand">
+                      <img src="./projects/lapangku-icon.png" alt="Lapangku Icon" class="lk-pass-logo" loading="lazy" />
+                      <span>LAPANGKU PASS</span>
+                    </div>
+                    <span class="lk-status-lunas">● LUNAS • QRIS</span>
+                  </div>
+
+                  {/* Match Information */}
+                  <div class="lk-pass-match">
+                    <div class="lk-match-venue">CHAMPIONS ARENA MALANG</div>
+                    <div class="lk-match-court">Lapangan Futsal Vinyl A</div>
+                    <div class="lk-match-time mono">📅 Rabu, 28 Okt 2026 • 19:00 - 20:00 WIB</div>
+                  </div>
+
+                  {/* Perforated Divider */}
+                  <div class="lk-pass-perforated">
+                    <span class="lk-perf-cutout left"></span>
+                    <span class="lk-perf-line"></span>
+                    <span class="lk-perf-cutout right"></span>
+                  </div>
+
+                  {/* In-Venue QR Code Box */}
+                  <div class="lk-pass-qr-box">
+                    <div class="lk-qr-frame">
+                      {/* Geometric SVG QR Code */}
+                      <svg viewBox="0 0 100 100" width="72" height="72" fill="none">
+                        {/* Finder Pattern Top-Left */}
+                        <rect x="5" y="5" width="28" height="28" rx="4" fill="#1B6B3A"/>
+                        <rect x="9" y="9" width="20" height="20" rx="2" fill="#ffffff"/>
+                        <rect x="13" y="13" width="12" height="12" rx="2" fill="#1B6B3A"/>
+
+                        {/* Finder Pattern Top-Right */}
+                        <rect x="67" y="5" width="28" height="28" rx="4" fill="#1B6B3A"/>
+                        <rect x="71" y="9" width="20" height="20" rx="2" fill="#ffffff"/>
+                        <rect x="75" y="13" width="12" height="12" rx="2" fill="#1B6B3A"/>
+
+                        {/* Finder Pattern Bottom-Left */}
+                        <rect x="5" y="67" width="28" height="28" rx="4" fill="#1B6B3A"/>
+                        <rect x="9" y="71" width="20" height="20" rx="2" fill="#ffffff"/>
+                        <rect x="13" y="75" width="12" height="12" rx="2" fill="#1B6B3A"/>
+
+                        {/* QR Data Grid Matrix */}
+                        <rect x="38" y="8" width="6" height="6" fill="#1B6B3A"/>
+                        <rect x="48" y="8" width="12" height="6" fill="#1B6B3A"/>
+                        <rect x="38" y="18" width="12" height="6" fill="#1B6B3A"/>
+                        <rect x="54" y="18" width="6" height="6" fill="#1B6B3A"/>
+                        <rect x="8" y="38" width="6" height="12" fill="#1B6B3A"/>
+                        <rect x="18" y="38" width="6" height="6" fill="#1B6B3A"/>
+                        <rect x="28" y="38" width="14" height="6" fill="#1B6B3A"/>
+                        <rect x="46" y="32" width="8" height="8" fill="#1B6B3A"/>
+                        <rect x="58" y="32" width="12" height="6" fill="#1B6B3A"/>
+                        <rect x="76" y="38" width="16" height="6" fill="#1B6B3A"/>
+                        <rect x="38" y="46" width="6" height="12" fill="#1B6B3A"/>
+                        <rect x="48" y="46" width="14" height="6" fill="#1B6B3A"/>
+                        <rect x="68" y="48" width="8" height="8" fill="#1B6B3A"/>
+                        <rect x="82" y="48" width="10" height="8" fill="#1B6B3A"/>
+                        <rect x="38" y="64" width="12" height="6" fill="#1B6B3A"/>
+                        <rect x="54" y="64" width="6" height="12" fill="#1B6B3A"/>
+                        <rect x="66" y="64" width="14" height="6" fill="#1B6B3A"/>
+                        <rect x="38" y="76" width="8" height="16" fill="#1B6B3A"/>
+                        <rect x="50" y="80" width="16" height="6" fill="#1B6B3A"/>
+                        <rect x="72" y="76" width="6" height="16" fill="#1B6B3A"/>
+                        <rect x="84" y="76" width="8" height="8" fill="#1B6B3A"/>
+                      </svg>
+                    </div>
+                    <div class="lk-qr-code mono">LPK-20261028-009</div>
+                    <div class="lk-qr-hint">Scan di aplikasi Mitra untuk check-in</div>
+                  </div>
+
+                  {/* Ticket Footer Summary */}
+                  <div class="lk-pass-foot">
+                    <div>
+                      <small>Total Biaya Sewa</small>
+                      <b>Rp 120.000</b>
+                    </div>
+                    <div style="text-align: right;">
+                      <small>PIN Masuk GOR</small>
+                      <b class="mono" style="color: #1B6B3A;">4829</b>
+                    </div>
+                  </div>
+                </div>
+
+                {/* In-Venue Action Button */}
+                <div class="lk-ticket-btn">
+                  <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                  Petunjuk Arah ke GOR
                 </div>
               </div>
             </div>
@@ -340,201 +428,394 @@ const { project } = Astro.props;
       </div>
     )}
 
-    {/* 3. PBL-IVSS: Replika Akurat Halaman Utama (user/modul/index.php + user/style/navbar.css) */}
+    {/* 3. PBL-IVSS: Replika Akurat Portal Riset Laboratorium (user/modul/index.php) */}
     {project.theme === 'lab' && (
-      <div class="app-ivss" aria-label="Pratinjau halaman utama portal web Laboratorium IVSS Polinema">
-        {/* Navbar (#0A192F + IVSS.png) */}
+      <div class="app-ivss web-window" aria-label="Pratinjau antarmuka Portal Resmi Laboratorium IVSS Polinema">
+        {/* Clean Web Browser Window Bar */}
+        <div class="web-window-bar">
+          <div class="web-window-dots" aria-hidden="true">
+            <span class="w-dot red"></span>
+            <span class="w-dot yellow"></span>
+            <span class="w-dot green"></span>
+          </div>
+          <div class="web-window-url mono">
+            <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>ivss.polinema.ac.id</span>
+          </div>
+        </div>
+
+        {/* Portal Navbar (#0A192F + IVSS.png) */}
         <header class="ivss-navbar">
           <div class="ivss-logo-area">
             <img src="./projects/IVSS.png" alt="Logo IVSS" class="ivss-logo-img" loading="lazy" />
             <span class="ivss-site-title">IVSS</span>
+            <span class="ivss-campus-tag mono">POLINEMA</span>
           </div>
           <nav class="ivss-menu">
             <span class="active">Home</span>
             <span>About</span>
+            <span>News</span>
             <span>Research</span>
+            <span>Members</span>
           </nav>
-          <div class="ivss-mode-pills">
-            <button type="button" class="ivss-mode-btn active" data-ivss-mode="portal">PORTAL</button>
-            <button type="button" class="ivss-mode-btn" data-ivss-mode="cctv">LIVE CCTV AI</button>
+          <div class="ivss-auth-area">
+            <span class="ivss-portal-login">Login Admin</span>
           </div>
         </header>
 
-        {/* Mode 1: Full Hero with real gedung.png background & exact overlay */}
-        <div class="ivss-hero" style="background-image: linear-gradient(135deg, rgba(10, 35, 66, 0.84) 0%, rgba(0, 30, 60, 0.84) 50%, rgba(31, 66, 110, 0.84) 100%), url('./projects/gedung.png');">
+        {/* Hero Section with Official Gedung Background & Gradient Overlay */}
+        <div class="ivss-hero" style="background-image: linear-gradient(135deg, rgba(10, 35, 66, 0.90) 0%, rgba(0, 30, 60, 0.92) 50%, rgba(31, 66, 110, 0.90) 100%), url('./projects/gedung.png');">
           <div class="ivss-hero-content">
-            <div class="ivss-h1">
+            <div class="ivss-kicker mono">LABORATORIUM INTELLIGENT VISION &amp; SMART SYSTEM</div>
+            <h4 class="ivss-h1">
               INTELLIGENT VISION<br/>AND SMART SYSTEM
-            </div>
+            </h4>
             <p class="ivss-tagline">
               Shaping the Future through Intelligent Vision and Adaptive Systems
             </p>
-          </div>
-          <div class="ivss-learn-more ivss-mode-btn" data-ivss-mode="cctv" role="button" tabindex="0">
-            <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            Buka Live CCTV AI
-          </div>
-        </div>
-
-        {/* Mode 2: Simulated Live CCTV AI Deep Learning Stream */}
-        <div class="ivss-cctv-deck" style="display: none;">
-          <div class="ivss-cctv-header mono">
-            <div class="ivss-cam-tabs">
-              <button type="button" class="ivss-cam-tab active" data-cam-id="1">CAM 01: GATEWAY DETECTION</button>
-              <button type="button" class="ivss-cam-tab" data-cam-id="2">CAM 02: SERVER RACK TELEMETRY</button>
+            
+            {/* Real Lab Highlights Row */}
+            <div class="ivss-highlights-row">
+              <div class="ivss-pill"><span class="pill-dot"></span> 4 Bidang Riset AI</div>
+              <div class="ivss-pill"><span class="pill-dot"></span> Manajemen Fasilitas</div>
+              <div class="ivss-pill"><span class="pill-dot"></span> Direktori Sivitas</div>
+              <div class="ivss-pill"><span class="pill-dot"></span> Multi-Role RBAC</div>
             </div>
-            <span class="ivss-rec-badge"><span class="live-demo-pulse red"></span> REC ●</span>
           </div>
 
-          <div class="ivss-cam-viewport">
-            {/* Feed 1: Gateway */}
-            <div class="ivss-cam-feed" data-feed-id="1">
-              <div class="ivss-scanlines"></div>
-              <div class="ivss-bbox box-person">
-                <span class="ivss-bbox-tag mono">PERSON 98.4%</span>
-              </div>
-              <div class="ivss-bbox box-helmet">
-                <span class="ivss-bbox-tag mono">HELMET: OK 94.2%</span>
-              </div>
-              <div class="ivss-feed-meta mono">
-                <span>FPS: 30.1 | YOLOv8-IVSS</span>
-                <span>RES: 1080p • INFERENCE: 16ms</span>
-              </div>
-            </div>
-
-            {/* Feed 2: Server */}
-            <div class="ivss-cam-feed" data-feed-id="2" style="display: none;">
-              <div class="ivss-scanlines"></div>
-              <div class="ivss-bbox box-server">
-                <span class="ivss-bbox-tag mono">AI COMPUTE CLUSTER 01</span>
-              </div>
-              <div class="ivss-feed-meta mono">
-                <span>GPU TEMP: 58°C | VRAM: 14.8 GB</span>
-                <span>STATUS: INFERENCE ACTIVE</span>
-              </div>
-            </div>
+          <div class="ivss-learn-more">
+            <span>Learn More</span>
+            <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </div>
         </div>
       </div>
     )}
 
-    {/* 4. CUCI.IN: Replika Akurat Halaman Utama (resources/views/welcome.blade.php — Heroicons SVG) */}
+    {/* 4. CUCI.IN: Multi-Screen Showcase (Landing & Lacak, Dashboard Admin POS, Portal Pelanggan) */}
     {project.theme === 'pos' && (
-      <div class="app-cuciin" aria-label="Pratinjau halaman utama CUCI.IN Laundry Management & Tracking">
-        {/* Sticky White Navbar (welcome.blade.php) */}
-        <header class="ci-navbar">
-          <div class="ci-brand">
-            {/* Official Washing Machine Squircle SVG from app-logo.blade.php */}
-            <svg class="ci-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="6" width="88" height="88" rx="24" fill="#0e7490" />
-              <line x1="20" y1="28" x2="80" y2="28" stroke="white" stroke-opacity="0.25" stroke-width="2.5" stroke-linecap="round" />
-              <circle cx="28" cy="18" r="3.5" fill="white" fill-opacity="0.85" />
-              <circle cx="38" cy="18" r="3.5" fill="#bae6fd" fill-opacity="0.65" />
-              <circle cx="50" cy="60" r="24" stroke="white" stroke-width="6" fill="#083344" fill-opacity="0.35" />
-              <path d="M 30 60 Q 40 50, 50 60 T 70 60 A 20 20 0 0 1 30 60 Z" fill="#38bdf8" fill-opacity="0.9" />
+      <div class="app-cuciin web-window" aria-label="Pratinjau antarmuka CUCI.IN Laundry Management & Tracking">
+        {/* Clean Web Browser Window Bar */}
+        <div class="web-window-bar">
+          <div class="web-window-dots" aria-hidden="true">
+            <span class="w-dot red"></span>
+            <span class="w-dot yellow"></span>
+            <span class="w-dot green"></span>
+          </div>
+          <div class="web-window-url mono">
+            <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
-            <span class="ci-brand-text">CUCI<span>.IN</span></span>
+            <span class="ci-window-url-text">cuciin.app/portal</span>
           </div>
+        </div>
 
-          <nav class="ci-nav-links">
-            <span>Fitur Layanan</span>
-            <span>Kalkulator Tarif</span>
-            <span>Cara Kerja</span>
-          </nav>
-
-          <div class="ci-nav-actions">
-            <span class="ci-btn-outline ci-reset-btn" role="button" tabindex="0">
-              <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              Lacak Nota
-            </span>
-            <span class="ci-btn-solid">Kasir POS</span>
-          </div>
-        </header>
-
-        {/* Hero Section (welcome.blade.php) */}
-        <div class="ci-hero">
-          {/* Stage 1: Pencarian Nota */}
-          <div class="ci-search-stage">
-            <div class="ci-hero-h1">
-              Laundry Bersih, Higienis &amp;<br/>
-              <span class="ci-gradient-text">Terpantau Real-Time</span>
-            </div>
-            <p class="ci-hero-sub">
-              Pantau status cucian langsung dari ponsel menggunakan kode nota tanpa perlu membuat akun atau login.
-            </p>
-
-            {/* Quick Tracking Box (Interactive Input & Button) */}
-            <div class="ci-tracking-box">
-              <div class="ci-tracking-input-wrap">
-                <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/><path d="M9 14h6"/><path d="M9 10h6"/></svg>
-                <input 
-                  type="text" 
-                  class="ci-tracking-input mono" 
-                  value="TRX-20261024-0001" 
-                  placeholder="Ketik TRX-XXXX..." 
-                  aria-label="Ketik kode nota transaksi untuk simulasi live tracking"
-                />
-              </div>
-              <button type="button" class="ci-tracking-btn">
-                Lacak Sekarang
-                <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </button>
-            </div>
-            <div class="ci-tracking-hint">
-              💡 Tekan <strong>Lacak Sekarang</strong> untuk melihat live demo signature 4-stage tracking!
-            </div>
-
-            {/* Trust Pills */}
-            <div class="ci-trust-pills">
-              <span class="ci-pill">1 Mesin 1 Pelanggan</span>
-              <span class="ci-pill">Timbangan Desimal</span>
-              <span class="ci-pill">Struk Thermal Resmi</span>
-            </div>
-          </div>
-
-          {/* Stage 2: Hasil Live Tracking Real-Time (Signature 4-Stage Stepper) */}
-          <div class="ci-result-stage" style="display: none;">
-            <div class="ci-result-top">
-              <div>
-                <span class="ci-result-label mono">KODE NOTA TRANSAKSI</span>
-                <div class="ci-result-nota mono">TRX-20261024-0001</div>
-              </div>
-              <span class="ci-status-badge mono">
-                <span class="live-demo-pulse cyan"></span> SEDANG DICUCI
-              </span>
-            </div>
-
-            {/* Signature 4-Stage Stepper */}
-            <div class="ci-stepper-row">
-              <div class="ci-step done">
-                <div class="ci-step-circle">✓</div>
-                <div class="ci-step-text"><b>Diterima</b><small>10:15 WIB</small></div>
-              </div>
-              <div class="ci-step-line done"></div>
-              <div class="ci-step in-progress">
-                <div class="ci-step-circle">●</div>
-                <div class="ci-step-text"><b>Cuci &amp; Kering</b><small>Sedang Proses</small></div>
-              </div>
-              <div class="ci-step-line"></div>
-              <div class="ci-step">
-                <div class="ci-step-circle">3</div>
-                <div class="ci-step-text"><b>Setrika</b><small>Antrean</small></div>
-              </div>
-              <div class="ci-step-line"></div>
-              <div class="ci-step">
-                <div class="ci-step-circle">4</div>
-                <div class="ci-step-text"><b>Selesai</b><small>Siap Ambil</small></div>
-              </div>
-            </div>
-
-            <div class="ci-result-meta">
-              <span>Budi Santoso • Cuci Komplit Wangi (4.2 Kg)</span>
-              <strong>Rp 33.600 (LUNAS - QRIS)</strong>
-            </div>
-
-            <button type="button" class="ci-reset-btn mono">
-              ← LACAK KODE NOTA LAIN
+        {/* View Switcher / Slide Navigation Bar */}
+        <div class="ci-slide-nav">
+          <div class="ci-tab-group">
+            <button type="button" class="ci-tab-btn active" data-slide="0" aria-label="Buka Tampilan Landing & Lacak Nota">
+              <span class="ci-tab-icon">🌐</span>
+              <span class="ci-tab-label">Landing &amp; Lacak</span>
             </button>
+            <button type="button" class="ci-tab-btn" data-slide="1" aria-label="Buka Dashboard Admin POS">
+              <span class="ci-tab-icon">📊</span>
+              <span class="ci-tab-label">Dashboard Admin</span>
+            </button>
+            <button type="button" class="ci-tab-btn" data-slide="2" aria-label="Buka Portal Pelanggan">
+              <span class="ci-tab-icon">👤</span>
+              <span class="ci-tab-label">Portal Pelanggan</span>
+            </button>
+          </div>
+          <div class="ci-slide-controls">
+            <button type="button" class="ci-nav-arrow prev" title="Slide sebelumnya" aria-label="Slide sebelumnya">‹</button>
+            <span class="ci-slide-indicator mono" aria-live="polite">1 / 3</span>
+            <button type="button" class="ci-nav-arrow next" title="Slide berikutnya" aria-label="Slide berikutnya">›</button>
+          </div>
+        </div>
+
+        {/* Slides Viewport */}
+        <div class="ci-slides-viewport">
+          {/* SLIDE 0: Landing Page & Public Tracking (resources/views/welcome.blade.php & lookup/index.blade.php) */}
+          <div class="ci-slide-pane active" data-pane="0">
+            {/* Sticky White Navbar */}
+            <header class="ci-navbar">
+              <div class="ci-brand">
+                <img src="./projects/cuciin-logo.svg" alt="Logo CUCI.IN" class="ci-logo-img" loading="lazy" />
+                <span class="ci-brand-text">CUCI<span>.IN</span></span>
+              </div>
+
+              <nav class="ci-nav-links">
+                <span>Fitur Layanan</span>
+                <span>Tarif Kiloan</span>
+                <span>Standar Higienis</span>
+              </nav>
+
+              <div class="ci-nav-actions">
+                <span class="ci-btn-outline ci-reset-btn" role="button" tabindex="0">
+                  <svg viewBox="0 0 24 24" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  Lacak Nota
+                </span>
+                <span class="ci-btn-solid ci-quick-switch" data-target="1" role="button" tabindex="0">Login POS</span>
+              </div>
+            </header>
+
+            {/* Hero Section */}
+            <div class="ci-hero">
+              {/* Stage 1: Pencarian Nota */}
+              <div class="ci-search-stage">
+                <div class="ci-hero-h1">
+                  Laundry Bersih, Higienis &amp;<br/>
+                  <span class="ci-gradient-text">Terpantau Real-Time</span>
+                </div>
+                <p class="ci-hero-sub">
+                  Pantau status cucian langsung dari ponsel menggunakan kode nota tanpa perlu registrasi atau login.
+                </p>
+
+                {/* Quick Tracking Box */}
+                <div class="ci-tracking-box">
+                  <div class="ci-tracking-input-wrap">
+                    <svg viewBox="0 0 24 24" width="7.5" height="7.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="6" height="4" x="9" y="3" rx="1"/><path d="M9 14h6"/><path d="M9 10h6"/></svg>
+                    <input 
+                      type="text" 
+                      class="ci-tracking-input mono" 
+                      value="TRX-20261024-0001" 
+                      placeholder="Ketik TRX-XXXX..." 
+                      aria-label="Ketik kode nota transaksi untuk simulasi live tracking"
+                    />
+                  </div>
+                  <button type="button" class="ci-tracking-btn">
+                    Lacak Sekarang
+                    <svg viewBox="0 0 24 24" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </button>
+                </div>
+                <div class="ci-tracking-hint">
+                  💡 Klik <strong>Lacak Sekarang</strong> untuk melihat signature 4-stage tracking!
+                </div>
+
+                {/* Trust Pills */}
+                <div class="ci-trust-pills">
+                  <span class="ci-pill">1 Mesin 1 Pelanggan</span>
+                  <span class="ci-pill">Timbangan Desimal Akurat</span>
+                  <span class="ci-pill">Struk Thermal 58mm</span>
+                </div>
+              </div>
+
+              {/* Stage 2: Hasil Live Tracking Real-Time */}
+              <div class="ci-result-stage" style="display: none;">
+                <div class="ci-result-top">
+                  <div>
+                    <span class="ci-result-label mono">NOMOR NOTA TRANSAKSI</span>
+                    <div class="ci-result-nota mono">TRX-20261024-0001</div>
+                  </div>
+                  <span class="ci-status-badge mono">
+                    <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
+                  </span>
+                </div>
+
+                {/* Signature 4-Stage Stepper: Diterima -> Diproses -> Selesai -> Diambil */}
+                <div class="ci-stepper-row">
+                  <div class="ci-step done">
+                    <div class="ci-step-circle">✓</div>
+                    <div class="ci-step-text"><b>Diterima</b><small>10:15 WIB</small></div>
+                  </div>
+                  <div class="ci-step-line done"></div>
+                  <div class="ci-step in-progress">
+                    <div class="ci-step-circle">●</div>
+                    <div class="ci-step-text"><b>Diproses</b><small>Sedang Cuci</small></div>
+                  </div>
+                  <div class="ci-step-line"></div>
+                  <div class="ci-step">
+                    <div class="ci-step-circle">3</div>
+                    <div class="ci-step-text"><b>Selesai</b><small>Siap Ambil</small></div>
+                  </div>
+                  <div class="ci-step-line"></div>
+                  <div class="ci-step">
+                    <div class="ci-step-circle">4</div>
+                    <div class="ci-step-text"><b>Diambil</b><small>Selesai</small></div>
+                  </div>
+                </div>
+
+                <div class="ci-result-meta">
+                  <span>Budi S*****o • Cuci Komplit Wangi (4.20 Kg)</span>
+                  <strong>Rp 33.600 (LUNAS - QRIS)</strong>
+                </div>
+
+                <div class="ci-result-estimasi mono">
+                  <span>📅 Perkiraan Selesai: <strong>Hari ini, 17:00 WIB</strong></span>
+                  <span class="ci-badge-ontime">Tepat Waktu</span>
+                </div>
+
+                <button type="button" class="ci-reset-btn mono">
+                  ← LACAK KODE NOTA LAIN
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 1: Dashboard Admin / Owner (admin/dashboard.blade.php) */}
+          <div class="ci-slide-pane" data-pane="1">
+            <div class="ci-admin-wrap">
+              {/* Admin Top Bar */}
+              <div class="ci-admin-header">
+                <div class="ci-admin-user">
+                  <div class="ci-admin-avatar">ADM</div>
+                  <div>
+                    <span class="ci-admin-role mono">KASIR / OWNER SHIFT 1</span>
+                    <strong class="ci-admin-title">CUCI.IN Laundry POS System</strong>
+                  </div>
+                </div>
+                <div class="ci-admin-actions">
+                  <span class="ci-chip-status"><span class="ci-dot-online"></span> Kasir Aktif</span>
+                  <button type="button" class="ci-btn-add-trx mono">+ Nota Baru (F2)</button>
+                </div>
+              </div>
+
+              {/* KPI Stat Cards (4 Cards) */}
+              <div class="ci-kpi-grid">
+                <div class="ci-kpi-card highlight">
+                  <span class="ci-kpi-label mono">OMZET HARI INI</span>
+                  <div class="ci-kpi-val mono">Rp 1.480.000</div>
+                  <div class="ci-kpi-trend green">↑ 18.4% vs kemarin</div>
+                </div>
+                <div class="ci-kpi-card">
+                  <span class="ci-kpi-label mono">TOTAL TRANSAKSI</span>
+                  <div class="ci-kpi-val mono">28 Nota</div>
+                  <div class="ci-kpi-sub">12 Cuci • 9 Kering • 7 Rak</div>
+                </div>
+                <div class="ci-kpi-card">
+                  <span class="ci-kpi-label mono">TOTAL TONASE</span>
+                  <div class="ci-kpi-val mono">185.4 Kg</div>
+                  <div class="ci-kpi-sub">Rata-rata 4.6 Kg/nota</div>
+                </div>
+                <div class="ci-kpi-card">
+                  <span class="ci-kpi-label mono">UTILISASI MESIN</span>
+                  <div class="ci-kpi-val mono">6/8 Unit</div>
+                  <div class="ci-kpi-trend teal">● 75% Kapasitas</div>
+                </div>
+              </div>
+
+              {/* Monitoring Transaksi Berjalan (Table) */}
+              <div class="ci-table-box">
+                <div class="ci-table-head">
+                  <span class="ci-table-title mono">MONITORING NOTA TRANSAKSI TERAKHIR</span>
+                  <span class="ci-live-badge mono"><span class="live-demo-pulse green"></span> LIVE MONITOR</span>
+                </div>
+                <div class="ci-mini-table">
+                  <div class="ci-tr ci-th mono">
+                    <span>NOTA</span>
+                    <span>PELANGGAN</span>
+                    <span>LAYANAN / KG</span>
+                    <span>STATUS PROSES</span>
+                    <span>PEMBAYARAN</span>
+                  </div>
+                  <div class="ci-tr">
+                    <span class="mono bold text-cyan">TRX-0001</span>
+                    <span>Budi Santoso</span>
+                    <span>Komplit • 4.2 Kg</span>
+                    <span><span class="ci-step-pill processing">Diproses (Cuci)</span></span>
+                    <span class="text-green bold">Rp 33.600 (QRIS)</span>
+                  </div>
+                  <div class="ci-tr">
+                    <span class="mono bold text-cyan">TRX-0002</span>
+                    <span>Siti Aminah</span>
+                    <span>Bedcover King • 1 Pcs</span>
+                    <span><span class="ci-step-pill ready">Selesai (Rak B-04)</span></span>
+                    <span class="text-green bold">Rp 65.000 (Tunai)</span>
+                  </div>
+                  <div class="ci-tr">
+                    <span class="mono bold text-cyan">TRX-0003</span>
+                    <span>Ahmad Ridho</span>
+                    <span>Setrika Wangi • 3.0 Kg</span>
+                    <span><span class="ci-step-pill queue">Antrean Cuci</span></span>
+                    <span class="text-amber bold">Rp 21.000 (Pending)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SLIDE 2: Portal Pelanggan / Customer Dashboard (customer/dashboard.blade.php) */}
+          <div class="ci-slide-pane" data-pane="2">
+            <div class="ci-cust-wrap">
+              {/* Customer Top Header */}
+              <div class="ci-cust-top">
+                <div class="ci-cust-user">
+                  <div class="ci-cust-avatar">👤</div>
+                  <div>
+                    <div class="ci-cust-greeting">Selamat Datang, <strong>Kak Budi Santoso</strong></div>
+                    <span class="ci-cust-tier mono">⭐ MEMBER SILVER • 340 POIN</span>
+                  </div>
+                </div>
+                <div class="ci-cust-saldo">
+                  <span class="ci-saldo-label mono">SALDO REWARD</span>
+                  <span class="ci-saldo-val mono">Rp 15.000</span>
+                </div>
+              </div>
+
+              {/* Active Order Card */}
+              <div class="ci-cust-card">
+                <div class="ci-cust-card-header">
+                  <div>
+                    <span class="ci-card-label mono">PESANAN SEDANG BERJALAN</span>
+                    <strong class="ci-cust-nota mono">TRX-20261024-0001</strong>
+                  </div>
+                  <span class="ci-status-badge mono">
+                    <span class="live-demo-pulse cyan"></span> DIPROSES (Cuci &amp; Kering)
+                  </span>
+                </div>
+
+                <div class="ci-cust-order-detail">
+                  <span>Paket Cuci Komplit Wangi (4.20 Kg)</span>
+                  <span class="text-teal bold mono">Rp 33.600 (LUNAS)</span>
+                </div>
+
+                {/* Customer 4-Stage Stepper */}
+                <div class="ci-stepper-row cust-scale">
+                  <div class="ci-step done">
+                    <div class="ci-step-circle">✓</div>
+                    <div class="ci-step-text"><b>Diterima</b><small>10:15</small></div>
+                  </div>
+                  <div class="ci-step-line done"></div>
+                  <div class="ci-step in-progress">
+                    <div class="ci-step-circle">●</div>
+                    <div class="ci-step-text"><b>Diproses</b><small>Sedang Cuci</small></div>
+                  </div>
+                  <div class="ci-step-line"></div>
+                  <div class="ci-step">
+                    <div class="ci-step-circle">3</div>
+                    <div class="ci-step-text"><b>Selesai</b><small>Lipat</small></div>
+                  </div>
+                  <div class="ci-step-line"></div>
+                  <div class="ci-step">
+                    <div class="ci-step-circle">4</div>
+                    <div class="ci-step-text"><b>Diambil</b><small>Siap</small></div>
+                  </div>
+                </div>
+
+                <div class="ci-cust-progress-eta mono">
+                  <span>⏱ Estimasi Selesai: <strong>Hari ini, 17:00 WIB</strong> (~2 Jam Lagi)</span>
+                  <span class="text-teal">Higienis 1 Mesin 1 Pelanggan</span>
+                </div>
+              </div>
+
+              {/* Quick Customer Action Buttons */}
+              <div class="ci-cust-action-row">
+                <button type="button" class="ci-cust-btn">
+                  <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Unduh E-Struk Thermal
+                </button>
+                <button type="button" class="ci-cust-btn outline">
+                  <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  WhatsApp Admin
+                </button>
+                <button type="button" class="ci-cust-btn highlight">
+                  Layanan Antar-Jemput
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -542,12 +823,21 @@ const { project } = Astro.props;
   </div>
 
   <div class="project-copy">
-    <span class="project-number mono">{project.caseNumber}</span>
+    <div class="project-meta-row">
+      <span class="project-number mono">{project.caseNumber}</span>
+      <span class="preview-mode-tag mono">
+        <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        PREVIEW SAJA
+      </span>
+    </div>
     <h3 class="project-name display">{project.title}</h3>
     <p class="project-description">{project.description}</p>
     <div class="tag-row">
       {project.stack.map(tech => (
-        <span class="tag">{tech}</span>
+        <TechTag label={tech} />
       ))}
     </div>
     <div class="project-actions" style="display: flex; gap: 8px; margin-top: auto;">

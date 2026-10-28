@@ -25,11 +25,14 @@ const MANGA_SFX_LIST = [
   { text: '何?!', sub: 'NANI?!', color: '#e0e7ff' }
 ];
 
-// Hanya elemen deliberat: kartu proyek dan tombol CTA utama.
+// Hanya elemen deliberat: kartu/panel utama dan tombol CTA.
 const HOVER_SELECTORS = [
   '.project-card',
   '.hero-actions .button',
-  '.contact-buttons .button'
+  '.contact-buttons .button',
+  '.photo-frame',
+  '.strip-panel',
+  '.about-badge'
 ];
 
 const CLICK_SELECTORS = [
@@ -40,14 +43,25 @@ const CLICK_SELECTORS = [
   '.project-card'
 ];
 
-const HOVER_COOLDOWN = 650;      // jeda global antar popup
-const SAME_TARGET_COOLDOWN = 1600; // cegah popup berulang saat pointer masuk ke anak elemen
+const HOVER_COOLDOWN = 180; // jeda minimal antar popup ketika berpindah elemen
 let lastHoverTime = 0;
-const lastTriggered = new WeakMap<Element, number>();
 
 function findTarget(target: EventTarget | null, selectors: string[]): Element | null {
   if (!(target instanceof Element)) return null;
   return target.closest(selectors.join(','));
+}
+
+/**
+ * Posisi popup mengikuti kursor (bukan tepi elemen) dan dijepit ke viewport,
+ * supaya tetap dekat pointer walau targetnya kartu tinggi.
+ */
+function popupPosition(e: MouseEvent, offsetY: number): { x: number; y: number } {
+  const jitterX = (Math.random() - 0.5) * 24;
+  const jitterY = (Math.random() - 0.5) * 14;
+  return {
+    x: Math.max(40, Math.min(window.innerWidth - 40, e.clientX + jitterX)),
+    y: Math.max(96, Math.min(window.innerHeight - 40, e.clientY - offsetY + jitterY))
+  };
 }
 
 /**
@@ -96,20 +110,15 @@ export function initMangaUIFX(): void {
     const interactiveEl = findTarget(e.target, HOVER_SELECTORS);
     if (!interactiveEl) return;
 
+    // Abaikan pergerakan di dalam elemen yang sama (mis. dari kartu ke anak-anaknya).
+    if (e.relatedTarget instanceof Node && interactiveEl.contains(e.relatedTarget)) return;
+
     const now = performance.now();
     if (now - lastHoverTime < HOVER_COOLDOWN) return;
-
-    const lastForTarget = lastTriggered.get(interactiveEl) ?? 0;
-    if (now - lastForTarget < SAME_TARGET_COOLDOWN) return;
-
     lastHoverTime = now;
-    lastTriggered.set(interactiveEl, now);
 
-    const rect = interactiveEl.getBoundingClientRect();
-    const posX = e.clientX + (Math.random() - 0.5) * 40;
-    const posY = Math.max(20, rect.top - 25 + (Math.random() - 0.5) * 20);
-
-    spawnMangaSFX(posX, posY);
+    const { x, y } = popupPosition(e, 28);
+    spawnMangaSFX(x, y);
   }, { passive: true });
 
   // Click SFX Trigger (DUARR / BAAAAN!) hanya pada CTA & kartu proyek
@@ -117,6 +126,7 @@ export function initMangaUIFX(): void {
     const btn = findTarget(e.target, CLICK_SELECTORS);
     if (!btn) return;
 
-    spawnMangaSFX(e.clientX, e.clientY - 30, 'DUARR!!', '#fb923c');
+    const { x, y } = popupPosition(e, 30);
+    spawnMangaSFX(x, y, 'DUARR!!', '#fb923c');
   }, { passive: true });
 }

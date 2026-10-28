@@ -39,18 +39,22 @@ WEB-PORTO/
     │   ├── ComicStrip.astro    # 3-Panel comic narrative strip
     │   ├── Projects.astro      # Seksi showcase proyek utama
     │   ├── ProjectCard.astro   # Kartu proyek + miniatur UI asli tiap aplikasi
-    │   ├── Process.astro       # Training arc (How I work / 3 langkah)
+    │   ├── TechTag.astro       # Tag teknologi: ikon logo (sprite) + label
+    │   ├── TechIconSprite.astro# Sprite SVG semua logo teknologi (dirender sekali)
+    │   ├── Process.astro       # Training arc: 3 tahap berurutan + panah alur
     │   ├── About.astro         # Seksi bio & toolkit keahlian teknis
     │   ├── Contact.astro       # Kotak kontak & tombol kolaborasi
     │   ├── Footer.astro        # Footer hak cipta & pemicu Command Palette
     │   ├── Modal.astro         # Dialog pop-up detail studi kasus proyek
     │   └── CommandPalette.astro# Dialog pencarian keyboard (Ctrl + K)
     ├── data/
-    │   └── projects.ts         # Sumber tunggal: proyek, proses, skill, & kontak
+    │   ├── projects.ts         # Sumber tunggal: proyek, proses, skill, & kontak
+    │   ├── tech-icons.ts       # Path SVG logo teknologi (build-time saja)
+    │   └── tech-icon-ids.ts    # Peta label teknologi → id ikon (dipakai klien)
     ├── scripts/
     │   ├── portfolio.ts        # Orkestrator: modal, palet, Ctrl+K, upload foto
     │   ├── wanderer.ts         # Fisika ikon background (requestAnimationFrame)
-    │   ├── manga-fx.ts         # Popup SFX onomatope pada kartu & CTA utama
+    │   ├── manga-fx.ts         # Popup SFX onomatope pada kartu, panel, & CTA
     │   └── motion.ts           # Helper prefers-reduced-motion untuk runtime
     ├── styles/                 # Modular CSS
     │   ├── variables.css       # Token warna & Araki Tri-Palette
@@ -103,7 +107,9 @@ Portofolio ini mengintegrasikan 4 proyek rekayasa nyata:
 ## 🛠️ Cara Kustomisasi Data & Foto
 
 1. **Mengubah Data & Kontak**:
-   Buka file [**`src/data/projects.ts`**](file:///c:/laragon/www/WEB-PORTO/src/data/projects.ts). Di satu berkas ini tersimpan `SITE_CONFIG` (nama, email, GitHub, LinkedIn), `PROJECTS`, `PROCESS_STEPS`, dan `SKILL_GROUPS`. Anda dapat memperbarui kontak, mengubah narasi studi kasus, atau menambah proyek baru — TypeScript akan memeriksa kelengkapan tipe datanya.
+   Buka file [**`src/data/projects.ts`**](file:///c:/laragon/www/WEB-PORTO/src/data/projects.ts). Di satu berkas ini tersimpan `SITE_CONFIG` (nama, email, GitHub, LinkedIn), `PROJECTS`, `PROCESS_STEPS`, `SKILL_GROUPS`, dan `CERTIFICATIONS`. Anda dapat memperbarui kontak, mengubah narasi studi kasus, atau menambah proyek baru — TypeScript akan memeriksa kelengkapan tipe datanya.
+
+   > `CERTIFICATIONS` masih berisi dua entri contoh (`name: "Nama Sertifikat Dicoding"`) sebagai penanda. Ganti dengan data asli: `name`, `issuer`, `year`, dan `credentialUrl`. Bila `credentialUrl` dikosongkan, tautan **VERIFY** otomatis tidak dirender — tidak ada tautan mati. Menambah entri keempat tidak perlu mengubah CSS; strip-nya tetap satu daftar.
 
    > `SITE_CONFIG.email` saat ini kosong. Selama masih kosong, tombol "Kirim email" hanya menampilkan notifikasi, bukan membuka klien email.
 2. **Memasang Foto Profil**:
@@ -112,6 +118,8 @@ Portofolio ini mengintegrasikan 4 proyek rekayasa nyata:
    Simpan screenshot ke `public/projects/`, lalu rujuk dengan path absolut, misalnya `/projects/IVSS.png`.
 4. **Mengubah Palet Warna**:
    Token warna ada di `src/styles/variables.css` (blok `:root` dan `body[data-palette="..."]`). Palet aktif disimpan di `localStorage` dengan kunci `porto_palette`.
+5. **Menambah Teknologi Baru**:
+   Tambahkan labelnya ke `stack` di `src/data/projects.ts`, lalu daftarkan di `TECH_ICON_BY_LABEL` (`src/data/tech-icon-ids.ts`) dengan id ikon yang sesuai. Path SVG-nya ditaruh di `TECH_ICONS` (`src/data/tech-icons.ts`). Tanpa pemetaan, tag tetap tampil sebagai teks biasa — tidak ada ikon yang salah tampil.
 
 ---
 

@@ -15,15 +15,25 @@ import { PROCESS_STEPS } from '../data/projects';
 
     <div class="process-grid">
       {PROCESS_STEPS.map((step, i) => (
-        <div class="step">
-          <span class="step-chapter mono" aria-hidden="true">CH. 0{i + 1}</span>
-          <span class="step-sfx">{step.sfx}</span>
-          <div class="step-index mono">{step.index}</div>
-          <h3 class="display" set:html={step.title} />
-          <p>{step.description}</p>
+        <div class="step-wrap">
+          <div class="step">
+            <span class="step-chapter mono" aria-hidden="true">CH. 0{i + 1}</span>
+            <span class="step-sfx" aria-hidden="true">{step.sfx}</span>
+            <div class="step-index mono">{step.index}</div>
+            <h3 class="display" set:html={step.title} />
+            <p>{step.description}</p>
+            <div class="step-output mono">
+              <span class="step-output-label">Output</span>
+              <span class="step-output-list">{step.deliverable}</span>
+            </div>
+          </div>
+          {i < PROCESS_STEPS.length - 1 && (
+            <span class="step-arrow" aria-hidden="true"></span>
+          )}
         </div>
       ))}
     </div>
+
+    <p class="process-note">Tiga tahap ini yang bikin saya berani bilang "sudah selesai" — bukan karena fiturnya jalan, tapi karena saya tahu bagian mana yang bisa gagal.</p>
   </div>
 </section>
-

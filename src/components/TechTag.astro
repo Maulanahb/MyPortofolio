@@ -1,0 +1,21 @@
+---
+// Satu tag teknologi: ikon logo (sprite) + label teks.
+import { techIconIds } from '../data/tech-icon-ids';
+
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: extraClass = '' } = Astro.props;
+const ids = techIconIds(label);
+---
+
+<span class={`tag ${extraClass}`.trim()}>
+  {ids.map(id => (
+    <svg class="tag-icon" data-icon={id} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <use href={`#tech-${id}`} />
+    </svg>
+  ))}
+  <span class="tag-label">{label}</span>
+</span>

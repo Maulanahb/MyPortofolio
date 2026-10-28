@@ -6,65 +6,32 @@
  */
 
 export function initLiveDemo(): void {
-  // 1. LAPANGKU: Filter Kategori Lapangan & Bottom Navigation Tabs
+  // 1. LAPANGKU: Subtle Active Chip & Tab Toggles
   document.addEventListener('click', (e: MouseEvent) => {
     const target = e.target as HTMLElement | null;
     if (!target) return;
 
     // A. Kategori Chip Click
-    const chip = target.closest<HTMLElement>('[data-lk-cat]');
+    const chip = target.closest<HTMLElement>('.lk-cat-chip');
     if (chip) {
       e.preventDefault();
-      const container = chip.closest<HTMLElement>('.app-lapangku');
-      if (!container) return;
-
-      container.querySelectorAll('[data-lk-cat]').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-
-      const cat = chip.dataset.lkCat || 'all';
-      const cards = container.querySelectorAll<HTMLElement>('.lk-field-card');
-      cards.forEach(card => {
-        const cardCat = card.dataset.fieldCat || 'all';
-        if (cat === 'all' || cardCat === cat) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      const catRow = chip.closest<HTMLElement>('.lk-cat-row');
+      if (catRow) {
+        catRow.querySelectorAll('.lk-cat-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      }
       return;
     }
 
     // B. Bottom Navigation Tab Click
-    const tab = target.closest<HTMLElement>('[data-lk-tab]');
+    const tab = target.closest<HTMLElement>('.lk-nav-tab');
     if (tab) {
       e.preventDefault();
-      const container = tab.closest<HTMLElement>('.app-lapangku');
-      if (!container) return;
-
-      container.querySelectorAll('[data-lk-tab]').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const tabName = tab.dataset.lkTab || 'beranda';
-      const views = container.querySelectorAll<HTMLElement>('.lk-tab-view');
-      views.forEach(v => {
-        if (v.dataset.viewName === tabName) {
-          v.style.display = 'flex';
-        } else {
-          v.style.display = 'none';
-        }
-      });
-      return;
-    }
-
-    // C. Field Card Click -> Mini Toast di Ponsel
-    const fieldCard = target.closest<HTMLElement>('.lk-field-card');
-    if (fieldCard) {
-      e.preventDefault();
-      const container = fieldCard.closest<HTMLElement>('.app-lapangku');
-      if (!container) return;
-
-      const venueName = fieldCard.querySelector('.lk-venue-name')?.textContent || 'Lapangan';
-      showMiniPhoneToast(container, `✓ ${venueName} (Slot 19:00) dipilih!`);
+      const nav = tab.closest<HTMLElement>('.lk-bottom-nav');
+      if (nav) {
+        nav.querySelectorAll('.lk-nav-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      }
       return;
     }
 
@@ -151,52 +118,6 @@ export function initLiveDemo(): void {
       }
       return;
     }
-
-    // 4. PBL-IVSS: Toggle Mode Web vs Live CCTV AI Camera Feed
-    const ivssModeBtn = target.closest<HTMLElement>('.ivss-mode-btn');
-    if (ivssModeBtn) {
-      e.preventDefault();
-      const preview = ivssModeBtn.closest<HTMLElement>('.app-ivss');
-      if (!preview) return;
-
-      const mode = ivssModeBtn.dataset.ivssMode || 'portal';
-      preview.querySelectorAll('.ivss-mode-btn').forEach(b => b.classList.remove('active'));
-      ivssModeBtn.classList.add('active');
-
-      const portalHero = preview.querySelector<HTMLElement>('.ivss-hero');
-      const cctvDeck = preview.querySelector<HTMLElement>('.ivss-cctv-deck');
-
-      if (mode === 'cctv') {
-        if (portalHero) portalHero.style.display = 'none';
-        if (cctvDeck) cctvDeck.style.display = 'flex';
-      } else {
-        if (cctvDeck) cctvDeck.style.display = 'none';
-        if (portalHero) portalHero.style.display = 'flex';
-      }
-      return;
-    }
-
-    // IVSS CCTV Camera Switcher (CAM 01 vs CAM 02)
-    const camBtn = target.closest<HTMLElement>('.ivss-cam-tab');
-    if (camBtn) {
-      e.preventDefault();
-      const deck = camBtn.closest<HTMLElement>('.ivss-cctv-deck');
-      if (!deck) return;
-
-      deck.querySelectorAll('.ivss-cam-tab').forEach(b => b.classList.remove('active'));
-      camBtn.classList.add('active');
-
-      const camId = camBtn.dataset.camId || '1';
-      const feeds = deck.querySelectorAll<HTMLElement>('.ivss-cam-feed');
-      feeds.forEach(f => {
-        if (f.dataset.feedId === camId) {
-          f.style.display = 'flex';
-        } else {
-          f.style.display = 'none';
-        }
-      });
-      return;
-    }
   });
 
   // Handle Enter key on CUCI.IN tracking input
@@ -211,19 +132,5 @@ export function initLiveDemo(): void {
       }
     }
   });
-}
-
-function showMiniPhoneToast(container: HTMLElement, message: string): void {
-  let toast = container.querySelector<HTMLElement>('.lk-phone-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'lk-phone-toast mono';
-    container.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.classList.add('show');
-  setTimeout(() => {
-    toast?.classList.remove('show');
-  }, 1800);
 }
 

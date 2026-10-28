@@ -46,23 +46,23 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: "bawanghub",
     caseNumber: "CASE STUDY / 001",
-    badge: "WEB APP / SUPPLY CHAIN",
+    badge: "AI AGRITECH / GOOGLE GEMINI",
     title: "BAWANGHUB",
-    description: "Platform web terintegrasi untuk manajemen rantai pasok komoditas, monitoring stok multi-hub gudang, dan analitik distribusi logistik.",
-    category: "CASE 001 / COMMODITY SUPPLY CHAIN & LOGISTICS",
-    problem: "Alur distribusi komoditas pangan sering menghadapi kendala pencatatan manual antar pihak, selisih data stok fisik di gudang transit, serta sulitnya melacak status surat jalan pengiriman secara real-time.",
-    approach: "Membangun platform dashboard web modern (React, TypeScript, Tailwind CSS) dengan backend REST API dan basis data terstruktur, menghadirkan monitoring stok multi-gudang terpusat, pencatatan surat jalan distribusi komoditas, serta kalkulator indeks harga pasar, dikemas dalam container Docker siap rilis ke cloud.",
+    description: "Platform Smart Agriculture untuk membantu petani bawang merah mendeteksi penyakit tanaman, memantau anomali cuaca, mencatat pembukuan operasional, dan menghitung estimasi hasil panen.",
+    category: "CASE 001 / SMART AGRICULTURE & AI ASSISTANT",
+    problem: "Dinamika budidaya bawang merah di lapangan menuntut keputusan yang serba cepat. Serangan hama daun dan anomali cuaca mendadak kerap memicu risiko penurunan hasil panen bila terlambat diantisipasi. Di sisi lain, kalkulasi modal benih, kebutuhan pupuk berkala, hingga proyeksi margin laba sering kali masih dihitung secara manual tanpa pencatatan operasional yang terukur.",
+    approach: "Membangun aplikasi web terpadu berbasis React 19 dan Tailwind CSS yang mengintegrasikan Google Gemini AI untuk konsultasi interaktif serta diagnosis visual tanaman, dipadukan dengan prakiraan cuaca Open-Meteo, kalender jadwal pemupukan terstruktur, serta modul kalkulator proyeksi panen.",
     highlights: [
-      "Multi-Hub Warehouse Inventory: Monitoring stok masuk, keluar, dan mutasi komoditas terpusat",
-      "Fleet & Dispatch Tracking: Pembuatan dan pelacakan surat jalan digital pengiriman antar hub",
-      "Commodity Market Index: Pemantauan tren harga pasar harian dan estimasi nilai komoditas",
-      "Audit Trail & Non-Destructive Log: Riwayat transaksi dan pergerakan barang terdokumentasi akurat",
-      "Containerized Docker Architecture: Standar deployment portable siap rilis ke cloud environment"
+      "Agri AI Assistant: Konsultasi pertanian & rekomendasi perawatan berbasis Google Gemini AI",
+      "Klinik Bawang: Diagnosis penyakit daun dan identifikasi hama tanaman via Gemini Vision",
+      "Smart Weather Forecast: Integrasi prakiraan cuaca Open-Meteo dengan saran pemupukan harian AI",
+      "Kalkulator Panen & Buku Tani: Estimasi tonase hasil panen, proyeksi margin laba, dan pencatatan kas operasional",
+      "Statistik Pasar & Kalender Tanam: Tracking indeks harga komoditas bawang dan jadwal pemupukan terstruktur"
     ],
-    stack: ["React", "TypeScript", "Tailwind CSS", "Docker", "REST API", "PostgreSQL"],
+    stack: ["React 19", "TypeScript", "Google Gemini AI", "Tailwind CSS", "Firebase", "Express.js", "Docker"],
     theme: "agri",
     brandColor: "#059669",
-    sfx: "DISPATCH!",
+    sfx: "GROW!",
     sfxClass: "project-sfx-agri",
     repoUrl: "https://github.com/Maulanahb/BawangHub"
   },
@@ -71,16 +71,16 @@ export const PROJECTS: ProjectItem[] = [
     caseNumber: "CASE STUDY / 002",
     badge: "MOBILE / FLUTTER RIVERPOD",
     title: "LAPANGKU",
-    description: "Aplikasi mobile multi-role pemesanan lapangan olahraga di Malang dengan manajemen jadwal real-time Firebase, Midtrans, dan E-Ticket QR Scanner.",
+    description: "Platform mobile multi-role reservasi venue olahraga di Malang dengan sinkronisasi slot real-time, payment gateway Midtrans, dan validasi E-Ticket QR Code.",
     category: "CASE 002 / MOBILE SPORTS BOOKING & FINTECH",
-    problem: "Pemesanan lapangan olahraga secara manual via chat rentan bentrok jadwal (double-booking), konfirmasi bukti transfer yang merepotkan pemilik GOR, dan belum adanya tiket digital yang tervalidasi saat pengguna tiba di venue.",
-    approach: "Merancang arsitektur mobile Flutter dengan Riverpod state management dan Firestore real-time synchronization, menghadirkan 3 peran pengguna (Customer, Mitra Pemilik Lapangan, dan Admin), integrasi gateway Midtrans, serta sistem E-Ticket dengan QR scanner di sisi Mitra.",
+    problem: "Penyewaan lapangan olahraga di berbagai GOR Malang kerap mengandalkan chat manual yang memicu risiko bentrok jadwal (double-booking), rekonsiliasi transfer manual yang merepotkan pengelola, dan ketiadaan tiket digital tervalidasi saat pemain tiba di lokasi.",
+    approach: "Merancang arsitektur mobile Flutter dengan Riverpod state management dan transaksi atomik Cloud Firestore. Menghubungkan 3 peran (Customer, Mitra Pengelola, dan Superadmin) lengkap dengan checkout Midtrans otomatis dan penerbitan E-Ticket ber-QR Code untuk verifikasi instan di pintu masuk.",
     highlights: [
-      "Multi-Role System: Customer (Cari & Booking), Mitra (Kelola Jadwal & Scan QR Tiket), dan Admin",
-      "Pencarian GOR multi-kategori (Futsal, Mini Soccer, Badminton, Basket, Tenis) area Malang",
-      "Kalender Ketersediaan Jadwal & Slot Waktu Real-Time dengan pencegahan double-booking atomik",
-      "Integrasi Gateway Pembayaran Midtrans (QRIS, VA, E-Wallet) dengan verifikasi otomatis",
-      "Penerbitan E-Ticket Digital Instan dengan QR Code yang dapat discan oleh pihak Mitra"
+      "Multi-Role System: Portal independen Customer (Cari & Booking), Mitra GOR (Kelola Jadwal & Scan Tiket), dan Superadmin",
+      "Location-Aware Discovery: Filter multi-kategori (Futsal, Mini Soccer, Badminton, Basket, Tenis) dengan kalkulasi radius jarak Malang",
+      "Real-Time Slot Engine: Sinkronisasi ketersediaan jadwal bebas double-booking dengan transaksi atomik Firestore",
+      "Gateway Pembayaran Midtrans: Checkout multi-channel (QRIS, Virtual Account, GoPay) dengan callback verifikasi otomatis",
+      "E-Ticket & In-Venue QR Check-In: Penerbitan tiket digital instan yang divalidasi langsung oleh kamera aplikasi Mitra"
     ],
     stack: ["Flutter SDK", "Dart", "Riverpod", "Cloud Firestore", "Midtrans Payment", "Firebase Auth"],
     theme: "sport",
@@ -127,7 +127,7 @@ export const PROJECTS: ProjectItem[] = [
       "Dukungan Cetak Struk Kasir Thermal ESC/POS (58mm/80mm) dan Ekspor Laporan Finansial (PDF & Excel)",
       "Arsitektur Non-Destructive Data Integrity: Riwayat transaksi dan perubahan status tersimpan rapi"
     ],
-    stack: ["Laravel Framework", "PostgreSQL", "Tailwind CSS", "Alpine.js", "Thermal ESC/POS", "PHPUnit"],
+    stack: ["Laravel Framework", "PostgreSQL", "Tailwind CSS", "Alpine.js", "Livewire", "Thermal ESC/POS"],
     theme: "pos",
     brandColor: "#0e7490",
     sfx: "CHA-CHING!",
@@ -142,6 +142,8 @@ export interface ProcessStep {
   index: string;
   title: string;
   description: string;
+  /** Hasil konkret di akhir tahap, dipisah dengan " · ". */
+  deliverable: string;
 }
 
 export interface SkillGroup {
@@ -149,24 +151,38 @@ export interface SkillGroup {
   items: string;
 }
 
+export interface Certification {
+  /** Nama sertifikat persis seperti yang tertera di sertifikat. */
+  name: string;
+  /** Lembaga penerbit, mis. "Dicoding". */
+  issuer: string;
+  /** Tahun terbit, empat digit. */
+  year: string;
+  /** URL halaman kredensial publik. Kosongkan bila tidak ada — tautan VERIFY otomatis disembunyikan. */
+  credentialUrl?: string;
+}
+
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     sfx: "?",
     index: "STEP 01 — UNDERSTAND",
-    title: "PAHAMI<br/>MASALAH.",
-    description: "Petakan kebutuhan pengguna, proses bisnis, dan titik yang sering membuat pekerjaan tersendat."
+    title: "PAHAMI<br/>MASALAHNYA.",
+    description: "Siapa yang memakai, pekerjaan mana yang macet, dan bagian mana yang tidak boleh salah. Ditulis ulang dengan bahasa pengguna sebelum menyentuh kode.",
+    deliverable: "1 paragraf masalah · Daftar aktor · Batasan nyata"
   },
   {
     sfx: "✦",
-    index: "STEP 02 — DESIGN",
-    title: "RANCANG<br/>ALURNYA.",
-    description: "Susun struktur data, interaksi, dan batas sistem sebelum fitur mulai dibangun."
+    index: "STEP 02 — SYSTEM MAP",
+    title: "PETAKAN<br/>SISTEMNYA.",
+    description: "Alur data, hak akses, dan titik gagal dipetakan sebelum satu layar dibuat. Keputusan teknis diambil di sini, bukan saat coding sudah setengah jalan.",
+    deliverable: "Skema data · Aturan hak akses · Titik gagal"
   },
   {
     sfx: "!",
     index: "STEP 03 — BUILD & TEST",
-    title: "BANGUN.<br/>UJI. REVISI.",
-    description: "Implementasikan fitur, cek skenario penting, lalu perbaiki bagian yang belum nyaman dipakai."
+    title: "BANGUN,<br/>LALU UJI.",
+    description: "Fitur dibangun bertahap dan diuji pada skenario yang paling mungkin gagal — bukan hanya jalur mulus yang saya bayangkan sendiri.",
+    deliverable: "Fitur jalan · Skenario uji · Catatan revisi"
   }
 ];
 
@@ -174,8 +190,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     title: "Web & Backend",
     items: "Laravel, PHP, RESTful API, PostgreSQL, Database Architecture"
-  },
-  {
+  },  {
     title: "Mobile & Frontend",
     items: "Flutter SDK, Dart, Riverpod, React, TypeScript, Tailwind CSS"
   },
@@ -186,5 +201,29 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     title: "System Analysis & QA",
     items: "Multi-Role RBAC, POS Thermal I/O, PHPUnit, Dokumentasi Sistem"
+  }
+];
+
+/**
+ * Sertifikasi. Ditampilkan sebagai strip ringkas di dalam About (bukan section
+ * tersendiri) karena jumlahnya sedikit. Contoh isian:
+ *
+ *   { name: "Belajar Dasar Pemrograman Web", issuer: "Dicoding", year: "2024",
+ *     credentialUrl: "https://www.dicoding.com/certificates/XXXXXXXXXXXX" }
+ *
+ * Selama `credentialUrl` kosong, tautan VERIFY tidak dirender.
+ */
+export const CERTIFICATIONS: Certification[] = [
+  {
+    name: "Nama Sertifikat Dicoding",
+    issuer: "Dicoding",
+    year: "2025",
+    credentialUrl: ""
+  },
+  {
+    name: "Nama Sertifikat Dicoding",
+    issuer: "Dicoding",
+    year: "2025",
+    credentialUrl: ""
   }
 ];
