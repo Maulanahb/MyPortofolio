@@ -9,7 +9,7 @@ import { PROJECTS, SITE_CONFIG } from '../data/projects';
 import { initBackgroundWanderers } from './wanderer';
 import { initMangaUIFX } from './manga-fx';
 import { prefersReducedMotion } from './motion';
-import { initLiveDemo } from './live-demo';
+import { initLiveDemo, switchCuciinSlide } from './live-demo';
 import { techIconIds } from '../data/tech-icon-ids';
 
 // State
@@ -40,7 +40,7 @@ export function openOverlay(el: HTMLElement, focusEl?: HTMLElement | null): void
   document.body.style.overflow = 'hidden';
 
   requestAnimationFrame(() => {
-    (focusEl || el.querySelector('button, input, [tabindex]'))?.focus();
+    (focusEl || el.querySelector<HTMLElement>('button, input, [tabindex]'))?.focus();
   });
 }
 
@@ -86,6 +86,11 @@ export function showProjectDetail(key: string): void {
       const clonedArt = sourceArt.cloneNode(true) as HTMLElement;
       clonedArt.removeAttribute('data-art');
       detailPreview.appendChild(clonedArt);
+
+      const cuciinApp = clonedArt.querySelector<HTMLElement>('.app-cuciin');
+      if (cuciinApp) {
+        switchCuciinSlide(cuciinApp, 0);
+      }
     }
   }
 

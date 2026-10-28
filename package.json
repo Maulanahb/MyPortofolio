@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "description": "Portofolio interaktif web berbasis narasi komik/manga menggunakan Astro & TypeScript",
   "scripts": {
-    "dev": "node --env-file=.env ./node_modules/astro/astro.js dev",
-    "start": "node --env-file=.env ./node_modules/astro/astro.js dev",
-    "build": "node --env-file=.env ./node_modules/astro/astro.js build",
-    "preview": "node --env-file=.env ./node_modules/astro/astro.js preview",
-    "astro": "node --env-file=.env ./node_modules/astro/astro.js"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
     "astro": "^5.1.0"
