@@ -1,0 +1,21 @@
+---
+import { PROJECTS } from '../data/projects';
+import ProjectCard from './ProjectCard.astro';
+---
+
+<section class="section shell" id="pekerjaan" aria-labelledby="project-title">
+  <div class="chapter-kicker mono">✦ CHAPTER 01 <span>THE PROJECT ARC</span></div>
+  <div class="section-head">
+    <div>
+      <div class="eyebrow mono">01 / Selected work</div>
+      <h2 id="project-title" class="section-title display">EMPAT PROYEK.<br/><span class="title-highlight">EMPAT CERITA.</span></h2>
+    </div>
+    <p class="section-aside">Bukan sekadar daftar teknologi. Setiap proyek dimulai dari masalah yang berbeda dan punya keputusan teknis serta repositori kodenya sendiri.</p>
+  </div>
+
+  <div class="projects-grid">
+    {PROJECTS.map(project => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+</section>

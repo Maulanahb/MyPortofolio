@@ -1,0 +1,14 @@
+# Build & Cache Output
+dist/
+.astro/
+node_modules/
+.repos/
+
+# Environment Variables
+.env
+.env.production
+
+# OS generated files
+.DS_Store
+Thumbs.db
+

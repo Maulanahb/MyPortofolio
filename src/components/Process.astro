@@ -1,0 +1,29 @@
+---
+import { PROCESS_STEPS } from '../data/projects';
+---
+
+<section class="section process" id="pendekatan" aria-labelledby="process-title">
+  <div class="shell">
+    <div class="chapter-kicker chapter-kicker-dark mono">✦ CHAPTER 02 <span>THE TRAINING ARC</span></div>
+    <div class="section-head">
+      <div>
+        <div class="eyebrow mono">02 / How I work</div>
+        <h2 class="section-title display" id="process-title">MISI DIMULAI.<br/><span class="process-title-highlight">KODE MENYUSUL.</span></h2>
+      </div>
+      <p class="section-aside">Solusi yang bagus tidak dimulai dari framework. Dimulai dari mengerti apa yang sebenarnya dibutuhkan.</p>
+    </div>
+
+    <div class="process-grid">
+      {PROCESS_STEPS.map((step, i) => (
+        <div class="step">
+          <span class="step-chapter mono" aria-hidden="true">CH. 0{i + 1}</span>
+          <span class="step-sfx">{step.sfx}</span>
+          <div class="step-index mono">{step.index}</div>
+          <h3 class="display" set:html={step.title} />
+          <p>{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+

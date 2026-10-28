@@ -6,7 +6,7 @@ Portofolio interaktif web berbasis narasi komik / manga yang dibangun dengan ars
 
 ## 🚀 Keunggulan Arsitektur Astro + TypeScript
 
-- **HTML Statis + JS Minimal**: Halaman dirender penuh saat build; browser hanya menerima satu bundle JS kecil (**±17 kB**, gzip ±7 kB) untuk interaktivitas (modal, command palette, upload foto).
+- **HTML Statis + JS Minimal**: Halaman dirender penuh saat build; browser hanya menerima satu bundle JS kecil (**±21 kB**, gzip ±8 kB) untuk interaktivitas (modal, command palette, upload foto).
 - **Type-Safe Data Layer**: Seluruh data proyek, konfigurasi profil, dan atribut divalidasi ketat menggunakan interface TypeScript (`src/data/projects.ts`).
 - **Komponen Modular**: Setiap seksi dipecah menjadi berkas `.astro` yang bersih dan mudah dirawat.
 - **Tema Otomatis**: Tiga palet warna berganti tiap 8,5 detik dan tersimpan di `localStorage`; klik badge palet di header untuk ganti manual.
@@ -50,7 +50,8 @@ WEB-PORTO/
     ├── scripts/
     │   ├── portfolio.ts        # Orkestrator: modal, palet, Ctrl+K, upload foto
     │   ├── wanderer.ts         # Fisika ikon background (requestAnimationFrame)
-    │   └── manga-fx.ts         # Popup SFX onomatope saat hover/klik
+    │   ├── manga-fx.ts         # Popup SFX onomatope pada kartu & CTA utama
+    │   └── motion.ts           # Helper prefers-reduced-motion untuk runtime
     ├── styles/                 # Modular CSS
     │   ├── variables.css       # Token warna & Araki Tri-Palette
     │   ├── base.css            # Reset, layout shell, tipografi

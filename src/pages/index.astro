@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TopNote from '../components/TopNote.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ComicStrip from '../components/ComicStrip.astro';
+import Projects from '../components/Projects.astro';
+import Process from '../components/Process.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import Modal from '../components/Modal.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+---
+
+<Layout title="Maulana — Developer Portfolio">
+  <TopNote />
+  <Header />
+
+  <main id="beranda">
+    <Hero />
+    <ComicStrip />
+    <hr class="section-rule" />
+    <Projects />
+    <Process />
+    <About />
+    <Contact />
+  </main>
+
+  <Footer />
+  <Modal />
+  <CommandPalette />
+</Layout>
+

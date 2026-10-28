@@ -1,0 +1,46 @@
+---
+// Project Case Study Modal Dialog
+---
+<div class="overlay" id="project-overlay" role="presentation">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
+    <div id="detail-brand-bar" class="dialog-brand-bar" aria-hidden="true"></div>
+    <button class="dialog-close" type="button" data-close aria-label="Tutup dialog">×</button>
+    <span class="eyebrow mono" id="detail-category">CASE STUDY</span>
+    <h2 id="detail-name" class="display">PROJECT</h2>
+
+    <div class="dialog-preview-wrap">
+      <div class="dialog-preview-head mono">
+        <span>PRATINJAU HALAMAN UTAMA APLIKASI</span>
+        <span id="detail-preview-badge">LIVE UI REPLICA</span>
+      </div>
+      <div id="detail-preview" class="dialog-preview"></div>
+    </div>
+
+    <div class="dialog-grid">
+      <div>
+        <h3 class="mono">Tantangan</h3>
+        <p id="detail-problem"></p>
+      </div>
+      <div>
+        <h3 class="mono">Pendekatan / kontribusi</h3>
+        <p id="detail-approach"></p>
+      </div>
+    </div>
+
+    <h3 class="mono">Fitur &amp; Kapabilitas Utama Aplikasi</h3>
+    <ul class="dialog-highlights" id="detail-highlights"></ul>
+
+    <h3 class="mono">Teknologi terkait</h3>
+    <div class="dialog-stack" id="detail-stack"></div>
+
+    <div style="margin-top: 22px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <a id="detail-repo" class="button dark tiny" href="#" target="_blank" rel="noopener noreferrer">
+        Kunjungi GitHub Repository <span class="arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="dialog-note">
+      Studi kasus dirangkum dari spesifikasi teknis dan repositori proyek resmi. Tautan repositori kode sumber dapat diakses langsung via tombol di atas.
+    </div>
+  </div>
+</div>

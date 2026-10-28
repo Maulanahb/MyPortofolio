@@ -1,0 +1,74 @@
+---
+// Hero Section with Main Bio Panel & Interactive Photo Frame
+---
+<section class="hero shell" aria-labelledby="hero-title">
+  <div class="hero-chapter-heading mono">
+    <span>● NEW SERIES — PORTFOLIO ARC</span>
+    <span>CHAPTER 00 / THE INTRODUCTION</span>
+  </div>
+
+  <div class="hero-grid">
+    <!-- Main Bio Panel -->
+    <div class="hero-main-panel comic-panel">
+      <div class="comic-page-index mono">P.001 <span>✦</span> THE ORIGIN</div>
+      <div class="comic-hero-eyebrow mono"><span class="chapter-dot"></span> THE DEVELOPER HAS ENTERED THE STORY</div>
+      <div class="intro-bubble">HEY!<small>Kenalan dulu, yuk.</small></div>
+      <svg class="intro-tail" viewBox="0 0 44 46" aria-hidden="true" focusable="false">
+        <path d="M42 2C34 18 22 34 4 44C8 32 12 18 12 2Z" />
+      </svg>
+      <h1 class="hero-title display" id="hero-title">HALO,<br/>GUE <span class="highlight hero-name">MAULANA!</span></h1>
+      <div class="hero-lead">
+        <span>FULL-STACK DEVELOPER</span>
+        <span class="star-divider">✳</span>
+        <span>SYSTEMS THINKER</span>
+      </div>
+      <p class="hero-desc">Saya suka mengubah masalah yang rumit menjadi alur yang sederhana, lalu membangunnya jadi aplikasi web dan mobile yang benar-benar berguna.</p>
+      <div class="hero-actions">
+        <a class="button dark action-manga" href="#pekerjaan">BUKA CHAPTER PROYEK <span class="arrow">↗</span></a>
+        <a class="button yellow" href="#kontak">HUBUNGI SAYA <span class="arrow">→</span></a>
+      </div>
+      <div class="hero-bottom mono">
+        <span class="small-rule"></span> LARAVEL · FLUTTER · CLOUD · SYSTEM ANALYSIS
+      </div>
+      <span class="background-sfx display" aria-hidden="true">ドン!!</span>
+    </div>
+
+    <!-- Interactive Photo Panel -->
+    <div class="photo-comic-panel comic-panel" id="photo-panel">
+      <div class="photo-speedlines" aria-hidden="true"></div>
+      <div class="photo-halftone" aria-hidden="true"></div>
+      <div class="photo-label mono">CHARACTER FILE <strong>#001</strong></div>
+      <div class="photo-speech"><b>INI<br/>GUE!</b></div>
+      <div class="photo-frame" id="photo-frame">
+        <div class="avatar-placeholder" id="avatar-placeholder" aria-hidden="true">
+          <svg viewBox="0 0 320 415" class="avatar-illustration" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="avatarDots" width="12" height="12" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.9" fill="#19141d" opacity=".28"/>
+              </pattern>
+            </defs>
+            <circle cx="175" cy="170" r="128" fill="#ffdc59" stroke="#151318" stroke-width="6"/>
+            <circle cx="175" cy="170" r="125" fill="url(#avatarDots)"/>
+            <path d="M16 414Q33 326 109 300l16-36h103l17 39q62 19 79 111Z" fill="#26222d" stroke="#17131b" stroke-width="8"/>
+            <path d="M110 295l50 52 78-51-13-28H121Z" fill="#eee8e1" stroke="#19141d" stroke-width="6"/>
+            <path d="M102 157q2-73 68-78 67-7 76 82v45q-9 84-74 91-61-9-72-88Z" fill="#f5eee2" stroke="#17131b" stroke-width="7"/>
+            <path d="M95 172q-1-70 26-95 31-34 85-26 59 5 62 80l-22 26-8-33-31 5-38-21-27 27-45 9Z" fill="#211d27" stroke="#17131b" stroke-width="7"/>
+            <path d="M120 180l34-3m41 2 32 2" stroke="#19141d" stroke-width="6" stroke-linecap="round"/>
+            <path d="M154 210q15 12 27 0M144 245q33 15 62-1" stroke="#19141d" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M18 411h290" stroke="#111" stroke-width="7"/>
+          </svg>
+          <span class="avatar-placeholder-caption mono">YOUR FACE GOES HERE</span>
+        </div>
+        <img id="profile-photo" class="profile-photo" src="./foto-profil.jpg" alt="Foto profil Maulana" />
+      </div>
+      <div class="photo-sfx display" aria-hidden="true">ゴゴゴ</div>
+      <div class="photo-caption">
+        <span class="display">MAULANA.</span>
+        <span class="mono">PROTAGONIST / SOFTWARE DEVELOPER</span>
+      </div>
+      <label class="photo-upload-button mono" for="photo-upload">⊕ <span id="photo-upload-label">GANTI FOTO</span></label>
+      <input type="file" id="photo-upload" accept="image/png,image/jpeg,image/webp,image/gif" aria-label="Pilih foto profil" />
+    </div>
+  </div>
+</section>
+

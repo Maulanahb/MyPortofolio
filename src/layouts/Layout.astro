@@ -1,0 +1,49 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Maulana — Developer Portfolio",
+  description = "Portofolio Maulana — Full-stack web, aplikasi mobile (Flutter), dan analisis sistem perangkat lunak."
+} = Astro.props;
+
+import '../styles/style.css';
+import BackgroundElements from '../components/BackgroundElements.astro';
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3f0e8" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+
+  <!-- Google Web Fonts: Anton, DM Sans, IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body data-palette="morioh">
+  <BackgroundElements />
+  <slot />
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- JoJo / Manga SFX Floating Overlay Container -->
+  <div id="manga-fx-container" class="manga-fx-container" aria-hidden="true"></div>
+
+  <!-- Client-side Interaction Runtime -->
+  <script>
+    import { initPortfolioApp } from '../scripts/portfolio';
+    document.addEventListener('DOMContentLoaded', () => {
+      initPortfolioApp();
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+{
+  "name": "maulana-dev-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Portofolio interaktif web berbasis narasi komik/manga menggunakan Astro & TypeScript",
+  "scripts": {
+    "dev": "node --env-file=.env ./node_modules/astro/astro.js dev",
+    "start": "node --env-file=.env ./node_modules/astro/astro.js dev",
+    "build": "node --env-file=.env ./node_modules/astro/astro.js build",
+    "preview": "node --env-file=.env ./node_modules/astro/astro.js preview",
+    "astro": "node --env-file=.env ./node_modules/astro/astro.js"
+  },
+  "dependencies": {
+    "astro": "^5.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

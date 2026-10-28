@@ -1,0 +1,29 @@
+---
+import { SKILL_GROUPS } from '../data/projects';
+---
+
+<section class="section shell" id="tentang" aria-labelledby="about-title">
+  <div class="about-grid">
+    <div class="about-badge">
+      <span class="about-starburst display">ME!</span>
+      <div class="eyebrow mono">A LITTLE ABOUT ME</div>
+      <div class="big-quote display">STYLE BOLEH NYENTRIK. SISTEM HARUS TETAP MASUK AKAL.</div>
+      <span class="small-note mono">MAULANA / DEVELOPER</span>
+    </div>
+    <div class="about-copy">
+      <div class="eyebrow mono">03 / About & toolkit</div>
+      <h2 class="section-title display" id="about-title">DI BALIK<br/>LAYAR.</h2>
+      <p>Saya tertarik pada bagian yang menghubungkan kebutuhan bisnis dan implementasi teknis: bagaimana sebuah fitur bekerja, datanya bergerak, dan pengguna menyelesaikan tugasnya tanpa kebingungan.</p>
+      <p>Selain membangun aplikasi, saya juga terbiasa melihat kebutuhan pengujian, dokumentasi, dan alur operasional sistem.</p>
+      <div class="skill-groups">
+        {SKILL_GROUPS.map(group => (
+          <div class="skill-box">
+            <h3 class="mono">{group.title}</h3>
+            <p>{group.items}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,82 @@
+/* ==========================================================================
+   DESIGN TOKENS & COLOR PALETTES (variables.css)
+   Mendukung transisi halus otomatis per palet tema (CSS @property & tokens)
+   ========================================================================== */
+
+@property --paper {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f3f0e8;
+}
+
+@property --paper-2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fffdf7;
+}
+
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #c6b5f7;
+}
+
+@property --accent-strong {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #6a37bd;
+}
+
+@property --bright {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f3dc55;
+}
+
+@property --pop {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ef7aa8;
+}
+
+:root {
+  /* Paper Canvas & Ink */
+  --paper: #f3f0e8;
+  --paper-2: #fffdf7;
+  --ink: #16151c;
+  --muted: #5f5b62;
+  --line: #16151c;
+
+  /* Default Palette: Morioh Pop (Part 4) */
+  --accent: #c6b5f7;
+  --accent-strong: #6a37bd;
+  --bright: #f3dc55;
+  --pop: #ef7aa8;
+
+  /* Elevation & Structure */
+  --shadow: 6px 6px 0 var(--line);
+  --panel-gap: 12px;
+
+  /* Transition Durations */
+  --theme-transition: 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Palette: Golden Wind (Part 5) */
+body[data-palette="golden"] {
+  --paper: #f7eddb;
+  --paper-2: #fff9eb;
+  --accent: #f7ad84;
+  --accent-strong: #a82f35;
+  --bright: #edc44b;
+  --pop: #e78b65;
+}
+
+/* Palette: Stone Ocean (Part 6) */
+body[data-palette="ocean"] {
+  --paper: #e9f3f2;
+  --paper-2: #fafffe;
+  --accent: #9bcfdd;
+  --accent-strong: #245e8b;
+  --bright: #b3e8ad;
+  --pop: #b5a2e9;
+}
