@@ -208,7 +208,9 @@ export function showProjectDetail(key: string): void {
 export const PALETTES = [
   { id: 'morioh', name: 'MORIOH POP' },
   { id: 'golden', name: 'GOLDEN WIND' },
-  { id: 'ocean', name: 'STONE OCEAN' }
+  { id: 'ocean', name: 'STONE OCEAN' },
+  { id: 'sbr', name: 'STEEL BALL RUN' },
+  { id: 'dark', name: 'DARK STARDUST' }
 ] as const;
 
 let currentPaletteIdx = 0;
@@ -216,20 +218,21 @@ let autoPaletteTimer: number | null = null;
 const AUTO_CYCLE_INTERVAL = 8500; // 8.5 detik pergantian transisi halus otomatis
 
 export function setPalette(paletteId: string, showNotification = false): void {
-  document.body.dataset.palette = paletteId;
-  localStorage.setItem('porto_palette', paletteId);
+  const normalizedId = paletteId;
+  document.body.dataset.palette = normalizedId;
+  localStorage.setItem('porto_palette', normalizedId);
 
-  const matchIdx = PALETTES.findIndex(p => p.id === paletteId);
+  const matchIdx = PALETTES.findIndex(p => p.id === normalizedId);
   if (matchIdx !== -1) currentPaletteIdx = matchIdx;
 
-  const label = PALETTES[currentPaletteIdx]?.name || paletteId.toUpperCase();
+  const label = PALETTES[currentPaletteIdx]?.name || normalizedId.toUpperCase();
   const labelEl = document.getElementById('palette-label');
   if (labelEl) {
     labelEl.textContent = label;
   }
 
   if (showNotification) {
-    notify('Tema otomatis: ' + label);
+    notify('Tema: ' + label);
   }
 }
 
@@ -258,6 +261,7 @@ export function goToSection(hash: string): void {
     });
   }
   toggleMobileMenu(false);
+  document.getElementById('header-inner')?.classList.remove('is-expanded');
 }
 
 // Mobile Menu Drawer
@@ -271,6 +275,265 @@ export function toggleMobileMenu(force?: boolean): void {
   menuToggle.setAttribute('aria-expanded', String(isOpen));
 }
 
+// Sticky Adaptive Island Navbar & Scroll Spy
+export function initStickyAdaptiveNavbar(): void {
+  const header = document.getElementById('site-header');
+  const headerInner = document.getElementById('header-inner');
+  const nav = document.getElementById('nav');
+  if (!header || !nav) return;
+
+  const navLinks = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a[data-nav]'));
+  const sectionIds = navLinks.map(link => link.dataset.nav).filter(Boolean) as string[];
+  const sections = sectionIds
+    .map(id => document.getElementById(id))
+    .filter((sec): sec is HTMLElement => Boolean(sec));
+
+  let ticking = false;
+
+  // Hysteresis window to prevent boundary jitter during rapid scrolling:
+  // Activate dynamic island pill past top navbar height (~80-100px).
+  // Deactivate and return smoothly to full original header layout when near top.
+  const ENTER_THRESHOLD = 85;
+  const EXIT_THRESHOLD = 55;
+
+  const updateHeaderState = () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const isCurrentlyScrolled = header.classList.contains('is-scrolled');
+
+    if (!isCurrentlyScrolled && scrollY > ENTER_THRESHOLD) {
+      header.classList.add('is-scrolled');
+      header.setAttribute('data-scrolled', 'true');
+      if (nav.classList.contains('open')) {
+        toggleMobileMenu(false);
+      }
+    } else if (isCurrentlyScrolled && scrollY <= EXIT_THRESHOLD) {
+      header.classList.remove('is-scrolled');
+      header.setAttribute('data-scrolled', 'false');
+      headerInner?.classList.remove('is-expanded');
+      if (nav.classList.contains('open')) {
+        toggleMobileMenu(false);
+      }
+    }
+
+    // 2. Scroll Spy: highlight active nav link
+    const scrollPos = scrollY + 140;
+    let currentId = '';
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const sec = sections[i];
+      if (sec.offsetTop <= scrollPos) {
+        currentId = sec.id;
+        break;
+      }
+    }
+
+    navLinks.forEach(link => {
+      const match = Boolean(currentId) && link.dataset.nav === currentId;
+      link.classList.toggle('active', match);
+      link.setAttribute('aria-current', match ? 'true' : 'false');
+    });
+
+    ticking = false;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateHeaderState);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  // Initial trigger on page load
+  updateHeaderState();
+
+  // Mobile / Touch toggle & Draggable interaction for compact Dynamic Island
+  if (headerInner) {
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0;
+    let startY = 0;
+    let initialLeft = 0;
+    let initialTop = 0;
+
+    // Restore saved position from localStorage if exists
+    try {
+      const saved = localStorage.getItem('maul_island_pos');
+      if (saved) {
+        const { x, y } = JSON.parse(saved);
+        if (typeof x === 'number' && typeof y === 'number') {
+          const clampedX = Math.max(12, Math.min(window.innerWidth - 60, x));
+          const clampedY = Math.max(12, Math.min(window.innerHeight - 60, y));
+          if (clampedX > window.innerWidth / 2) {
+            headerInner.style.setProperty('--island-right', `${window.innerWidth - clampedX - 48}px`);
+            headerInner.style.removeProperty('--island-x');
+            headerInner.classList.add('dock-right');
+          } else {
+            headerInner.style.setProperty('--island-x', `${clampedX}px`);
+            headerInner.style.removeProperty('--island-right');
+            headerInner.classList.remove('dock-right');
+          }
+          headerInner.style.setProperty('--island-y', `${clampedY}px`);
+        }
+      }
+    } catch {}
+
+    let currentWidth = 44;
+    let currentHeight = 44;
+
+    const onPointerMove = (e: PointerEvent) => {
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!isDragging && Math.hypot(dx, dy) > 5) {
+        isDragging = true;
+        hasMoved = true;
+        headerInner.classList.add('is-dragging');
+        headerInner.classList.remove('is-expanded');
+        currentWidth = headerInner.offsetWidth || 44;
+        currentHeight = headerInner.offsetHeight || 44;
+      }
+
+      if (isDragging) {
+        const newX = Math.max(12, Math.min(window.innerWidth - currentWidth - 12, initialLeft + dx));
+        const newY = Math.max(12, Math.min(window.innerHeight - currentHeight - 12, initialTop + dy));
+
+        // Keep left-based positioning during active drag to avoid mid-drag layout flipping
+        headerInner.style.setProperty('--island-x', `${newX}px`);
+        headerInner.style.setProperty('--island-y', `${newY}px`);
+        headerInner.style.removeProperty('--island-right');
+      }
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerUp);
+
+      try {
+        (e.target as HTMLElement)?.releasePointerCapture?.(e.pointerId);
+      } catch {}
+
+      if (isDragging) {
+        headerInner.classList.remove('is-dragging');
+        const finalRect = headerInner.getBoundingClientRect();
+        const finalX = finalRect.left;
+        const finalY = finalRect.top;
+
+        // Snap expansion direction based on screen half
+        if (finalX > window.innerWidth / 2) {
+          const rightDist = window.innerWidth - finalX - currentWidth;
+          headerInner.style.setProperty('--island-right', `${Math.max(12, rightDist)}px`);
+          headerInner.style.removeProperty('--island-x');
+          headerInner.classList.add('dock-right');
+        } else {
+          headerInner.style.setProperty('--island-x', `${Math.max(12, finalX)}px`);
+          headerInner.style.removeProperty('--island-right');
+          headerInner.classList.remove('dock-right');
+        }
+        headerInner.style.setProperty('--island-y', `${Math.max(12, finalY)}px`);
+
+        try {
+          localStorage.setItem('maul_island_pos', JSON.stringify({ x: finalX, y: finalY }));
+        } catch {}
+
+        setTimeout(() => {
+          isDragging = false;
+          hasMoved = false;
+        }, 120);
+      }
+    };
+
+    headerInner.addEventListener('pointerdown', (e: PointerEvent) => {
+      // Only drag when in scrolled state
+      if (!header.classList.contains('is-scrolled')) return;
+      // Don't drag if user clicked inside navigation link
+      if ((e.target as HTMLElement).closest('.nav a')) return;
+
+      const rect = headerInner.getBoundingClientRect();
+      startX = e.clientX;
+      startY = e.clientY;
+      initialLeft = rect.left;
+      initialTop = rect.top;
+      currentWidth = headerInner.offsetWidth || 44;
+      currentHeight = headerInner.offsetHeight || 44;
+      hasMoved = false;
+
+      try {
+        (e.target as HTMLElement)?.setPointerCapture?.(e.pointerId);
+      } catch {}
+
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+      window.addEventListener('pointercancel', onPointerUp);
+    });
+
+    // Double click to reset position to default left
+    headerInner.addEventListener('dblclick', () => {
+      if (!header.classList.contains('is-scrolled')) return;
+      try {
+        localStorage.removeItem('maul_island_pos');
+      } catch {}
+      headerInner.style.removeProperty('--island-x');
+      headerInner.style.removeProperty('--island-y');
+      headerInner.style.removeProperty('--island-right');
+      headerInner.classList.remove('dock-right');
+      notify('Posisi logo dinamis direset ke kiri');
+    });
+
+    headerInner.addEventListener('click', (e: MouseEvent) => {
+      if (!header.classList.contains('is-scrolled')) return;
+
+      // If user dragged, cancel click action completely
+      if (isDragging || hasMoved) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
+      // If user tapped a nav link, allow standard anchor navigation and close expanded pill
+      const navAnchor = target.closest<HTMLAnchorElement>('.nav a');
+      if (navAnchor) {
+        headerInner.classList.remove('is-expanded');
+        return;
+      }
+
+      // Toggle menu expansion when clicking the brand logo on any device
+      const brandAnchor = target.closest<HTMLAnchorElement>('.brand');
+      if (brandAnchor) {
+        e.preventDefault();
+        headerInner.classList.toggle('is-expanded');
+      }
+    });
+
+    // Close expanded island pill when clicking outside
+    document.addEventListener('click', (e: MouseEvent) => {
+      if (!headerInner.classList.contains('is-expanded')) return;
+      const target = e.target as HTMLElement | null;
+      if (target && !headerInner.contains(target)) {
+        headerInner.classList.remove('is-expanded');
+      }
+    });
+
+    // Close on Escape & blur active element to collapse :focus-within
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (headerInner.classList.contains('is-expanded')) {
+          headerInner.classList.remove('is-expanded');
+        }
+        if (headerInner.contains(document.activeElement)) {
+          (document.activeElement as HTMLElement)?.blur();
+        }
+      }
+    });
+  }
+}
+
 // Command Palette Definition
 interface CommandItem {
   label: string;
@@ -279,6 +542,12 @@ interface CommandItem {
 }
 
 const COMMANDS: CommandItem[] = [
+  { label: 'Ganti / siklus tema warna berikutnya', meta: 'Tema Warna', action: () => cyclePalette(true) },
+  { label: 'Aktifkan Tema Dark Stardust (Dark Mode)', meta: 'Tema Warna', action: () => setPalette('dark', true) },
+  { label: 'Aktifkan Tema Steel Ball Run (Vintage Sepia)', meta: 'Tema Warna', action: () => setPalette('sbr', true) },
+  { label: 'Aktifkan Tema Morioh Pop (Default Pop)', meta: 'Tema Warna', action: () => setPalette('morioh', true) },
+  { label: 'Aktifkan Tema Golden Wind (Warm Gold)', meta: 'Tema Warna', action: () => setPalette('golden', true) },
+  { label: 'Aktifkan Tema Stone Ocean (Cool Cyan)', meta: 'Tema Warna', action: () => setPalette('ocean', true) },
   { label: 'Ke tentang saya & tujuan magang', meta: 'Navigasi', action: () => goToSection('#tentang') },
   { label: 'Ke keahlian lintas bidang SI (Skills)', meta: 'Navigasi', action: () => goToSection('#keahlian') },
   { label: 'Ke proyek unggulan SI', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
@@ -289,7 +558,8 @@ const COMMANDS: CommandItem[] = [
   { label: 'Buka Studi Kasus: CUCI.IN (POS Laundry)', meta: 'Proyek', action: () => showProjectDetail('cuciin') },
   { label: 'Buka Studi Kasus: BAWANGHUB (AI Agritech)', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
   { label: 'Buka Studi Kasus: LAPANGKU (Mobile GOR)', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
-  { label: 'Buka Studi Kasus: PBL-IVSS (Lab Polinema)', meta: 'Proyek', action: () => showProjectDetail('ivss') }
+  { label: 'Buka Studi Kasus: PBL-IVSS (Lab Polinema)', meta: 'Proyek', action: () => showProjectDetail('ivss') },
+  { label: 'Buka Studi Kasus: AIAAS (AI Finansial)', meta: 'Proyek', action: () => showProjectDetail('aiaas') }
 ];
 
 export function renderCommands(search = ''): void {
@@ -347,8 +617,9 @@ export function showCommands(): void {
 export function initPortfolioApp(): void {
   const reduceMotion = prefersReducedMotion();
 
-  // 1. Inisialisasi Palet Standar (Morioh)
-  setPalette('morioh', false);
+  // 1. Inisialisasi Palet (Manual / Saved Preference, tanpa auto-cycle timer)
+  const savedPalette = localStorage.getItem('porto_palette') || 'morioh';
+  setPalette(savedPalette, false);
 
   if (!reduceMotion) {
     // 2. Ikon vektor bergerak acak di background (Wanderer Engine)
@@ -443,14 +714,48 @@ export function initPortfolioApp(): void {
     });
   }
 
-  // 5. Mobile Menu & Navigation
+  // 5. Mobile Menu & Navigation (Adaptive Island & Scroll Spy)
+  initStickyAdaptiveNavbar();
   const menuToggle = document.getElementById('menu-toggle');
   const nav = document.getElementById('nav');
 
   if (menuToggle) menuToggle.addEventListener('click', () => toggleMobileMenu());
   nav?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => toggleMobileMenu(false));
+    link.addEventListener('click', () => {
+      toggleMobileMenu(false);
+      document.getElementById('header-inner')?.classList.remove('is-expanded');
+    });
   });
+
+  // Close mobile drawer when clicking outside
+  document.addEventListener('click', (e: MouseEvent) => {
+    if (!nav?.classList.contains('open')) return;
+    const target = e.target as HTMLElement | null;
+    if (target && !nav.contains(target) && !menuToggle?.contains(target)) {
+      toggleMobileMenu(false);
+    }
+  });
+
+  // Close mobile drawer on Escape key for accessibility
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && nav?.classList.contains('open')) {
+      toggleMobileMenu(false);
+    }
+  });
+
+  // Close mobile drawer and collapse island pill if resized to desktop viewport
+  window.addEventListener(
+    'resize',
+    () => {
+      if (window.innerWidth > 860) {
+        if (nav?.classList.contains('open')) {
+          toggleMobileMenu(false);
+        }
+        document.getElementById('header-inner')?.classList.remove('is-expanded');
+      }
+    },
+    { passive: true }
+  );
 
   // 6. Contact Buttons & Simple Contact Form
   const emailBtn = document.getElementById('email-button');
@@ -529,6 +834,18 @@ export function initPortfolioApp(): void {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
       if (!commandOverlay?.classList.contains('open')) showCommands();
+      return;
+    }
+
+    // Shortcut 'T' untuk ganti tema warna secara manual (hanya saat tidak mengetik)
+    if (
+      (e.key === 't' || e.key === 'T') &&
+      !e.ctrlKey &&
+      !e.metaKey &&
+      !e.altKey &&
+      !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName || '')
+    ) {
+      cyclePalette(true);
       return;
     }
 
