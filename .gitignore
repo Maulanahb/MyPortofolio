@@ -4,6 +4,11 @@ dist/
 node_modules/
 .repos/
 
+# Agent Workspaces & External Skill Repos
+.agents/teamwork/
+.agents/skills/logo-design/
+.superpowers/
+
 # Environment Variables
 .env
 .env.production
