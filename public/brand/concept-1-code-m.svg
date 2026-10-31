@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Logo Maulana - Concept 1: Code-M Protagonist">
+  <defs>
+    <!-- Hard Neo-brutalist shadow offset filter if needed -->
+  </defs>
+  <!-- Background Badge (Optional for app icon/badge view, pure vector) -->
+  <rect width="256" height="256" rx="48" fill="#16151c"/>
+  <!-- Hard Comic Pop Shadow Accent -->
+  <path d="M48 204 L48 52 L94 52 L128 120 L162 52 L208 52 L208 204 L170 204 L170 110 L136 174 L120 174 L86 110 L86 204 Z" 
+        fill="#f3dc55" 
+        transform="translate(6, 6)"/>
+  <!-- Main Crisp Letterform 'M' with Sharp Code Brackets -->
+  <path d="M48 204 L48 52 L94 52 L128 120 L162 52 L208 52 L208 204 L170 204 L170 110 L136 174 L120 174 L86 110 L86 204 Z" 
+        fill="#fffdf7" 
+        stroke="#16151c" 
+        stroke-width="8" 
+        stroke-linejoin="miter"/>
+  <!-- Central Tech Terminal Spark / Cursor Accent -->
+  <polygon points="128,136 134,148 146,154 134,160 128,172 122,160 110,154 122,148" fill="#6a37bd"/>
+</svg>
+

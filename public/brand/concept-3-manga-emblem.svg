@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Logo Maulana - Concept 3: Manga Shonen Emblem">
+  <!-- Dynamic Angled Hexagonal Comic Badge Base -->
+  <!-- Shadow offset -->
+  <polygon points="128,26 230,82 230,186 128,242 26,186 26,82" fill="#16151c" transform="translate(6, 6)"/>
+  
+  <!-- Outer Badge Body -->
+  <polygon points="128,26 230,82 230,186 128,242 26,186 26,82" fill="#f3dc55" stroke="#16151c" stroke-width="10" stroke-linejoin="round"/>
+  
+  <!-- Halftone Screentone Texture Accent in Badge Top Corner -->
+  <g fill="#16151c" opacity="0.18">
+    <circle cx="128" cy="55" r="4"/>
+    <circle cx="116" cy="65" r="3.5"/>
+    <circle cx="140" cy="65" r="3.5"/>
+    <circle cx="104" cy="75" r="3"/>
+    <circle cx="152" cy="75" r="3"/>
+  </g>
+
+  <!-- Central Sharp Manga Action 'M' Letterform -->
+  <path d="M62 188 L78 92 L108 92 L128 144 L148 92 L178 92 L194 188 L164 188 L154 130 L136 172 L120 172 L102 130 L92 188 Z" 
+        fill="#16151c" 
+        stroke="#16151c" 
+        stroke-width="4" 
+        stroke-linejoin="miter"/>
+
+  <!-- Inner Spark Star of Protagonist (Negative Space Cutout in Center) -->
+  <path d="M128 96 Q128 116 114 122 Q128 128 128 148 Q128 128 142 122 Q128 116 128 96 Z" fill="#ef7aa8"/>
+</svg>
+
