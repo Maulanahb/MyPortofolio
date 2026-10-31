@@ -1,5 +1,5 @@
 ---
-// Project Case Study Modal Dialog
+// Project Case Study Modal Dialog (Full SI Case Study: Role, Process, Impact, Artifacts, & Interactive Demo)
 ---
 <div class="overlay" id="project-overlay" role="presentation">
   <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
@@ -7,40 +7,80 @@
     <button class="dialog-close" type="button" data-close aria-label="Tutup dialog">×</button>
     <span class="eyebrow mono" id="detail-category">CASE STUDY</span>
     <h2 id="detail-name" class="display">PROJECT</h2>
+    <div id="detail-type" class="dialog-type-badge mono"></div>
 
     <div class="dialog-preview-wrap">
       <div class="dialog-preview-head mono">
-        <span>PRATINJAU HALAMAN UTAMA APLIKASI</span>
+        <span>PRATINJAU INTERAKTIF HALAMAN UTAMA APLIKASI</span>
         <span id="detail-preview-badge">LIVE UI REPLICA</span>
       </div>
       <div id="detail-preview" class="dialog-preview"></div>
     </div>
 
+    <div class="dialog-role-box">
+      <div class="dialog-role-col">
+        <span class="dialog-role-label mono">PERAN SPESIFIK SAYA</span>
+        <p id="detail-role" class="dialog-role-text"></p>
+      </div>
+      <div class="dialog-role-col">
+        <span class="dialog-role-label mono">DOKUMENTASI &amp; ARTEFAK SI</span>
+        <div id="detail-artifacts" class="dialog-artifacts-list"></div>
+      </div>
+    </div>
+
     <div class="dialog-grid">
       <div>
-        <h3 class="mono">Tantangan</h3>
+        <h3 class="mono">Masalah Bisnis (Kondisi As-Is)</h3>
         <p id="detail-problem"></p>
       </div>
       <div>
-        <h3 class="mono">Pendekatan / kontribusi</h3>
+        <h3 class="mono">Solusi &amp; Arsitektur (Kondisi To-Be)</h3>
         <p id="detail-approach"></p>
       </div>
     </div>
 
+    <h3 class="mono">Proses Pengerjaan (Analisis Kebutuhan → Desain → Implementasi)</h3>
+    <div class="dialog-process-grid">
+      <div class="dialog-process-step">
+        <span class="process-step-num mono">01 / ANALISIS KEBUTUHAN</span>
+        <p id="detail-process-analysis"></p>
+      </div>
+      <div class="dialog-process-step">
+        <span class="process-step-num mono">02 / DESAIN SISTEM &amp; UI/UX</span>
+        <p id="detail-process-design"></p>
+      </div>
+      <div class="dialog-process-step">
+        <span class="process-step-num mono">03 / IMPLEMENTASI &amp; PENGUJIAN</span>
+        <p id="detail-process-impl"></p>
+      </div>
+    </div>
+
+    <h3 class="mono">Hasil &amp; Dampak Terukur</h3>
+    <ul class="dialog-highlights dialog-impact-list" id="detail-impact-list"></ul>
+
     <h3 class="mono">Fitur &amp; Kapabilitas Utama Aplikasi</h3>
     <ul class="dialog-highlights" id="detail-highlights"></ul>
 
-    <h3 class="mono">Teknologi terkait</h3>
+    <h3 class="mono">Tools &amp; Teknologi yang Dipakai</h3>
     <div class="dialog-stack" id="detail-stack"></div>
 
-    <div style="margin-top: 22px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <div class="dialog-actions" style="margin-top: 22px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
       <a id="detail-repo" class="button dark tiny" href="#" target="_blank" rel="noopener noreferrer">
         Kunjungi GitHub Repository <span class="arrow">↗</span>
       </a>
+      <a id="detail-demo-url" class="button yellow tiny" href="#" target="_blank" rel="noopener noreferrer" style="display: none;">
+        Buka Live Demo <span class="arrow">↗</span>
+      </a>
+      <a id="detail-figma-url" class="button tiny" href="#" target="_blank" rel="noopener noreferrer" style="display: none;">
+        Prototipe Figma <span class="arrow">↗</span>
+      </a>
+      <button id="detail-demo-jump" class="button tiny" type="button">
+        Coba Pratinjau Interaktif <span class="arrow">↑</span>
+      </button>
     </div>
 
     <div class="dialog-note">
-      Studi kasus dirangkum dari spesifikasi teknis dan repositori proyek resmi. Tautan repositori kode sumber dapat diakses langsung via tombol di atas.
+      Studi kasus disusun berdasarkan analisis sistem, artefak perancangan (SRS/PRD, BPMN, UML, ERD), dan implementasi kode sumber pada repositori proyek resmi.
     </div>
   </div>
 </div>

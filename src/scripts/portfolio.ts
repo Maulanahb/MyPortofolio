@@ -9,7 +9,7 @@ import { PROJECTS, SITE_CONFIG } from '../data/projects';
 import { initBackgroundWanderers } from './wanderer';
 import { initMangaUIFX } from './manga-fx';
 import { prefersReducedMotion } from './motion';
-import { initLiveDemo, switchCuciinSlide } from './live-demo';
+import { initLiveDemo, switchCuciinSlide, fitProjectPreviews } from './live-demo';
 import { techIconIds } from '../data/tech-icon-ids';
 
 // State
@@ -62,8 +62,15 @@ export function showProjectDetail(key: string): void {
 
   const detailCategory = document.getElementById('detail-category');
   const detailName = document.getElementById('detail-name');
+  const detailType = document.getElementById('detail-type');
+  const detailRole = document.getElementById('detail-role');
+  const detailArtifacts = document.getElementById('detail-artifacts');
   const detailProblem = document.getElementById('detail-problem');
   const detailApproach = document.getElementById('detail-approach');
+  const detailProcessAnalysis = document.getElementById('detail-process-analysis');
+  const detailProcessDesign = document.getElementById('detail-process-design');
+  const detailProcessImpl = document.getElementById('detail-process-impl');
+  const detailImpactList = document.getElementById('detail-impact-list');
   const detailHighlights = document.getElementById('detail-highlights');
   const detailStack = document.getElementById('detail-stack');
   const detailBrandBar = document.getElementById('detail-brand-bar');
@@ -72,11 +79,27 @@ export function showProjectDetail(key: string): void {
 
   if (detailCategory) detailCategory.textContent = project.category;
   if (detailName) detailName.textContent = project.title;
+  if (detailType) detailType.textContent = project.projectType;
+  if (detailRole) detailRole.textContent = project.role;
   if (detailProblem) detailProblem.textContent = project.problem;
   if (detailApproach) detailApproach.textContent = project.approach;
+  if (detailProcessAnalysis) detailProcessAnalysis.textContent = project.process.analysis;
+  if (detailProcessDesign) detailProcessDesign.textContent = project.process.design;
+  if (detailProcessImpl) detailProcessImpl.textContent = project.process.implementation;
   if (detailPreviewBadge) detailPreviewBadge.textContent = project.badge;
   if (detailBrandBar && project.brandColor) {
     detailBrandBar.style.backgroundColor = project.brandColor;
+  }
+
+  if (detailArtifacts) {
+    detailArtifacts.replaceChildren(
+      ...(project.artifacts || []).map(art => {
+        const pill = document.createElement('span');
+        pill.className = 'artifact-pill mono';
+        pill.textContent = '📄 ' + art;
+        return pill;
+      })
+    );
   }
 
   if (detailPreview) {
@@ -91,7 +114,20 @@ export function showProjectDetail(key: string): void {
       if (cuciinApp) {
         switchCuciinSlide(cuciinApp, 0);
       }
+      requestAnimationFrame(() => {
+        fitProjectPreviews();
+      });
     }
+  }
+
+  if (detailImpactList) {
+    detailImpactList.replaceChildren(
+      ...(project.impactMetrics || []).map(metric => {
+        const li = document.createElement('li');
+        li.textContent = metric;
+        return li;
+      })
+    );
   }
 
   if (detailHighlights) {
@@ -141,6 +177,26 @@ export function showProjectDetail(key: string): void {
       detailRepo.style.display = 'inline-flex';
     } else {
       detailRepo.style.display = 'none';
+    }
+  }
+
+  const detailDemoUrl = document.getElementById('detail-demo-url') as HTMLAnchorElement | null;
+  if (detailDemoUrl) {
+    if (project.demoUrl) {
+      detailDemoUrl.href = project.demoUrl;
+      detailDemoUrl.style.display = 'inline-flex';
+    } else {
+      detailDemoUrl.style.display = 'none';
+    }
+  }
+
+  const detailFigmaUrl = document.getElementById('detail-figma-url') as HTMLAnchorElement | null;
+  if (detailFigmaUrl) {
+    if (project.figmaUrl) {
+      detailFigmaUrl.href = project.figmaUrl;
+      detailFigmaUrl.style.display = 'inline-flex';
+    } else {
+      detailFigmaUrl.style.display = 'none';
     }
   }
 
@@ -223,15 +279,17 @@ interface CommandItem {
 }
 
 const COMMANDS: CommandItem[] = [
-  { label: 'Ke proyek unggulan', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
-  { label: 'Ke proses & metodologi', meta: 'Navigasi', action: () => goToSection('#pendekatan') },
-  { label: 'Ke tentang saya & toolkit', meta: 'Navigasi', action: () => goToSection('#tentang') },
-  { label: 'Ke kontak & kolaborasi', meta: 'Navigasi', action: () => goToSection('#kontak') },
-  { label: 'Lompat ke tema warna berikutnya', meta: 'Transisi Otomatis', action: () => cyclePalette(true) },
-  { label: 'Buka Studi Kasus: BAWANGHUB', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
-  { label: 'Buka Studi Kasus: LAPANGKU', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
-  { label: 'Buka Studi Kasus: PBL-IVSS', meta: 'Proyek', action: () => showProjectDetail('ivss') },
-  { label: 'Buka Studi Kasus: CUCI.IN', meta: 'Proyek', action: () => showProjectDetail('cuciin') }
+  { label: 'Ke tentang saya & tujuan magang', meta: 'Navigasi', action: () => goToSection('#tentang') },
+  { label: 'Ke keahlian lintas bidang SI (Skills)', meta: 'Navigasi', action: () => goToSection('#keahlian') },
+  { label: 'Ke proyek unggulan SI', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
+  { label: 'Ke pengalaman & organisasi', meta: 'Navigasi', action: () => goToSection('#pengalaman') },
+  { label: 'Ke pendidikan, sertifikasi & prestasi', meta: 'Navigasi', action: () => goToSection('#pendidikan') },
+  { label: 'Ke kontak & form pesan', meta: 'Navigasi', action: () => goToSection('#kontak') },
+  { label: 'Unduh CV Maulana (PDF)', meta: 'Dokumen', action: () => window.open(SITE_CONFIG.cvUrl, '_blank') },
+  { label: 'Buka Studi Kasus: CUCI.IN (POS Laundry)', meta: 'Proyek', action: () => showProjectDetail('cuciin') },
+  { label: 'Buka Studi Kasus: BAWANGHUB (AI Agritech)', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
+  { label: 'Buka Studi Kasus: LAPANGKU (Mobile GOR)', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
+  { label: 'Buka Studi Kasus: PBL-IVSS (Lab Polinema)', meta: 'Proyek', action: () => showProjectDetail('ivss') }
 ];
 
 export function renderCommands(search = ''): void {
@@ -289,28 +347,15 @@ export function showCommands(): void {
 export function initPortfolioApp(): void {
   const reduceMotion = prefersReducedMotion();
 
-  // 1. Inisialisasi Palet & Siklus Transisi Otomatis
-  // Palet tetap dipulihkan; siklus otomatis hanya berjalan bila motion tidak dikurangi.
-  const savedPalette = localStorage.getItem('porto_palette') || 'morioh';
-  setPalette(savedPalette, false);
+  // 1. Inisialisasi Palet Standar (Morioh)
+  setPalette('morioh', false);
 
   if (!reduceMotion) {
-    startAutoPaletteCycle();
-
     // 2. Ikon vektor bergerak acak di background (Wanderer Engine)
     initBackgroundWanderers();
 
     // 3. Manga & JoJo Hover SFX
     initMangaUIFX();
-  }
-
-  const paletteIndicator = document.getElementById('palette-indicator');
-  if (paletteIndicator) {
-    paletteIndicator.addEventListener('click', () => {
-      cyclePalette(true);
-      // reset timer interval setelah interaksi manual
-      startAutoPaletteCycle();
-    });
   }
 
   // 2. Modals & Project Click Bindings
@@ -328,6 +373,12 @@ export function initPortfolioApp(): void {
     });
     projectOverlay.addEventListener('mousedown', e => {
       if (e.target === projectOverlay) closeOverlay(projectOverlay);
+    });
+    const demoJumpBtn = document.getElementById('detail-demo-jump');
+    demoJumpBtn?.addEventListener('click', () => {
+      const previewWrap = projectOverlay.querySelector<HTMLElement>('.dialog-preview-wrap');
+      previewWrap?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+      notify('Klik menu, tab, atau kartu di dalam pratinjau aplikasi untuk mencoba demo interaktif!');
     });
   }
 
@@ -401,7 +452,7 @@ export function initPortfolioApp(): void {
     link.addEventListener('click', () => toggleMobileMenu(false));
   });
 
-  // 6. Contact Buttons
+  // 6. Contact Buttons & Simple Contact Form
   const emailBtn = document.getElementById('email-button');
   if (emailBtn) {
     emailBtn.addEventListener('click', () => {
@@ -424,6 +475,55 @@ export function initPortfolioApp(): void {
     });
   }
 
+  const contactForm = document.getElementById('contact-form') as HTMLFormElement | null;
+  const contactStatus = document.getElementById('contact-form-status');
+  if (contactForm) {
+    contactForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+      const emailInput = document.getElementById('contact-email') as HTMLInputElement | null;
+      const subjectSelect = document.getElementById('contact-subject') as HTMLSelectElement | null;
+      const msgInput = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+
+      const name = nameInput?.value.trim() || '';
+      const senderEmail = emailInput?.value.trim() || '';
+      const subject = subjectSelect?.value || 'Diskusi Portofolio SI';
+      const message = msgInput?.value.trim() || '';
+
+      if (!name || !senderEmail || !message) {
+        if (contactStatus) {
+          contactStatus.textContent = '⚠ Mohon lengkapi nama, email balasan, dan isi pesan Anda.';
+          contactStatus.className = 'form-status mono error';
+        }
+        notify('Lengkapi nama, email, dan pesan terlebih dahulu.');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(senderEmail)) {
+        if (contactStatus) {
+          contactStatus.textContent = '⚠ Format alamat email balasan belum valid.';
+          contactStatus.className = 'form-status mono error';
+        }
+        notify('Masukkan format email yang valid.');
+        return;
+      }
+
+      const mailSubject = encodeURIComponent(`[Portofolio SI] ${subject} — dari ${name}`);
+      const mailBody = encodeURIComponent(
+        `Halo Maulana,\n\nNama / Instansi: ${name}\nEmail Balasan: ${senderEmail}\nKeperluan: ${subject}\n\nPesan:\n${message}\n`
+      );
+
+      if (contactStatus) {
+        contactStatus.textContent = `✓ Siap dikirim ke ${SITE_CONFIG.email}! Membuka aplikasi email Anda...`;
+        contactStatus.className = 'form-status mono success';
+      }
+      notify(`Pesan dari ${name} siap dikirim!`);
+      window.location.href = `mailto:${SITE_CONFIG.email}?subject=${mailSubject}&body=${mailBody}`;
+      contactForm.reset();
+    });
+  }
+
   // 7. Global Shortcuts (Ctrl+K, Escape, Tab trap)
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -443,7 +543,7 @@ export function initPortfolioApp(): void {
     if (e.key === 'Tab' && overlayStack.length) {
       const topOverlay = overlayStack[overlayStack.length - 1];
       const focusable = [
-        ...topOverlay.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
+        ...topOverlay.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
       ].filter(el => el.offsetParent !== null);
 
       if (focusable.length) {

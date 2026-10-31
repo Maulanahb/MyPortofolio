@@ -9,10 +9,12 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 92px;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--paper);
   background-image: radial-gradient(#17141c19 0.8px, transparent 0.8px);
   background-size: 22px 22px;

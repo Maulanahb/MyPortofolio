@@ -1,50 +1,110 @@
 ---
-import { SKILL_GROUPS, CERTIFICATIONS } from '../data/projects';
+import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
 ---
 
 <section class="section shell" id="tentang" aria-labelledby="about-title">
+  <div class="chapter-kicker mono">✦ CHAPTER 01 <span>TENTANG SAYA &amp; KEAHLIAN SI</span></div>
+
   <div class="about-grid">
+    <!-- Left Comic Badge & Quick SI Profile Card -->
     <div class="about-badge">
-      <span class="about-starburst display">ME!</span>
-      <div class="eyebrow mono">A LITTLE ABOUT ME</div>
-      <div class="big-quote display">STYLE BOLEH NYENTRIK. SISTEM HARUS TETAP MASUK AKAL.</div>
-      <span class="small-note mono">MAULANA / DEVELOPER</span>
-    </div>
-    <div class="about-copy">
-      <div class="eyebrow mono">03 / About & toolkit</div>
-      <h2 class="section-title display" id="about-title">DI BALIK<br/>LAYAR.</h2>
-      <p>Saya tertarik pada bagian yang menghubungkan kebutuhan bisnis dan implementasi teknis: bagaimana sebuah fitur bekerja, datanya bergerak, dan pengguna menyelesaikan tugasnya tanpa kebingungan.</p>
-      <p>Selain membangun aplikasi, saya juga terbiasa melihat kebutuhan pengujian, dokumentasi, dan alur operasional sistem.</p>
-      <div class="skill-groups">
-        {SKILL_GROUPS.map(group => (
-          <div class="skill-box">
-            <h3 class="mono">{group.title}</h3>
-            <p>{group.items}</p>
-          </div>
-        ))}
+      <div>
+        <span class="about-starburst display">SI!</span>
+        <div class="eyebrow mono">PROFIL SINGKAT / IDENTITY</div>
+        <div class="big-quote display">PROSES BISNIS JELAS. SISTEM JADI TANGGUH.</div>
       </div>
 
-      {CERTIFICATIONS.length > 0 && (
-        <div class="cert-block">
-          <h3 class="cert-title mono" id="cert-title">Sertifikasi &amp; kursus</h3>
-          <ul class="cert-list" aria-labelledby="cert-title">
-            {CERTIFICATIONS.map(cert => (
-              <li class="cert-item">
-                <span class="cert-name">{cert.name}</span>
-                <span class="cert-meta mono">{cert.issuer} · {cert.year}</span>
-                {cert.credentialUrl && (
-                  <a
-                    class="cert-link mono"
-                    href={cert.credentialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >Verify&nbsp;↗</a>
-                )}
-              </li>
-            ))}
-          </ul>
+      <div class="about-meta-list">
+        <div class="about-meta-item">
+          <span class="meta-label mono">KAMPUS &amp; PRODI</span>
+          <strong>{SITE_CONFIG.program} — {SITE_CONFIG.campus}</strong>
         </div>
-      )}
+        <div class="about-meta-item">
+          <span class="meta-label mono">STATUS AKADEMIK</span>
+          <strong>{SITE_CONFIG.semester} · IPK {SITE_CONFIG.gpa}</strong>
+        </div>
+        <div class="about-meta-item">
+          <span class="meta-label mono">BIDANG MINAT</span>
+          <strong>System Analyst · Business Analyst · Web/Mobile Dev · UI/UX</strong>
+        </div>
+        <div class="about-meta-item highlight">
+          <span class="meta-label mono">TARGET MAGANG / INTERNSHIP</span>
+          <strong>{SITE_CONFIG.internshipTarget}</strong>
+        </div>
+      </div>
+
+      <span class="small-note mono">MAULANA / SISTEM INFORMASI BISNIS</span>
+    </div>
+
+    <!-- Right Narrative: 3 Paragraphs (Professional & Personal) -->
+    <div class="about-copy">
+      <div class="eyebrow mono">01 / Tentang saya</div>
+      <h2 class="section-title display" id="about-title">ANALISIS BISNIS<br/><span class="title-highlight">&amp; REKAYASA WEB.</span></h2>
+
+      <p>
+        Saya mahasiswa <strong>{SITE_CONFIG.semester} Program Studi {SITE_CONFIG.program} di {SITE_CONFIG.campus}</strong>. Selama menempuh studi di Jurusan Teknologi Informasi, saya mendalami cara menjembatani proses bisnis organisasi dengan implementasi teknologi—mulai dari memetakan alur kerja yang sebelumnya masih manual, menyusun pemodelan sistem, hingga membangun aplikasi yang mudah dipakai.
+      </p>
+
+      <p>
+        Bidang yang paling saya minati mencakup <strong>System Analysis, Business Process Analysis, UI/UX Design, serta Full-Stack Web &amp; Mobile Development</strong>. Bagi saya, perangkat lunak yang baik berawal dari analisis kebutuhan yang tajam (<em>requirement analysis</em>), perancangan proses <em>As-Is</em> ke <em>To-Be</em> dengan BPMN dan UML, skema basis data yang terukur, serta antarmuka yang tidak membingungkan pengguna.
+      </p>
+
+      <p>
+        Saat ini saya memfokuskan tujuan karier untuk berkembang sebagai talenta Sistem Informasi yang mampu menangani siklus produk dari hulu ke hilir. Saya sedang aktif mencari kesempatan <strong>magang (Internship / PKL)</strong> di posisi <strong>System Analyst, Business Analyst, UI/UX Designer, atau Web &amp; Mobile Developer</strong> untuk ikut memecahkan masalah operasional nyata bersama tim industri.
+      </p>
+
+      <div class="about-interest-pills" aria-label="Fokus bidang yang diminati">
+        {SITE_CONFIG.interests.map(item => (
+          <span class="interest-pill mono">✦ {item}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-section 3: Skills Lintas Bidang Sistem Informasi -->
+  <div class="skills-section-wrap" id="keahlian" aria-labelledby="skills-title">
+    <div class="skills-head">
+      <div>
+        <div class="eyebrow mono">02 / Keahlian lintas bidang SI</div>
+        <h3 class="skills-main-title display" id="skills-title">KOMBINASI TEKNIS, ANALISIS SISTEM &amp; EKSEKUSI TIM.</h3>
+      </div>
+      <p class="skills-subcopy">
+        Sistem Informasi menuntut keseimbangan antara kemampuan koding, ketelitian memodelkan proses bisnis, penguasaan tools kolaborasi, dan komunikasi yang terbukti di proyek.
+      </p>
+    </div>
+
+    <div class="skill-groups si-skill-grid">
+      {SKILL_GROUPS.map(group => (
+        <article class={`skill-box comic-skill-card ${group.proofs ? 'skill-card-wide' : ''}`}>
+          <div class="skill-card-top">
+            <span class="skill-code mono">{group.code}</span>
+            <h4 class="display">{group.title}</h4>
+            <span class="skill-subtitle mono">{group.subtitle}</span>
+          </div>
+
+          <p class="skill-desc">{group.items}</p>
+
+          <div class="skill-pill-row">
+            {group.pills.map(pill => (
+              <span class="skill-pill mono">{pill}</span>
+            ))}
+          </div>
+
+          {group.proofs && group.proofs.length > 0 && (
+            <div class="soft-skill-proofs">
+              <div class="proof-heading mono">BUKTI KONKRET PADA PROYEK:</div>
+              <div class="proof-grid">
+                {group.proofs.map(item => (
+                  <div class="proof-item">
+                    <strong class="mono">{item.skill}</strong>
+                    <p>{item.proof}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </article>
+      ))}
     </div>
   </div>
 </section>

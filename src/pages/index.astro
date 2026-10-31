@@ -3,25 +3,29 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import ComicStrip from '../components/ComicStrip.astro';
+import About from '../components/About.astro';
 import Projects from '../components/Projects.astro';
 import Process from '../components/Process.astro';
-import About from '../components/About.astro';
+import ExperienceEducation from '../components/ExperienceEducation.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import Modal from '../components/Modal.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 ---
 
-<Layout title="Maulana — Developer Portfolio">
+<Layout title="Maulana — Portofolio Sistem Informasi Bisnis & Web/Mobile Developer">
   <Header />
 
   <main id="beranda">
     <Hero />
     <ComicStrip />
     <hr class="section-rule" />
+    <About />
+    <hr class="section-rule" />
     <Projects />
     <Process />
-    <About />
+    <ExperienceEducation />
+    <hr class="section-rule" />
     <Contact />
   </main>
 
@@ -29,4 +33,3 @@ import CommandPalette from '../components/CommandPalette.astro';
   <Modal />
   <CommandPalette />
 </Layout>
-

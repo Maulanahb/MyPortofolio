@@ -1,18 +1,111 @@
 ---
-// Contact Section with CTA Box
+import { SITE_CONFIG } from '../data/projects';
 ---
+
 <section class="contact shell" id="kontak" aria-labelledby="contact-title">
+  <div class="chapter-kicker mono">✦ CHAPTER 05 <span>KONTAK, UNDUH CV &amp; KOLABORASI</span></div>
+
   <div class="contact-box">
     <span class="contact-sfx display" aria-hidden="true">TO BE CONTINUED...</span>
-    <div>
-      <div class="eyebrow mono">04 / Next chapter</div>
-      <h2 id="contact-title" class="contact-title display">ADA IDE?<br/>CERITAKAN.</h2>
-      <p>Punya proyek atau sekadar ingin berdiskusi tentang web, mobile, dan arsitektur sistem? Mari mulai dari percakapan sederhana.</p>
-    </div>
-    <div class="contact-buttons">
-      <button type="button" class="button dark" id="email-button">Kirim email ↗</button>
-      <button type="button" class="button" id="github-button">GitHub ↗</button>
+
+    <div class="contact-layout-grid">
+      <!-- Kolom Kiri: Info Kontak Langsung & Link CV -->
+      <div class="contact-info-col">
+        <div class="eyebrow mono">06 / Hubungi saya</div>
+        <h2 id="contact-title" class="contact-title display">TERBUKA UNTUK<br/>MAGANG &amp; PROYEK.</h2>
+        <p class="contact-lead">
+          Tertarik berdiskusi mengenai kesempatan magang (<em>System Analyst, Business Analyst, UI/UX, atau Web/Mobile Developer</em>) maupun kolaborasi pengembangan sistem informasi? Silakan hubungi saya melalui kanal berikut atau isi form di samping.
+        </p>
+
+        <div class="contact-channels" aria-label="Kanal kontak langsung">
+          <a class="channel-card" href={`mailto:${SITE_CONFIG.email}`}>
+            <span class="channel-label mono">EMAIL</span>
+            <strong>{SITE_CONFIG.email}</strong>
+          </a>
+          <a class="channel-card" href={SITE_CONFIG.linkedin} target="_blank" rel="noopener noreferrer">
+            <span class="channel-label mono">LINKEDIN</span>
+            <strong>linkedin.com/in/maulanahb ↗</strong>
+          </a>
+          <a class="channel-card" href={SITE_CONFIG.github} target="_blank" rel="noopener noreferrer">
+            <span class="channel-label mono">GITHUB</span>
+            <strong>github.com/Maulanahb ↗</strong>
+          </a>
+          <a class="channel-card" href={SITE_CONFIG.whatsapp} target="_blank" rel="noopener noreferrer">
+            <span class="channel-label mono">WHATSAPP</span>
+            <strong>{SITE_CONFIG.whatsappDisplay} ↗</strong>
+          </a>
+        </div>
+
+        <div class="contact-buttons">
+          <a class="button dark action-manga" href={SITE_CONFIG.cvUrl} download="CV-Maulana-SIB-Polinema.pdf">
+            UNDUH CV (PDF) <span class="arrow">↓</span>
+          </a>
+          <button type="button" class="button" id="email-button">Kirim Email ↗</button>
+          <button type="button" class="button" id="github-button">GitHub ↗</button>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Form Kontak Sederhana -->
+      <div class="contact-form-panel comic-panel">
+        <div class="form-panel-head mono">
+          <span>FORM PESAN CEPAT</span>
+          <span>DIRECT MESSAGE</span>
+        </div>
+
+        <form id="contact-form" class="contact-form" novalidate>
+          <div class="form-field">
+            <label for="contact-name" class="mono">NAMA LENGKAP / INSTANSI</label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              placeholder="Contoh: Budi — HR / Tech Lead PT ..."
+              required
+            />
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-field">
+              <label for="contact-email" class="mono">EMAIL BALASAN</label>
+              <input
+                type="email"
+                id="contact-email"
+                name="email"
+                placeholder="nama@perusahaan.com"
+                required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="contact-subject" class="mono">KEPERLUAN</label>
+              <select id="contact-subject" name="subject">
+                <option value="Tawaran Magang / Internship SI">Tawaran Magang / Internship</option>
+                <option value="Kolaborasi Proyek Web / Mobile">Kolaborasi Proyek Web / Mobile</option>
+                <option value="Diskusi Analisis & Desain Sistem">Diskusi Analisis Sistem</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="contact-message" class="mono">PESAN SINGKAT</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="3"
+              placeholder="Tulis pesan atau detail singkat kebutuhan Anda..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="button dark" style="width: 100%;">
+              KIRIM PESAN SEKARANG <span class="arrow">↗</span>
+            </button>
+          </div>
+          <p id="contact-form-status" class="form-status mono" aria-live="polite"></p>
+        </form>
+      </div>
     </div>
   </div>
 </section>
-
