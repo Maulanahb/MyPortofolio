@@ -1,31 +1,39 @@
 ---
-// Site Header & Navigation
+// Site Header & Navigation (Comic Dynamic Island)
 ---
-<header class="site-header">
-  <div class="shell header-inner">
-    <!-- Brand Logo Mark -->
-    <a class="brand" href="#beranda" aria-label="Kembali ke beranda">
+<header class="site-header" id="site-header" data-scrolled-nav role="banner">
+  <div class="header-inner" id="header-inner">
+    <!-- Halftone Texture Layer (Manga screentone motif, visual only) -->
+    <div class="island-halftone" aria-hidden="true"></div>
+
+    <!-- Brand Logo Mark (Code-M Protagonist) -->
+    <a class="brand" href="#beranda" aria-label="Menu navigasi Maulana">
       <span class="brand-mark">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-          <path d="m5 19 7-14 7 14M7.5 14h9" stroke="#fff" stroke-width="3" stroke-linecap="square"/>
+        <svg viewBox="0 0 256 256" width="22" height="22" fill="none" aria-hidden="true">
+          <!-- Pop Yellow Drop Accent -->
+          <path d="M48 204 L48 52 L94 52 L128 120 L162 52 L208 52 L208 204 L170 204 L170 110 L136 174 L120 174 L86 110 L86 204 Z" fill="var(--bright, #f3dc55)" transform="translate(4, 4)"/>
+          <!-- Crisp Solid 'M' Letterform with Code Brackets -->
+          <path d="M48 204 L48 52 L94 52 L128 120 L162 52 L208 52 L208 204 L170 204 L170 110 L136 174 L120 174 L86 110 L86 204 Z" fill="#fffdf7" stroke="#16151c" stroke-width="12" stroke-linejoin="miter"/>
+          <!-- Central Terminal Diamond Spark -->
+          <polygon points="128,136 135,150 149,157 135,164 128,178 121,164 107,157 121,150" fill="var(--pop, #ef7aa8)"/>
         </svg>
       </span>
-      <span class="brand-word display">MAULANA<span>.</span>DEV</span>
+      <span class="brand-word display">MAULANA</span>
     </a>
 
     <!-- Navigation Links -->
     <nav id="nav" class="nav" aria-label="Menu utama">
-      <a href="#tentang">Tentang</a>
-      <a href="#keahlian">Skills</a>
-      <a href="#pekerjaan">Proyek</a>
-      <a href="#pengalaman">Pengalaman</a>
-      <a href="#pendidikan">Pendidikan</a>
-      <a href="#kontak">Kontak</a>
+      <a href="#tentang" data-nav="tentang">Tentang</a>
+      <a href="#keahlian" data-nav="keahlian">Skills</a>
+      <a href="#pekerjaan" data-nav="pekerjaan">Proyek</a>
+      <a href="#pengalaman" data-nav="pengalaman">Pengalaman</a>
+      <a href="#pendidikan" data-nav="pendidikan">Pendidikan</a>
+      <a href="#kontak" data-nav="kontak">Kontak</a>
     </nav>
 
     <!-- Mobile Menu Toggle -->
     <div class="header-actions">
-      <button class="button tiny mobile-menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="nav" type="button">Menu</button>
+      <button class="button tiny mobile-menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="nav" type="button" aria-label="Buka menu navigasi">Menu</button>
     </div>
   </div>
 </header>
