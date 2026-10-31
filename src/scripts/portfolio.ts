@@ -353,11 +353,14 @@ export function initStickyAdaptiveNavbar(): void {
   // Mobile / Touch toggle & Draggable interaction for compact Dynamic Island
   if (headerInner) {
     let isDragging = false;
-    let hasMoved = false;
+    let didDrag = false;
     let startX = 0;
     let startY = 0;
     let initialLeft = 0;
     let initialTop = 0;
+    let currentWidth = 44;
+    let currentHeight = 44;
+    const DRAG_THRESHOLD = 8;
 
     // Restore saved position from localStorage if exists
     try {
@@ -367,43 +370,37 @@ export function initStickyAdaptiveNavbar(): void {
         if (typeof x === 'number' && typeof y === 'number') {
           const clampedX = Math.max(12, Math.min(window.innerWidth - 60, x));
           const clampedY = Math.max(12, Math.min(window.innerHeight - 60, y));
+          headerInner.style.setProperty('--island-x', `${clampedX}px`);
+          headerInner.style.setProperty('--island-y', `${clampedY}px`);
           if (clampedX > window.innerWidth / 2) {
-            headerInner.style.setProperty('--island-right', `${window.innerWidth - clampedX - 48}px`);
-            headerInner.style.removeProperty('--island-x');
             headerInner.classList.add('dock-right');
           } else {
-            headerInner.style.setProperty('--island-x', `${clampedX}px`);
-            headerInner.style.removeProperty('--island-right');
             headerInner.classList.remove('dock-right');
           }
-          headerInner.style.setProperty('--island-y', `${clampedY}px`);
         }
       }
     } catch {}
 
-    let currentWidth = 44;
-    let currentHeight = 44;
-
     const onPointerMove = (e: PointerEvent) => {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      if (!isDragging && Math.hypot(dx, dy) > 5) {
+
+      if (!isDragging && Math.hypot(dx, dy) >= DRAG_THRESHOLD) {
         isDragging = true;
-        hasMoved = true;
+        didDrag = true;
+        try {
+          headerInner.setPointerCapture?.(e.pointerId);
+        } catch {}
         headerInner.classList.add('is-dragging');
         headerInner.classList.remove('is-expanded');
-        currentWidth = headerInner.offsetWidth || 44;
-        currentHeight = headerInner.offsetHeight || 44;
       }
 
       if (isDragging) {
         const newX = Math.max(12, Math.min(window.innerWidth - currentWidth - 12, initialLeft + dx));
         const newY = Math.max(12, Math.min(window.innerHeight - currentHeight - 12, initialTop + dy));
 
-        // Keep left-based positioning during active drag to avoid mid-drag layout flipping
         headerInner.style.setProperty('--island-x', `${newX}px`);
         headerInner.style.setProperty('--island-y', `${newY}px`);
-        headerInner.style.removeProperty('--island-right');
       }
     };
 
@@ -412,28 +409,24 @@ export function initStickyAdaptiveNavbar(): void {
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointercancel', onPointerUp);
 
-      try {
-        (e.target as HTMLElement)?.releasePointerCapture?.(e.pointerId);
-      } catch {}
-
       if (isDragging) {
+        try {
+          headerInner.releasePointerCapture?.(e.pointerId);
+        } catch {}
+
         headerInner.classList.remove('is-dragging');
         const finalRect = headerInner.getBoundingClientRect();
-        const finalX = finalRect.left;
-        const finalY = finalRect.top;
+        const finalX = Math.max(12, Math.min(window.innerWidth - currentWidth - 12, finalRect.left));
+        const finalY = Math.max(12, Math.min(window.innerHeight - currentHeight - 12, finalRect.top));
 
-        // Snap expansion direction based on screen half
+        headerInner.style.setProperty('--island-x', `${finalX}px`);
+        headerInner.style.setProperty('--island-y', `${finalY}px`);
+
         if (finalX > window.innerWidth / 2) {
-          const rightDist = window.innerWidth - finalX - currentWidth;
-          headerInner.style.setProperty('--island-right', `${Math.max(12, rightDist)}px`);
-          headerInner.style.removeProperty('--island-x');
           headerInner.classList.add('dock-right');
         } else {
-          headerInner.style.setProperty('--island-x', `${Math.max(12, finalX)}px`);
-          headerInner.style.removeProperty('--island-right');
           headerInner.classList.remove('dock-right');
         }
-        headerInner.style.setProperty('--island-y', `${Math.max(12, finalY)}px`);
 
         try {
           localStorage.setItem('maul_island_pos', JSON.stringify({ x: finalX, y: finalY }));
@@ -441,29 +434,34 @@ export function initStickyAdaptiveNavbar(): void {
 
         setTimeout(() => {
           isDragging = false;
-          hasMoved = false;
+          didDrag = false;
         }, 120);
+      } else {
+        isDragging = false;
+        didDrag = false;
       }
     };
+
+    // Prevent native browser link drag
+    headerInner.addEventListener('dragstart', (e: DragEvent) => {
+      e.preventDefault();
+    });
 
     headerInner.addEventListener('pointerdown', (e: PointerEvent) => {
       // Only drag when in scrolled state
       if (!header.classList.contains('is-scrolled')) return;
       // Don't drag if user clicked inside navigation link
-      if ((e.target as HTMLElement).closest('.nav a')) return;
+      if ((e.target as HTMLElement).closest('.nav')) return;
 
       const rect = headerInner.getBoundingClientRect();
       startX = e.clientX;
       startY = e.clientY;
       initialLeft = rect.left;
       initialTop = rect.top;
-      currentWidth = headerInner.offsetWidth || 44;
-      currentHeight = headerInner.offsetHeight || 44;
-      hasMoved = false;
-
-      try {
-        (e.target as HTMLElement)?.setPointerCapture?.(e.pointerId);
-      } catch {}
+      currentWidth = 44;
+      currentHeight = 44;
+      isDragging = false;
+      didDrag = false;
 
       window.addEventListener('pointermove', onPointerMove);
       window.addEventListener('pointerup', onPointerUp);
@@ -471,14 +469,15 @@ export function initStickyAdaptiveNavbar(): void {
     });
 
     // Double click to reset position to default left
-    headerInner.addEventListener('dblclick', () => {
+    headerInner.addEventListener('dblclick', (e: MouseEvent) => {
       if (!header.classList.contains('is-scrolled')) return;
+      e.preventDefault();
+      e.stopPropagation();
       try {
         localStorage.removeItem('maul_island_pos');
       } catch {}
       headerInner.style.removeProperty('--island-x');
       headerInner.style.removeProperty('--island-y');
-      headerInner.style.removeProperty('--island-right');
       headerInner.classList.remove('dock-right');
       notify('Posisi logo dinamis direset ke kiri');
     });
@@ -486,8 +485,8 @@ export function initStickyAdaptiveNavbar(): void {
     headerInner.addEventListener('click', (e: MouseEvent) => {
       if (!header.classList.contains('is-scrolled')) return;
 
-      // If user dragged, cancel click action completely
-      if (isDragging || hasMoved) {
+      // If user actually dragged the badge, suppress click
+      if (didDrag) {
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -503,12 +502,15 @@ export function initStickyAdaptiveNavbar(): void {
         return;
       }
 
-      // Toggle menu expansion when clicking the brand logo on any device
-      const brandAnchor = target.closest<HTMLAnchorElement>('.brand');
-      if (brandAnchor) {
-        e.preventDefault();
-        headerInner.classList.toggle('is-expanded');
+      // If user clicked inside the open navigation container, keep it open
+      if (target.closest('.nav')) {
+        return;
       }
+
+      // User clicked the badge: toggle menu!
+      e.preventDefault();
+      e.stopPropagation();
+      headerInner.classList.toggle('is-expanded');
     });
 
     // Close expanded island pill when clicking outside
