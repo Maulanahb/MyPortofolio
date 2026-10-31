@@ -26,7 +26,9 @@ const icons = Object.entries(TECH_ICONS);
           {icon.paths.map(d => <path d={d} />)}
         </g>
       ) : (
-        icon.paths.map(d => <path d={d} />)
+        <g fill="currentColor" stroke="none">
+          {icon.paths.map(d => <path d={d} />)}
+        </g>
       )}
     </symbol>
   ))}

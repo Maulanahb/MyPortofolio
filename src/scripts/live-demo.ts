@@ -171,32 +171,32 @@ const BAWANGHUB_SECTIONS: Record<string, {
   Dashboard: {
     badge: 'Google Juara Vibe Coding',
     titleHtml: 'Halo, <strong>Petani Bawang!</strong>',
-    desc: 'Platform cerdas diagnosis penyakit daun & estimasi panen.'
+    desc: 'PWA asisten AI Gemini, prediksi harga & cuaca lokal.'
   },
-  Klinik: {
-    badge: '✦ GEMINI VISION • KLINIK BAWANG',
-    titleHtml: 'Deteksi Gejala Daun<br /><strong>Lebih Dini.</strong>',
-    desc: 'Identifikasi serangan trotol (Alternaria porri), layu fusarium, & rekomendasi penanganan AI.'
+  Tanya: {
+    badge: '✦ GEMINI AI • SERVER-SECURED PROXY',
+    titleHtml: 'Konsultasi Budidaya<br /><strong>Bersama Gemini AI.</strong>',
+    desc: 'Tanyakan penanganan hama, pemupukan, atau anomali cuaca melalui backend Express (server.ts).'
   },
-  Kalkulator: {
-    badge: '✦ KALKULATOR TONASE & PUPUK',
-    titleHtml: 'Proyeksi Panen &<br /><strong>Margin Laba.</strong>',
-    desc: 'Hitung otomatis kebutuhan bibit, dosis pupuk NPK, dan estimasi tonase panen per luasan lahan.'
-  },
-  Jadwal: {
-    badge: '✦ KALENDER TANAM 60 HST',
-    titleHtml: 'Jadwal Semprot &<br /><strong>Rotasi Pemupukan.</strong>',
-    desc: 'Pengingat pemupukan ke-1 (10 HST), susulan (25 HST), hingga masa panen tersinkron cuaca.'
+  Statistik: {
+    badge: '✦ RECHARTS & REGRESI LINIER',
+    titleHtml: 'Statistik &amp; Prediksi<br /><strong>Harga Komoditas.</strong>',
+    desc: 'Visualisasi grafik tren harga bawang merah dilengkapi perhitungan simple linear regression.'
   },
   Buku: {
     badge: '✦ BUKU TANI & ARUS KAS',
-    titleHtml: 'Catatan Operasional<br /><strong>Stok Saprotan.</strong>',
-    desc: 'Rekap pengeluaran benih, pestisida, dan upah harian untuk memantau efisiensi modal tanam.'
+    titleHtml: 'Catatan Operasional<br /><strong>&amp; Buku Kas Tani.</strong>',
+    desc: 'Rekap pengeluaran benih, pupuk, dan hasil panen tersinkronisasi dengan Firestore caching.'
   },
-  Tanya: {
-    badge: '✦ ASISTEN AGRI AI 24/7',
-    titleHtml: 'Konsultasi Budidaya<br /><strong>Berbasis Konteks.</strong>',
-    desc: 'Tanyakan dosis fungisida, anomali cuaca, atau perawatan umbi langsung ke asisten Gemini AI.'
+  Forum: {
+    badge: '✦ FORUM & KOMUNITAS PETANI',
+    titleHtml: 'Diskusi Komunitas<br /><strong>Petani Bawang.</strong>',
+    desc: 'Berbagi pengalaman budidaya, informasi harga pasar daerah, dan solusi lapangan antar petani.'
+  },
+  Galeri: {
+    badge: '✦ GALERI & DOKUMENTASI LAHAN',
+    titleHtml: 'Galeri Komoditas<br /><strong>&amp; Aktivitas Tani.</strong>',
+    desc: 'Dokumentasi visual perkembangan tanaman bawang merah, panen raya, dan kegiatan komunitas.'
   }
 };
 
@@ -248,6 +248,42 @@ const IVSS_MODULES: Record<string, {
   }
 };
 
+const AIAAS_NLP_SAMPLES = [
+  {
+    raw: '"Beli kopi 25rb & makan siang 45rb kemarin"',
+    json: '{ "type": "EXPENSE", "amount": 70000, "category": "Makanan & Minuman", "date": "2026-10-30" }',
+    consultant: 'Rasio pengeluaran Makanan & Minuman masih aman (Rp 920rb / Rp 1,5jt). Surplus Rp 1,2jt siap dialokasikan ke Target Tabungan.'
+  },
+  {
+    raw: '"Terima honor proyek web 1.5jt hari ini"',
+    json: '{ "type": "INCOME", "amount": 1500000, "category": "Pemasukan", "date": "2026-10-31" }',
+    consultant: 'Pemasukan +Rp 1,5jt tercatat! AI Core 4.0 menyarankan alokasi 30% (Rp 450rb) ke Target Tabungan Dana Darurat.'
+  },
+  {
+    raw: '"Isi bensin pertamax 50k & parkir 5rb 2 hari lalu"',
+    json: '{ "type": "EXPENSE", "amount": 55000, "category": "Transportasi", "date": "2026-10-29" }',
+    consultant: 'Anggaran Transportasi bulan ini terpakai 48% (Rp 240rb / Rp 500rb). Pengeluaran harian terkendali.'
+  }
+];
+
+const AIAAS_PERIODS: Record<string, { balance: string; income: string; expense: string }> = {
+  Bulanan: {
+    balance: 'Rp 5.420.000',
+    income: '+Rp 8.500.000',
+    expense: '-Rp 3.080.000'
+  },
+  Mingguan: {
+    balance: 'Rp 1.640.000',
+    income: '+Rp 2.250.000',
+    expense: '-Rp 610.000'
+  },
+  Semua: {
+    balance: 'Rp 18.950.000',
+    income: '+Rp 29.400.000',
+    expense: '-Rp 10.450.000'
+  }
+};
+
 /**
  * Memperbarui informasi E-Ticket pada Phone 2 (Lapangku) secara real-time
  * saat pengguna memilih kategori atau mengetuk salah satu kartu lapangan di Phone 1.
@@ -296,8 +332,8 @@ export function fitProjectPreviews(): void {
     const availW = artEl.clientWidth - padLeft - padRight;
     if (availW <= 0) return;
 
-    // 1. Web Desktop Mockups (BawangHub, PBL-IVSS, CUCI.IN)
-    const webApp = artEl.querySelector<HTMLElement>('.app-bawanghub, .app-ivss, .app-cuciin');
+    // 1. Web Desktop Mockups (BawangHub, PBL-IVSS, CUCI.IN, AIaaS Keuangan)
+    const webApp = artEl.querySelector<HTMLElement>('.app-bawanghub, .app-ivss, .app-cuciin, .app-aiaas');
     if (webApp) {
       if (isInsideModal && !isMobileViewport) {
         resetPreviewScale(webApp);
@@ -651,11 +687,11 @@ export function initLiveDemo(): void {
 
       const text = (bhInteractive.textContent || '').trim();
       let key = 'Dashboard';
-      if (text.includes('Klinik')) key = 'Klinik';
-      else if (text.includes('Kalkulator') || text.includes('Hitung')) key = 'Kalkulator';
-      else if (text.includes('Jadwal') || text.includes('Kalender')) key = 'Jadwal';
+      if (text.includes('Tanya')) key = 'Tanya';
+      else if (text.includes('Statistik') || text.includes('Tren')) key = 'Statistik';
       else if (text.includes('Buku')) key = 'Buku';
-      else if (text.includes('Tanya')) key = 'Tanya';
+      else if (text.includes('Forum')) key = 'Forum';
+      else if (text.includes('Galeri')) key = 'Galeri';
 
       const sectionData = BAWANGHUB_SECTIONS[key] || BAWANGHUB_SECTIONS.Dashboard;
       const badgeEl = preview.querySelector<HTMLElement>('.bh-hero-badge');
@@ -670,21 +706,21 @@ export function initLiveDemo(): void {
         const lText = (link.textContent || '').trim();
         const isMatch =
           (key === 'Dashboard' && lText.includes('Dashboard')) ||
-          (key === 'Klinik' && lText.includes('Klinik')) ||
-          (key === 'Kalkulator' && lText.includes('Kalkulator')) ||
-          (key === 'Jadwal' && lText.includes('Jadwal')) ||
+          (key === 'Tanya' && lText.includes('Tanya')) ||
+          (key === 'Statistik' && lText.includes('Statistik')) ||
           (key === 'Buku' && lText.includes('Buku')) ||
-          (key === 'Tanya' && lText.includes('Tanya'));
+          (key === 'Forum' && lText.includes('Forum')) ||
+          (key === 'Galeri' && lText.includes('Galeri'));
         link.classList.toggle('active', isMatch);
       });
 
       preview.querySelectorAll<HTMLElement>('.bh-card').forEach(card => {
         const cText = (card.textContent || '').trim();
         const isMatch =
-          (key === 'Klinik' && cText.includes('Klinik')) ||
-          (key === 'Kalkulator' && cText.includes('Kalkulator')) ||
-          (key === 'Jadwal' && cText.includes('Jadwal')) ||
-          (key === 'Buku' && cText.includes('Buku'));
+          (key === 'Tanya' && cText.includes('Tanya')) ||
+          (key === 'Statistik' && cText.includes('Statistik')) ||
+          (key === 'Buku' && cText.includes('Buku')) ||
+          (key === 'Forum' && cText.includes('Forum'));
         card.classList.toggle('active-card', isMatch);
       });
       return;

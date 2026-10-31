@@ -4,14 +4,14 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
 
 <!-- 5. PENGALAMAN & ORGANISASI -->
 <section class="section shell" id="pengalaman" aria-labelledby="exp-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 03 <span>PENGALAMAN, RISET LAB &amp; ORGANISASI TIM</span></div>
+  <div class="chapter-kicker mono">✦ CHAPTER 03 <span>PENGALAMAN &amp; KERJA TIM</span></div>
   <div class="section-head">
     <div>
-      <div class="eyebrow mono">04 / Pengalaman &amp; kontribusi nyata</div>
-      <h2 class="section-title display" id="exp-title">BUKAN SEKADAR JABATAN.<br/><span class="title-highlight">FOKUS PADA KONTRIBUSI &amp; HASIL.</span></h2>
+      <div class="eyebrow mono">04 / Pengalaman</div>
+      <h2 class="section-title display" id="exp-title">APA YANG SAYA<br/><span class="title-highlight">KERJAKAN DI TIAP PROYEK.</span></h2>
     </div>
     <p class="section-aside">
-      Rangkaian pengalaman dalam proyek laboratorium kampus (PBL), pengembangan sistem operasional UMKM, kompetisi produk AI, serta kolaborasi tim akademik.
+      Proyek aplikasi dan sistem informasi, beserta bagian yang saya kerjakan sendiri.
     </p>
   </div>
 
@@ -48,12 +48,12 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
 
 <hr class="section-rule" />
 
-<!-- 6. PENDIDIKAN, SERTIFIKASI, DAN PRESTASI -->
+<!-- 6. PENDIDIKAN DAN CAPAIAN -->
 <section class="section shell" id="pendidikan" aria-labelledby="edu-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 04 <span>PENDIDIKAN, SERTIFIKASI &amp; PRESTASI</span></div>
+  <div class="chapter-kicker mono">✦ CHAPTER 04 <span>PENDIDIKAN &amp; CAPAIAN</span></div>
   <div class="section-head">
     <div>
-      <div class="eyebrow mono">05 / Latar akademik &amp; kredensial</div>
+      <div class="eyebrow mono">05 / Latar akademik &amp; capaian</div>
       <h2 class="section-title display" id="edu-title">FONDASI AKADEMIK<br/><span class="title-highlight">&amp; REKAM JEJAK.</span></h2>
     </div>
   </div>
@@ -65,7 +65,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
       <h3 class="edu-campus display">{EDUCATION_INFO.campus}</h3>
       <div class="edu-program-row">
         <strong class="edu-program">{EDUCATION_INFO.program}</strong>
-        <span class="edu-faculty mono">{EDUCATION_INFO.faculty}</span>
+        <span class="edu-faculty mono">{EDUCATION_INFO.faculty} · NIM {EDUCATION_INFO.nim}</span>
       </div>
 
       <div class="edu-stats-strip">
@@ -78,15 +78,24 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
           <strong>{EDUCATION_INFO.semester}</strong>
         </div>
         <div class="edu-stat-box highlight">
-          <span class="mono">INDEKS PRESTASI (IPK)</span>
+          <span class="mono">IPK (SMT 1–4)</span>
           <strong>{EDUCATION_INFO.gpa}</strong>
         </div>
+        <div class="edu-stat-box">
+          <span class="mono">REPOSITORI PUBLIK</span>
+          <strong>{EDUCATION_INFO.repoMetric}</strong>
+        </div>
+      </div>
+
+      <div class="edu-gpa-note mono">
+        <span class="gpa-dot">✦</span>
+        <span>{EDUCATION_INFO.gpaDetail}</span>
       </div>
 
       <p class="edu-summary">{EDUCATION_INFO.summary}</p>
 
       <div class="edu-coursework">
-        <div class="coursework-title mono">FOKUS KOMPETENSI &amp; MATA KULIAH RELEVAN:</div>
+        <div class="coursework-title mono">MATA KULIAH YANG RELEVAN:</div>
         <div class="coursework-pills">
           {EDUCATION_INFO.coursework.map(course => (
             <span class="course-pill mono">{course}</span>
@@ -95,40 +104,41 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
       </div>
     </article>
 
-    <!-- Kolom Kanan: Sertifikasi & Prestasi/Kompetisi -->
+    <!-- Kolom Kanan: Capaian & Pengakuan -->
     <div class="edu-side-stack">
-      <!-- Blok Sertifikasi & Pelatihan -->
-      <article class="cred-box comic-panel">
-        <div class="cred-box-head">
-          <span class="cred-tag mono">SERTIFIKASI &amp; PELATIHAN</span>
-          <h3 class="display">KURSUS &amp; KOMPETENSI</h3>
-        </div>
-        <ul class="cred-list">
-          {CERTIFICATIONS.map(cert => (
-            <li class="cred-item">
-              <div class="cred-item-top">
-                <strong class="cred-name">{cert.name}</strong>
-                <span class="cred-meta mono">{cert.issuer} · {cert.year}</span>
-              </div>
-              <p class="cred-focus">{cert.focus}</p>
-              {cert.credentialUrl && (
-                <a
-                  class="cert-link mono"
-                  href={cert.credentialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Lihat Kredensial ↗</a>
-              )}
-            </li>
-          ))}
-        </ul>
-      </article>
+      {CERTIFICATIONS.length > 0 && (
+        <article class="cred-box comic-panel">
+          <div class="cred-box-head">
+            <span class="cred-tag mono">SERTIFIKASI</span>
+            <h3 class="display">SERTIFIKAT KOMPETENSI</h3>
+          </div>
+          <ul class="cred-list">
+            {CERTIFICATIONS.map(cert => (
+              <li class="cred-item">
+                <div class="cred-item-top">
+                  <strong class="cred-name">{cert.name}</strong>
+                  <span class="cred-meta mono">{cert.issuer} · {cert.year}</span>
+                </div>
+                <p class="cred-focus">{cert.focus}</p>
+                {cert.credentialUrl && (
+                  <a
+                    class="cert-link mono"
+                    href={cert.credentialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >Lihat Repositori ↗</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </article>
+      )}
 
       <!-- Blok Prestasi, Lomba & Karya Unggulan -->
       <article class="cred-box comic-panel">
         <div class="cred-box-head">
-          <span class="cred-tag pop mono">PRESTASI, KOMPETISI &amp; RISET</span>
-          <h3 class="display">CAPAIAN &amp; PENGAKUAN</h3>
+          <span class="cred-tag pop mono">CAPAIAN</span>
+          <h3 class="display">YANG BISA DICEK</h3>
         </div>
         <ul class="cred-list">
           {ACHIEVEMENTS.map(ach => (

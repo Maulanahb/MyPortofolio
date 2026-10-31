@@ -54,24 +54,24 @@ const { project } = Astro.props;
                 <span>Dashboard</span>
               </div>
               <div class="bh-link">
-                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
-                <span>Klinik Bawang</span>
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/></svg>
+                <span>Tanya AI</span>
               </div>
               <div class="bh-link">
-                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/></svg>
-                <span>Kalkulator</span>
-              </div>
-              <div class="bh-link">
-                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                <span>Jadwal Tanam</span>
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                <span>Statistik</span>
               </div>
               <div class="bh-link">
                 <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
                 <span>Buku Tani</span>
               </div>
               <div class="bh-link">
-                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/></svg>
-                <span>Tanya Agri AI</span>
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Forum</span>
+              </div>
+              <div class="bh-link">
+                <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                <span>Galeri</span>
               </div>
             </nav>
             <div class="bh-side-footer">
@@ -86,16 +86,16 @@ const { project } = Astro.props;
               <div class="bh-hero-card">
                 <div class="bh-hero-badge">Google Juara Vibe Coding</div>
                 <div class="bh-hero-title">Halo, <strong>Petani Bawang!</strong></div>
-                <div class="bh-hero-desc">Platform cerdas diagnosis penyakit daun &amp; estimasi panen.</div>
+                <div class="bh-hero-desc">PWA asisten AI Gemini, prediksi harga &amp; cuaca lokal.</div>
                 <div class="bh-hero-btns">
                   <span class="bh-btn-green">Mulai Tanya AI</span>
-                  <span class="bh-btn-outline">Cek Jadwal</span>
+                  <span class="bh-btn-outline">Cek Statistik</span>
                 </div>
               </div>
 
               <div class="bh-weather-box">
                 <div class="bh-weather-head">
-                  <span>Info Cuaca</span>
+                  <span>CuacaDetail</span>
                   <span class="bh-loc-tag">
                     <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-1px;margin-right:2px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                     Nganjuk
@@ -106,7 +106,7 @@ const { project } = Astro.props;
                   <div class="bh-weather-stat">Cerah Berawan</div>
                 </div>
                 <div class="bh-weather-ai-tip">
-                  <span>Saran AI:</span> Optimal untuk pemupukan.
+                  <span>Open-Meteo:</span> Optimal untuk pemupukan.
                 </div>
               </div>
             </div>
@@ -115,38 +115,38 @@ const { project } = Astro.props;
             <div class="bh-cards-grid">
               <div class="bh-card">
                 <div class="bh-card-icon green">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/></svg>
                 </div>
-                <div class="bh-card-title">Klinik Bawang</div>
-                <div class="bh-card-desc">Diagnosis hama daun via Gemini Vision.</div>
-                <div class="bh-card-action green">Buka Klinik →</div>
+                <div class="bh-card-title">Tanya AI</div>
+                <div class="bh-card-desc">Konsultasi budidaya via Gemini AI Proxy.</div>
+                <div class="bh-card-action green">Tanya AI →</div>
               </div>
 
               <div class="bh-card">
                 <div class="bh-card-icon blue">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/></svg>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
                 </div>
-                <div class="bh-card-title">Kalkulator</div>
-                <div class="bh-card-desc">Estimasi tonase &amp; margin laba panen.</div>
-                <div class="bh-card-action blue">Hitung Panen →</div>
+                <div class="bh-card-title">Statistik</div>
+                <div class="bh-card-desc">Grafik Recharts &amp; regresi linier harga.</div>
+                <div class="bh-card-action blue">Lihat Tren →</div>
               </div>
 
               <div class="bh-card">
                 <div class="bh-card-icon amber">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
                 </div>
-                <div class="bh-card-title">Jadwal Tanam</div>
-                <div class="bh-card-desc">Kalender semprot &amp; rotasi pemupukan.</div>
-                <div class="bh-card-action amber">Lihat Jadwal →</div>
+                <div class="bh-card-title">Buku Tani</div>
+                <div class="bh-card-desc">Catatan kas harian &amp; operasional tani.</div>
+                <div class="bh-card-action amber">Buka Buku →</div>
               </div>
 
               <div class="bh-card">
                 <div class="bh-card-icon purple">
-                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 </div>
-                <div class="bh-card-title">Buku Tani</div>
-                <div class="bh-card-desc">Catatan kas harian &amp; stok saprotan.</div>
-                <div class="bh-card-action purple">Buka Buku →</div>
+                <div class="bh-card-title">Forum</div>
+                <div class="bh-card-desc">Diskusi komunitas petani &amp; galeri.</div>
+                <div class="bh-card-action purple">Buka Forum →</div>
               </div>
             </div>
           </main>
@@ -951,6 +951,117 @@ const { project } = Astro.props;
         </div>
       </div>
     )}
+
+    {/* 5. AIAAS KEUANGAN (AiASService): AI-as-a-Service Finance Tracker & Gemini 2.5 Flash NLP Parser */}
+    {project.theme === 'fintech' && (
+      <div class="app-aiaas web-window" aria-label="Pratinjau antarmuka AIaaS Catatan Keuangan & Konsultan Finansial AI">
+        <div class="web-window-bar">
+          <div class="web-window-dots" aria-hidden="true">
+            <span class="w-dot red"></span>
+            <span class="w-dot yellow"></span>
+            <span class="w-dot green"></span>
+          </div>
+          <div class="web-window-url mono">
+            <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span class="ai-window-url-text">aiaas-keuangan.app/dashboard</span>
+          </div>
+        </div>
+
+        <div class="ai-desktop-layout">
+          {/* Sidebar Navigation (resources/App.tsx) */}
+          <aside class="ai-side-nav">
+            <div class="ai-nav-brand">
+              <span class="ai-brand-icon">✦</span>
+              <div>
+                <div class="ai-brand-title">AIaaS<strong>Keuangan</strong></div>
+                <div class="ai-brand-sub mono">GEMINI 2.5 FLASH</div>
+              </div>
+            </div>
+            <nav class="ai-nav-links">
+              <div class="ai-nav-link active" data-ai-tab="Dashboard">
+                <span>◉</span>
+                <span>Dashboard</span>
+              </div>
+              <div class="ai-nav-link" data-ai-tab="Transaksi">
+                <span>⇄</span>
+                <span>Transaksi</span>
+              </div>
+              <div class="ai-nav-link" data-ai-tab="Tabungan">
+                <span>◎</span>
+                <span>Target Tabungan</span>
+              </div>
+              <div class="ai-nav-link" data-ai-tab="Anggaran">
+                <span>▦</span>
+                <span>Anggaran Bulanan</span>
+              </div>
+              <div class="ai-nav-link" data-ai-tab="Assistant">
+                <span>✦</span>
+                <span>AI Core 4.0 Chat</span>
+              </div>
+            </nav>
+            <div class="ai-side-footer mono">
+              <span class="ai-status-dot"></span> PRD v1.1 • JSON API
+            </div>
+          </aside>
+
+          {/* Main Dashboard & FT-01 Natural Language Parser (resources/pages/Dashboard.tsx & GeminiService.php) */}
+          <main class="ai-main-canvas">
+            <div class="ai-top-bar">
+              <div>
+                <span class="ai-kicker mono">FT-01 NATURAL LANGUAGE PARSER • FT-04 DASHBOARD</span>
+                <div class="ai-hero-title">Overview <strong>Arus Kas &amp; AI Parser</strong></div>
+              </div>
+              <div class="ai-period-tabs mono" role="tablist" aria-label="Filter Periode Arus Kas">
+                <button type="button" class="ai-period-btn active" data-period="Bulanan">Bulanan</button>
+                <button type="button" class="ai-period-btn" data-period="Mingguan">Mingguan</button>
+                <button type="button" class="ai-period-btn" data-period="Semua">Semua</button>
+              </div>
+            </div>
+
+            {/* FT-01 Natural Language Transaction Input Simulator */}
+            <div class="ai-nlp-card">
+              <div class="ai-nlp-row">
+                <span class="ai-nlp-badge mono">INPUT TEKS ALAMI</span>
+                <span class="ai-nlp-sample mono" data-nlp-idx="0">"Beli kopi 25rb &amp; makan siang 45rb kemarin"</span>
+                <button type="button" class="ai-parse-btn mono">Parse AI ✦</button>
+              </div>
+              <div class="ai-json-output mono">
+                <span class="ai-json-label">JSON:</span>
+                <span class="ai-json-code">{`{ "type": "EXPENSE", "amount": 70000, "category": "Makanan & Minuman", "date": "2026-10-30" }`}</span>
+              </div>
+            </div>
+
+            {/* FT-04 3 Kartu Ringkasan Finansial */}
+            <div class="ai-summary-grid">
+              <div class="ai-stat-card balance">
+                <span class="ai-stat-label mono">TOTAL SALDO BERSIH</span>
+                <strong class="ai-stat-val mono ai-val-balance">Rp 5.420.000</strong>
+                <span class="ai-stat-note">Tabungan Darurat: 82% tercapai</span>
+              </div>
+              <div class="ai-stat-card income">
+                <span class="ai-stat-label mono">PEMASUKAN</span>
+                <strong class="ai-stat-val mono ai-val-income">+Rp 8.500.000</strong>
+                <span class="ai-stat-note">Gaji &amp; Proyek Freelance</span>
+              </div>
+              <div class="ai-stat-card expense">
+                <span class="ai-stat-label mono">PENGELUARAN</span>
+                <strong class="ai-stat-val mono ai-val-expense">-Rp 3.080.000</strong>
+                <span class="ai-stat-note">64% dari batas Anggaran Bulanan</span>
+              </div>
+            </div>
+
+            {/* AI Core 4.0 Financial Consultant Bar */}
+            <div class="ai-consultant-bar">
+              <span class="ai-consultant-tag mono">✦ AI CORE 4.0 CONSULTANT</span>
+              <span class="ai-consultant-msg">Rasio pengeluaran Makanan &amp; Minuman masih aman (Rp 920rb / Rp 1,5jt). Surplus Rp 1,2jt siap dialokasikan ke Target Tabungan.</span>
+            </div>
+          </main>
+        </div>
+      </div>
+    )}
   </div>
 
   <div class="project-copy">
@@ -1000,10 +1111,23 @@ const { project } = Astro.props;
       ))}
     </div>
 
-    <div class="project-actions" style="display: flex; gap: 8px; margin-top: auto;">
+    <div class="project-actions" style="display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap;">
       <button class="button flat" type="button" data-project={project.id} style="flex: 1;">
         STUDI KASUS &amp; DEMO <span class="arrow">↗</span>
       </button>
+      {project.demoUrl && (
+        <a
+          class="button tiny"
+          href={project.demoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Buka Live Web Showcase ${project.title}`}
+          title={`Buka Live Web Showcase ${project.title}`}
+          style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 12px;"
+        >
+          <span class="mono" style="font-size: 10px;">WEB LIVE ↗</span>
+        </a>
+      )}
       {project.repoUrl && (
         <a 
           class="button dark tiny" 
