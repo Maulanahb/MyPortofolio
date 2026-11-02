@@ -3,15 +3,14 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
 ---
 
 <section class="section shell" id="tentang" aria-labelledby="about-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 01 <span>TENTANG SAYA &amp; KEAHLIAN SI</span></div>
+  <div class="chapter-kicker mono">✦ CHAPTER 01 <span>TENTANG SAYA &amp; KEAHLIAN</span></div>
 
   <div class="about-grid">
-    <!-- Left Comic Badge & Quick SI Profile Card -->
+    <!-- Left Comic Badge & Quick Profile Card -->
     <div class="about-badge">
       <div>
-        <span class="about-starburst display">SI!</span>
-        <div class="eyebrow mono">PROFIL SINGKAT / IDENTITY</div>
-        <div class="big-quote display">PROSES BISNIS JELAS. SISTEM JADI TANGGUH.</div>
+        <div class="eyebrow mono">PROFIL SINGKAT</div>
+        <div class="big-quote display">PERANCANGAN SISTEM &amp; PENGEMBANGAN APLIKASI.</div>
       </div>
 
       <div class="about-meta-list">
@@ -24,37 +23,39 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
           <strong>{SITE_CONFIG.semester} · Angkatan 2024</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">IPK (SEMESTER 1–4)</span>
-          <strong>{SITE_CONFIG.gpa}</strong>
+          <span class="meta-label mono">MINAT POSISI</span>
+          <strong>System Analyst · Full-Stack Web · Mobile Dev</strong>
+        </div>
+        <div class="about-meta-item">
+          <span class="meta-label mono">STACK TEKNOLOGI UTAMA</span>
+          <strong>Laravel · React · Flutter · PostgreSQL</strong>
         </div>
         <div class="about-meta-item">
           <span class="meta-label mono">REPOSITORI PUBLIK</span>
           <strong>{SITE_CONFIG.githubRepos} (github.com/{SITE_CONFIG.githubHandle})</strong>
         </div>
-        <div class="about-meta-item highlight">
-          <span class="meta-label mono">SEDANG MENCARI</span>
-          <strong>{SITE_CONFIG.internshipTarget}</strong>
+        <div class="about-meta-item">
+          <span class="meta-label mono">KETERSEDIAAN</span>
+          <strong>Siap ditempatkan di mana saja (On-site / Remote)</strong>
         </div>
       </div>
-
-      <span class="small-note mono">{SITE_CONFIG.fullName.toUpperCase()} · NIM {SITE_CONFIG.nim}</span>
     </div>
 
     <!-- Right Narrative: 3 Paragraphs (Professional & Personal) -->
     <div class="about-copy">
       <div class="eyebrow mono">01 / Tentang saya</div>
-      <h2 class="section-title display" id="about-title">ANALISIS SISTEM<br/><span class="title-highlight">&amp; REKAYASA WEB/MOBILE.</span></h2>
+      <h2 class="section-title display" id="about-title">LATAR BELAKANG<br/><span class="title-highlight">&amp; KOMPETENSI.</span></h2>
 
       <p>
-        Saya <strong>{SITE_CONFIG.fullName}</strong>, mahasiswa semester 5 <strong>{SITE_CONFIG.program}</strong> di Politeknik Negeri Malang. Sejak 2024 saya menyimpan hampir semua tugas dan proyek di GitHub, jadi apa yang saya tulis di sini bisa dicek langsung kodenya.
+        <strong>{SITE_CONFIG.fullName}</strong>, mahasiswa semester 5 <strong>{SITE_CONFIG.program}</strong>, Politeknik Negeri Malang.
       </p>
 
       <p>
-        Saya paling sering bekerja di dua sisi. Pertama menulis kebutuhan sistem: siapa penggunanya, apa saja hak aksesnya, dan seperti apa databasenya. Setelah itu saya ikut membangunnya, biasanya dengan <strong>Laravel</strong> atau <strong>React</strong> untuk web dan <strong>Flutter</strong> untuk mobile.
+        Menyusun kebutuhan sistem, skema basis data, dan hak akses, lalu mengimplementasikannya dengan <strong>Laravel</strong> dan <strong>React</strong> (web) serta <strong>Flutter</strong> (mobile).
       </p>
 
       <p>
-        Sekarang saya mencari tempat <strong>magang atau PKL</strong> sebagai <strong>System Analyst, Full-Stack Web Developer, atau Mobile Developer</strong>. Saya ingin belajar bagaimana tim sungguhan menulis kebutuhan, mereview kode, dan merilis produk.
+        Mencari posisi <strong>magang / PKL</strong> sebagai <strong>System Analyst, Full-Stack Web Developer, atau Mobile Developer</strong>, dan terbuka untuk peran lain di bidang IT seperti QA, data, atau UI/UX.
       </p>
 
       <div class="about-interest-pills" aria-label="Fokus bidang yang diminati">
@@ -69,12 +70,10 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
   <div class="skills-section-wrap" id="keahlian" aria-labelledby="skills-title">
     <div class="skills-head">
       <div>
-        <div class="eyebrow mono">02 / Keahlian lintas bidang SI</div>
-        <h3 class="skills-main-title display" id="skills-title">KOMBINASI TEKNIS, ANALISIS SISTEM &amp; EKSEKUSI TIM.</h3>
+        <div class="eyebrow mono">02 / Keahlian &amp; Tech Stack</div>
+        <h3 class="skills-main-title display" id="skills-title">KOMPETENSI TEKNIS &amp; STACK TEKNOLOGI.</h3>
       </div>
-      <p class="skills-subcopy">
-        Di Sistem Informasi, menulis kode saja tidak cukup. Saya juga perlu bisa memetakan proses bisnis, memakai tools tim, dan menjelaskan pekerjaan saya ke orang lain.
-      </p>
+
     </div>
 
     <div class="skill-groups si-skill-grid">
@@ -116,7 +115,7 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
 
           {group.proofs && group.proofs.length > 0 && (
             <div class="soft-skill-proofs">
-              <div class="proof-heading mono">BUKTI KONKRET PADA PROYEK:</div>
+              <div class="proof-heading mono">PENERAPAN PADA PROYEK:</div>
               <div class="proof-grid">
                 {group.proofs.map(item => (
                   <div class="proof-item">

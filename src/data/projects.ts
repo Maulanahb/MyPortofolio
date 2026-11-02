@@ -70,14 +70,14 @@ export const SITE_CONFIG: SiteConfig = {
   githubHandle: "Maulanahb",
   nim: "244107060133",
   role: "Mahasiswa Sistem Informasi Bisnis · System Analyst & Web/Mobile Developer",
-  positioning: "Mahasiswa Sistem Informasi Bisnis Polinema. Saya menulis kebutuhan sistem, merancang database, lalu ikut membangun aplikasinya di web dan mobile.",
-  tagline: "Style boleh nyentrik. Sistem harus tetap masuk akal.",
+  positioning: "Mahasiswa D-IV Sistem Informasi Bisnis di Politeknik Negeri Malang dengan fokus pada analisis sistem, pengembangan web (Laravel & React), dan aplikasi mobile (Flutter).",
+  tagline: "Pengembangan aplikasi web dan mobile dengan perancangan database dan kebutuhan sistem yang terstruktur.",
   campus: "Politeknik Negeri Malang (Polinema)",
   department: "Jurusan Teknologi Informasi (JTI)",
   program: "D-IV Sistem Informasi Bisnis",
   period: "2024 – Sekarang",
   semester: "Semester 5",
-  gpa: "3.68 / 4.00",
+  gpa: "",
   githubRepos: "67+ repo publik",
   interests: [
     "System Analyst",
@@ -86,8 +86,8 @@ export const SITE_CONFIG: SiteConfig = {
     "Integrasi AI & Data Mining",
     "Database & Backend"
   ],
-  careerGoal: "Membuat sistem yang kebutuhannya jelas, dokumentasinya rapi, dan sudah diuji sebelum dipakai.",
-  internshipTarget: "Magang atau PKL sebagai System Analyst, Full-Stack Web Developer, atau Mobile Developer.",
+  careerGoal: "Berorientasi pada pengembangan aplikasi yang terstruktur, terdokumentasi dengan baik, dan melalui tahapan pengujian yang terukur.",
+  internshipTarget: "Magang / Praktik Kerja Lapangan (PKL) sebagai System Analyst, Full-Stack Web Developer, atau Mobile Developer.",
   email: "maulanahmad2287@gmail.com",
   github: "https://github.com/Maulanahb",
   linkedin: "https://linkedin.com/in/maulanahb",
@@ -366,37 +366,37 @@ export interface AchievementItem {
 export const PROCESS_STEPS: ProcessStep[] = [
   {
     sfx: "?",
-    index: "STEP 01 — KEBUTUHAN",
+    index: "TAHAP 01 — KEBUTUHAN",
     title: "ANALISIS &<br/>PERENCANAAN.",
-    description: "Sebelum menulis kode, saya mencatat siapa penggunanya, apa yang mereka butuhkan, dan fitur mana yang masuk versi pertama.",
-    deliverable: "Project Charter · PRD · Rencana biaya"
+    description: "Menentukan pengguna, kebutuhan, dan ruang lingkup fitur.",
+    deliverable: "Project Charter · PRD · Ruang Lingkup Sistem"
   },
   {
     sfx: "✦",
-    index: "STEP 02 — RANCANGAN",
+    index: "TAHAP 02 — RANCANGAN",
     title: "PERANCANGAN<br/>DATABASE & UI.",
-    description: "Merancang tabel dan relasinya, hak akses tiap role, dan tampilan dasar supaya tim punya acuan yang sama.",
-    deliverable: "Skema database · Hak akses · Design system"
+    description: "Merancang ERD, hak akses per peran, dan prototipe antarmuka.",
+    deliverable: "Skema Database · Hak Akses Multi-Peran · Design System"
   },
   {
     sfx: "!",
-    index: "STEP 03 — BANGUN & UJI",
-    title: "IMPLEMENTASI<br/>& PENGUJIAN.",
-    description: "Membangun fitur lewat pull request, menulis test untuk logika penting, lalu deploy.",
-    deliverable: "Pull request · Test otomatis · Deploy"
+    index: "TAHAP 03 — IMPLEMENTASI",
+    title: "PENGEMBANGAN<br/>& PENGUJIAN.",
+    description: "Pengembangan via pull request, pengujian otomatis, lalu deploy.",
+    deliverable: "Git Pull Request · Automated Testing · Deployment"
   }
 ];
 
 /**
- * 3. SKILLS — 100% diselaraskan dengan 67+ repositori publik GitHub Maulanahb:
- * Teknis & Pemrograman, Analisis & Desain Sistem, Tools/Cloud/DevOps, dan Soft Skills terbukti di PR.
+ * 3. SKILLS — Diselaraskan dengan repositori publik GitHub Maulanahb:
+ * Teknis & Pemrograman, Analisis & Desain Sistem, Tools/Cloud/DevOps, dan Kolaborasi Tim.
  */
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    code: "SKILL 01 / ENGINEERING",
+    code: "BIDANG 01 / REKAYASA PERANGKAT LUNAK",
     title: "Teknis & Pemrograman",
-    subtitle: "Web, mobile, data, dan database",
-    items: "Paling sering memakai Laravel dan React untuk web, Flutter untuk mobile, dan PostgreSQL untuk database. Python saya pakai untuk analisis data mining.",
+    subtitle: "Web, mobile, data, dan basis data",
+    items: "Laravel dan React untuk web, Flutter untuk mobile, PostgreSQL dan MySQL untuk basis data.",
     icons: [
       { name: "PHP", iconId: "php" },
       { name: "Laravel", iconId: "laravel" },
@@ -415,10 +415,10 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ]
   },
   {
-    code: "SKILL 02 / SYSTEM ANALYSIS",
+    code: "BIDANG 02 / ANALISIS SISTEM",
     title: "Analisis & Desain Sistem",
-    subtitle: "Dokumen kebutuhan, database, dan hak akses",
-    items: "Menulis PRD dan Project Charter, merancang skema database dan hak akses tiap role, serta mengoptimalkan query yang lambat.",
+    subtitle: "Spesifikasi kebutuhan, pemodelan database, dan hak akses",
+    items: "PRD, Project Charter, ERD, RBAC, dan optimasi kueri.",
     icons: [
       { name: "Project Charter & PRD", iconId: "prd" },
       { name: "Skema Database & ERD", iconId: "erd" },
@@ -430,10 +430,10 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ]
   },
   {
-    code: "SKILL 03 / TOOLS, CLOUD & DEVOPS",
+    code: "BIDANG 03 / TOOLS, CLOUD & DEVOPS",
     title: "Tools, Cloud & DevOps",
-    subtitle: "Kolaborasi, deploy, dan layanan pihak ketiga",
-    items: "Kerja tim lewat Git dan pull request, test otomatis di GitHub Actions, deploy dengan Docker ke Cloud Run, serta integrasi Firebase, Midtrans, dan Gemini API.",
+    subtitle: "Kontrol versi, deployment, dan integrasi layanan",
+    items: "Git, GitHub Actions, Docker ke Cloud Run, Firebase, Midtrans.",
     icons: [
       { name: "Git", iconId: "git" },
       { name: "GitHub", iconId: "github" },
@@ -447,22 +447,22 @@ export const SKILL_GROUPS: SkillGroup[] = [
     ]
   },
   {
-    code: "SKILL 04 / PROVEN SOFT SKILLS",
-    title: "Soft Skills",
-    subtitle: "Bisa dicek langsung di repositori GitHub",
-    items: "Memimpin perencanaan proyek, bekerja dalam tim lewat pull request, dan menyelesaikan masalah integrasi sampai jalan.",
+    code: "BIDANG 04 / KOLABORASI & KERJA TIM",
+    title: "Kolaborasi & Manajemen Proyek",
+    subtitle: "Komunikasi teknis dan dokumentasi",
+    items: "Perencanaan proyek, kolaborasi via pull request, dan penyelesaian masalah integrasi.",
     proofs: [
       {
-        skill: "Memimpin perencanaan (CUCI.IN & AIaaS Keuangan)",
-        proof: "Menulis Project Charter, PRD, dan rencana biaya untuk tim CUCI.IN, lalu PRD lengkap untuk aplikasi keuangan berbasis AI."
+        skill: "Perencanaan Spesifikasi (CUCI.IN & AIaaS)",
+        proof: "Project Charter, PRD, dan estimasi biaya untuk CUCI.IN; PRD untuk AIaaS Keuangan."
       },
       {
-        skill: "Kerja tim lewat pull request",
-        proof: "Aktif berkolaborasi dalam tim lewat pull request untuk modul admin berita dan integrasi pembayaran."
+        skill: "Kolaborasi Berbasis Pull Request",
+        proof: "Branching, code review, dan merge modul dalam tim."
       },
       {
-        skill: "Problem solving (Lapangku & BawangHub)",
-        proof: "Memindahkan pembayaran manual Lapangku ke Midtrans dengan batas waktu 15 menit, dan memindahkan panggilan AI BawangHub ke server agar API key aman."
+        skill: "Penyelesaian Masalah Integrasi (Lapangku & BawangHub)",
+        proof: "Midtrans dengan batas bayar otomatis (Lapangku); API key dipindah ke server (BawangHub)."
       }
     ]
   }
@@ -477,62 +477,62 @@ export const EXPERIENCES: ExperienceItem[] = [
     period: "2026",
     type: "PROYEK TIM · LARAVEL",
     role: "System Analyst & Full-Stack Developer",
-    organization: "CUCI.IN, sistem kasir laundry",
-    summary: "Memimpin perencanaan dan membangun sebagian besar fitur inti sistem kasir laundry bersama dua rekan tim.",
+    organization: "CUCI.IN (Sistem POS & Operasional Laundry)",
+    summary: "Spesifikasi sistem dan modul inti kasir laundry, tim 3 orang.",
     contributions: [
-      "Menulis Project Charter, PRD, rencana biaya server, dan design system.",
-      "Membangun fitur cek status cucian, pembayaran, komplain, manajemen user, dan laporan keuangan.",
-      "Menyiapkan feature test PHPUnit yang berjalan otomatis di GitHub Actions."
+      "Project Charter, PRD, estimasi biaya cloud, design system.",
+      "Modul cek status cucian, transaksi, komplain, laporan keuangan.",
+      "PHPUnit + CI GitHub Actions."
     ],
-    resultHighlight: "Sistem kasir 3 role dengan cek status cucian tanpa login."
+    resultHighlight: "Kasir 3 peran, cek status cucian tanpa login."
   },
   {
     id: "exp-aiaas-vibe",
     period: "2026",
-    type: "PROYEK INDIVIDU · INTEGRASI AI",
+    type: "PROYEK INDIVIDU · AI INTEGRATION",
     role: "Full-Stack Developer",
     organization: "AIaaS Keuangan & BawangHub",
-    summary: "Membangun dua aplikasi web yang memakai Gemini API, dari dokumen kebutuhan sampai deploy.",
+    summary: "Dua aplikasi web dengan Gemini API, dari PRD sampai deploy.",
     contributions: [
-      "AIaaS Keuangan: menulis PRD, merancang database, dan membuat fitur yang mengubah kalimat biasa menjadi data transaksi.",
-      "BawangHub: membangun tujuh halaman untuk petani, termasuk grafik harga dengan prediksi tren.",
-      "Menyimpan API key di server, bukan di browser, lalu men-deploy BawangHub dengan Docker ke Cloud Run."
+      "AIaaS Keuangan: PRD, basis data, konversi kalimat menjadi transaksi.",
+      "BawangHub: PWA 7 halaman dengan prediksi tren harga.",
+      "API key di server, deploy Docker ke Cloud Run."
     ],
-    resultHighlight: "Dua aplikasi AI yang bisa dicoba dan kodenya terbuka di GitHub."
+    resultHighlight: "Dua aplikasi AI, kode terbuka di GitHub."
   },
   {
     id: "exp-lapangku-mobile",
     period: "2026",
     type: "PROYEK TIM · FLUTTER",
     role: "Mobile & Web Developer",
-    organization: "Lapangku, aplikasi booking lapangan",
-    summary: "Membangun aplikasi booking lapangan dengan Flutter bersama dua rekan tim, plus landing page-nya.",
+    organization: "Lapangku (Aplikasi Booking Lapangan Olahraga)",
+    summary: "Aplikasi booking lapangan Flutter + Firebase, tim 3 orang.",
     contributions: [
-      "Menyiapkan struktur Firebase dan state management Riverpod, lalu membangun modul penyewa dan mitra GOR.",
-      "Mengganti pembayaran manual dengan Midtrans. Booking batal otomatis kalau tidak dibayar dalam 15 menit.",
-      "Membuat landing page dan ikut berkontribusi di beberapa proyek Flutter teman."
+      "Struktur Firestore dan state management Riverpod.",
+      "Midtrans Snap, booking batal otomatis setelah 15 menit.",
+      "Landing page produk."
     ],
-    resultHighlight: "Booking dan pembayaran lapangan dari aplikasi, dengan pendapatan mitra yang terpisah otomatis."
+    resultHighlight: "Booking dan pembayaran real-time, pendapatan mitra terpisah otomatis."
   },
   {
     id: "exp-ivss-web",
     period: "2025",
     type: "PROYEK TIM · WEB & DATABASE",
     role: "Full-Stack Web Developer",
-    organization: "Portal Web Laboratorium IVSS",
-    summary: "Membangun modul pengelolaan konten berita dan mempercepat query dashboard statistik dengan Materialized View.",
+    organization: "Portal Riset Laboratorium IVSS Polinema",
+    summary: "Panel admin berita dan optimasi dashboard statistik.",
     contributions: [
-      "Membangun panel admin berita: kelola artikel, dashboard statistik, log aktivitas, profil, pagination, dan filter.",
-      "Mempercepat waktu muat dashboard statistik menggunakan Materialized View di PostgreSQL.",
-      "Merapikan alur login dan tampilan antarmuka publik agar responsif di berbagai perangkat."
+      "CRUD berita, log aktivitas, filter, paginasi.",
+      "Materialized View PostgreSQL untuk dashboard.",
+      "Perbaikan login dan tampilan publik responsif."
     ],
-    resultHighlight: "Portal web lab dengan 4 hak akses dan dashboard statistik yang responsif."
+    resultHighlight: "Portal lab dengan 4 hak akses."
   }
 ];
 
 /**
  * 6. PENDIDIKAN, KREDENSIAL KOMPETENSI, DAN CAPAIAN
- * Selaras dengan KHS resmi (Semester 1–4) & 67+ repositori GitHub Maulanahb (Angkatan 2024).
+ * Berdasarkan rekam jejak akademik & repositori publik GitHub Maulanahb.
  */
 export const EDUCATION_INFO: EducationInfo = {
   campus: "Politeknik Negeri Malang (Polinema)",
@@ -541,21 +541,21 @@ export const EDUCATION_INFO: EducationInfo = {
   period: "2024 – Sekarang",
   semester: "Semester 5",
   nim: "244107060133",
-  gpa: "3.68 / 4.00",
-  gpaDetail: "IPK semester 1–4 dari KHS resmi. IP per semester: 3.53 · 3.89 · 3.65 · 3.67.",
+  gpa: "",
+  gpaDetail: "",
   repoMetric: "67+ repo publik",
-  summary: "Program sarjana terapan yang menggabungkan analisis proses bisnis, perancangan sistem informasi, pemrograman web dan mobile, serta pengolahan data.",
+  summary: "Sarjana terapan: analisis proses bisnis, perancangan sistem, pengembangan web/mobile, basis data.",
   coursework: [
-    "Analisis & Perancangan Sistem Informasi (A)",
-    "Pemrograman Mobile (A)",
-    "Pemrograman Web (A)",
-    "Rekayasa Perangkat Lunak (A)",
-    "Desain UI/UX (A)",
-    "Basis Data & Basis Data Lanjut (A)",
-    "Algoritma & Struktur Data (A)",
-    "Workshop (A)",
+    "Analisis & Perancangan Sistem Informasi",
+    "Rekayasa Perangkat Lunak",
+    "Pemrograman Web",
+    "Pemrograman Mobile",
+    "Basis Data & Basis Data Lanjut",
+    "Desain UI/UX",
+    "Algoritma & Struktur Data",
     "Data Mining & Data Warehouse",
-    "E-Business & Startup Digital"
+    "E-Business & Startup Digital",
+    "Workshop Pengembangan Aplikasi"
   ]
 };
 
@@ -563,24 +563,24 @@ export const CERTIFICATIONS: Certification[] = [];
 
 export const ACHIEVEMENTS: AchievementItem[] = [
   {
-    title: "IPK 3.68 dari empat semester",
+    title: "Penyelesaian 4 Semester Akademik Terstruktur",
     organizer: "D-IV Sistem Informasi Bisnis, Polinema",
     year: "2024 – 2026",
     badge: "AKADEMIK",
-    description: "IP tertinggi 3.89 di semester 2. Nilai A di Analisis & Perancangan SI, Pemrograman Web, Pemrograman Mobile, dan Desain UI/UX."
+    description: "Analisis & Perancangan Sistem, Basis Data Lanjut, Pemrograman Web & Mobile, RPL."
   },
   {
-    title: "BawangHub untuk Google Juara Vibe Coding",
-    organizer: "Proyek individu",
+    title: "BawangHub — Inisiatif Google Juara Vibe Coding",
+    organizer: "Proyek Independen",
     year: "2026",
     badge: "PROYEK AI",
-    description: "Aplikasi web pertanian dengan asisten Gemini, dibuat sendiri dan sudah berjalan di Google Cloud Run."
+    description: "Aplikasi agritech dengan Gemini API, berjalan di Cloud Run."
   },
   {
-    title: "67+ repositori publik di GitHub",
+    title: "Rekam Jejak 67+ Repositori Publik GitHub",
     organizer: "github.com/Maulanahb",
     year: "2024 – 2026",
-    badge: "GITHUB",
-    description: "Tugas kuliah, proyek tim, dan proyek pribadi sejak semester 1. Semua kode di portofolio ini bisa dicek langsung."
+    badge: "KONTRIBUSI",
+    description: "Tugas kuliah, proyek tim, dan proyek pribadi sejak semester 1."
   }
 ];

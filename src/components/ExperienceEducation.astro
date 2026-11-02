@@ -7,12 +7,9 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
   <div class="chapter-kicker mono">✦ CHAPTER 03 <span>PENGALAMAN &amp; KERJA TIM</span></div>
   <div class="section-head">
     <div>
-      <div class="eyebrow mono">04 / Pengalaman</div>
-      <h2 class="section-title display" id="exp-title">APA YANG SAYA<br/><span class="title-highlight">KERJAKAN DI TIAP PROYEK.</span></h2>
+      <div class="eyebrow mono">04 / Pengalaman proyek</div>
+      <h2 class="section-title display" id="exp-title">PENGALAMAN PROYEK<br/><span class="title-highlight">&amp; KOLABORASI TIM.</span></h2>
     </div>
-    <p class="section-aside">
-      Proyek aplikasi dan sistem informasi, beserta bagian yang saya kerjakan sendiri.
-    </p>
   </div>
 
   <div class="exp-grid">
@@ -28,7 +25,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
         <p class="exp-summary">{exp.summary}</p>
 
         <div class="exp-contrib-wrap">
-          <div class="exp-contrib-label mono">KONTRIBUSI SPESIFIK:</div>
+          <div class="exp-contrib-label mono">TANGGUNG JAWAB &amp; KONTRIBUSI:</div>
           <ul class="exp-contrib-list">
             {exp.contributions.map(item => (
               <li>{item}</li>
@@ -54,7 +51,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
   <div class="section-head">
     <div>
       <div class="eyebrow mono">05 / Latar akademik &amp; capaian</div>
-      <h2 class="section-title display" id="edu-title">FONDASI AKADEMIK<br/><span class="title-highlight">&amp; REKAM JEJAK.</span></h2>
+      <h2 class="section-title display" id="edu-title">RIWAYAT PENDIDIKAN<br/><span class="title-highlight">&amp; PENCAPAIAN.</span></h2>
     </div>
   </div>
 
@@ -78,18 +75,13 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
           <strong>{EDUCATION_INFO.semester}</strong>
         </div>
         <div class="edu-stat-box highlight">
-          <span class="mono">IPK (SMT 1–4)</span>
-          <strong>{EDUCATION_INFO.gpa}</strong>
+          <span class="mono">PEMINATAN</span>
+          <strong>Rekayasa Sistem &amp; Web/Mobile</strong>
         </div>
         <div class="edu-stat-box">
           <span class="mono">REPOSITORI PUBLIK</span>
           <strong>{EDUCATION_INFO.repoMetric}</strong>
         </div>
-      </div>
-
-      <div class="edu-gpa-note mono">
-        <span class="gpa-dot">✦</span>
-        <span>{EDUCATION_INFO.gpaDetail}</span>
       </div>
 
       <p class="edu-summary">{EDUCATION_INFO.summary}</p>
