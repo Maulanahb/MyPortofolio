@@ -1,0 +1,87 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /MediaBox [0 0 595 842] /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Length 4379 >>
+stream
+BT /F1 18 Tf 1 0 0 1 45 800 Tm (MUHAMAD MAULANA AHMAD BUKHORI) Tj ET
+BT /F2 9.2 Tf 1 0 0 1 45 783 Tm (Malang, Indonesia   |   +62 895 2398 9355   |   maulanahmad2287@gmail.com) Tj ET
+BT /F2 9.2 Tf 1 0 0 1 45 771 Tm (linkedin.com/in/maulanahb   |   github.com/Maulanahb \(67+ Repositori Publik\)) Tj ET
+BT /F1 11.5 Tf 1 0 0 1 45 751 Tm (RINGKASAN PROFIL) Tj ET
+0.6 w 0.2 0.25 0.3 RG 45 748 m 550 748 l S
+BT /F2 9 Tf 1 0 0 1 45 734 Tm (Junior System Analyst dan Full-Stack Developer yang berdedikasi dengan pengalaman membangun berbagai) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 721.5 Tm (proyek aplikasi berbasis Laravel, React, Flutter, dan integrasi AI. Terbiasa menganalisis proses bisnis,) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 709 Tm (merancang kebutuhan sistem terstruktur, serta mengimplementasikannya menjadi solusi digital yang fungsional.) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 696.5 Tm (Berkomitmen untuk merancang dan mengoptimalkan sistem perangkat lunak guna mendukung operasional perusahaan.) Tj ET
+BT /F1 11.5 Tf 1 0 0 1 45 676.5 Tm (PENDIDIKAN) Tj ET
+0.6 w 0.2 0.25 0.3 RG 45 673.5 m 550 673.5 l S
+BT /F1 9.5 Tf 1 0 0 1 45 659.5 Tm (Politeknik Negeri Malang) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 659.5 Tm (2024 - Sekarang) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 648.5 Tm (D-IV Sistem Informasi Bisnis \(Semester 5 / Angkatan 2024\)) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 635.5 Tm (SMAN 3 Nganjuk) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 635.5 Tm (2021 - 2024) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 624.5 Tm (Matematika dan Ilmu Pengetahuan Alam \(MIPA\)) Tj ET
+BT /F1 11.5 Tf 1 0 0 1 45 604.5 Tm (PROYEK UTAMA) Tj ET
+0.6 w 0.2 0.25 0.3 RG 45 601.5 m 550 601.5 l S
+BT /F1 9.5 Tf 1 0 0 1 45 587.5 Tm (AI Finance \(AIAAS\)) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 587.5 Tm (2026) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 576.5 Tm (Mengembangkan aplikasi manajemen keuangan pribadi otomatis dengan fitur pencatatan transaksi berbasis) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 564 Tm (percakapan bahasa alami menggunakan React.js, PHP, dan Google Gemini AI.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 551 Tm (CUCI.IN) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 551 Tm (2026) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 540 Tm (Mengembangkan sistem Point of Sales \(POS\) kasir dan operasional laundry dengan fitur pelacakan status) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 527.5 Tm (cucian pelanggan secara publik tanpa login berbasis Laravel dan PostgreSQL.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 514.5 Tm (BawangHub) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 514.5 Tm (2026) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 503.5 Tm (Membangun Progressive Web App \(PWA\) agritech budidaya bawang merah yang menyediakan asisten) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 491 Tm (konsultasi AI, prakiraan cuaca, dan analisis tren harga pasar berbasis React.js dan Gemini AI.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 478 Tm (Lapangku) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 478 Tm (2026) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 467 Tm (Mengembangkan aplikasi mobile reservasi lapangan olahraga dan manajemen venue dengan integrasi sistem) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 454.5 Tm (pembayaran digital Midtrans berbasis Flutter dan Firebase.) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 441.5 Tm (Portal Riset Laboratorium IVSS Polinema) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 441.5 Tm (2025) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 430.5 Tm (Merancang dan membangun Content Management System \(CMS\) portal riset laboratorium untuk publikasi) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 418 Tm (kegiatan ilmiah, berita, dan manajemen fasilitas lab berbasis PHP dan PostgreSQL.) Tj ET
+BT /F1 11.5 Tf 1 0 0 1 45 398 Tm (SERTIFIKASI) Tj ET
+0.6 w 0.2 0.25 0.3 RG 45 395 m 550 395 l S
+BT /F1 9.5 Tf 1 0 0 1 45 381 Tm (Spec-Driven Development dengan Kiro - Dicoding Indonesia) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 381 Tm (2026) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 45 369 Tm (Belajar Dasar AI - Dicoding Indonesia) Tj ET
+BT /F1 9.5 Tf 1 0 0 1 485 369 Tm (2025) Tj ET
+BT /F1 11.5 Tf 1 0 0 1 45 349 Tm (KEAHLIAN) Tj ET
+0.6 w 0.2 0.25 0.3 RG 45 346 m 550 346 l S
+BT /F2 9 Tf 1 0 0 1 45 333 Tm (Core Languages:  PHP, JavaScript, TypeScript, Dart, SQL, Python) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 321 Tm (Frameworks & UI:  Laravel, React.js, Vite, Flutter, Riverpod, Tailwind CSS, Alpine.js) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 309 Tm (Tools & Desain Sistem:  PRD, Project Charter, ERD, RBAC, Odoo ERP, Power BI, PostgreSQL, MySQL) Tj ET
+BT /F2 9 Tf 1 0 0 1 45 297 Tm (AI & Cloud/DevOps:  Google Gemini API, Google Antigravity, Midtrans, Docker, Cloud Run, Git, GitHub Actions) Tj ET
+
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000326 00000 n 
+0000000396 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+4827
+%%EOF

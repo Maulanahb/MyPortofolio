@@ -540,7 +540,7 @@ interface CommandItem {
 }
 
 const COMMANDS: CommandItem[] = [
-  { label: 'Ganti / siklus tema warna berikutnya', meta: 'Tema Warna', action: () => cyclePalette(true) },
+  { label: 'Ganti siklus tema warna berikutnya', meta: 'Tema Warna', action: () => cyclePalette(true) },
   { label: 'Aktifkan Tema Steel Ball Run (Vintage Sepia)', meta: 'Tema Warna', action: () => setPalette('sbr', true) },
   { label: 'Aktifkan Tema Morioh Pop (Default Pop)', meta: 'Tema Warna', action: () => setPalette('morioh', true) },
   { label: 'Aktifkan Tema Golden Wind (Warm Gold)', meta: 'Tema Warna', action: () => setPalette('golden', true) },
@@ -816,7 +816,7 @@ export function initPortfolioApp(): void {
         return;
       }
 
-      const mailSubject = encodeURIComponent(`[Portofolio SI] ${subject} — dari ${name}`);
+      const mailSubject = encodeURIComponent(`[Portofolio SI] ${subject} dari ${name}`);
       const mailBody = encodeURIComponent(
         `Halo Maulana,\n\nNama / Instansi: ${name}\nEmail Balasan: ${senderEmail}\nKeperluan: ${subject}\n\nPesan:\n${message}\n`
       );

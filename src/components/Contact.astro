@@ -14,7 +14,7 @@ import { SITE_CONFIG } from '../data/projects';
         <div class="eyebrow mono">✦ HUBUNGI &amp; DISKUSI</div>
         <h2 id="contact-title" class="contact-title display">INFORMASI KONTAK<br/>&amp; KETERSEDIAAN.</h2>
         <p class="contact-lead">
-          Terbuka untuk magang / PKL dan kolaborasi proyek.
+          Terbuka untuk magang atau PKL dan kolaborasi proyek.
         </p>
 
         <div class="contact-channels" aria-label="Kanal kontak langsung">
@@ -37,7 +37,7 @@ import { SITE_CONFIG } from '../data/projects';
         </div>
 
         <div class="contact-buttons">
-          <a class="button dark action-manga" href={SITE_CONFIG.cvUrl} download="CV-Maulana-SIB-Polinema.pdf">
+          <a class="button dark action-manga" href="/cv-maulana.pdf" download="CV-Maulana-Ahmad-Bukhori.pdf" target="_blank">
             UNDUH CV (PDF) <span class="arrow">↓</span>
           </a>
           <button type="button" class="button" id="email-button">Kirim Email ↗</button>
@@ -54,12 +54,12 @@ import { SITE_CONFIG } from '../data/projects';
 
         <form id="contact-form" class="contact-form" novalidate>
           <div class="form-field">
-            <label for="contact-name" class="mono">NAMA LENGKAP / INSTANSI</label>
+            <label for="contact-name" class="mono">NAMA LENGKAP ATAU INSTANSI</label>
             <input
               type="text"
               id="contact-name"
               name="name"
-              placeholder="Contoh: Budi — HR / Tech Lead PT ..."
+              placeholder="Contoh: Budi, HR atau Tech Lead PT ..."
               required
             />
           </div>
@@ -79,8 +79,8 @@ import { SITE_CONFIG } from '../data/projects';
             <div class="form-field">
               <label for="contact-subject" class="mono">KEPERLUAN</label>
               <select id="contact-subject" name="subject">
-                <option value="Tawaran Magang / Internship">Tawaran Magang / Internship</option>
-                <option value="Kolaborasi Proyek Web / Mobile">Kolaborasi Proyek Web / Mobile</option>
+                <option value="Tawaran Magang atau PKL">Tawaran Magang atau PKL</option>
+                <option value="Kolaborasi Proyek Web & Mobile">Kolaborasi Proyek Web & Mobile</option>
                 <option value="Diskusi Analisis & Desain Sistem">Diskusi Analisis Sistem</option>
                 <option value="Lainnya">Lainnya</option>
               </select>
