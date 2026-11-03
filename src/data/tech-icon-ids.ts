@@ -55,7 +55,13 @@ export const TECH_ICON_BY_LABEL: Record<string, string[]> = {
   'MySQL': ['firestore'],
   'Multi-Role RBAC & Audit Log': ['rbac'],
   'PRD v1.1 & Schema SQL': ['rbac'],
-  'JavaScript & Bootstrap 5': ['javascript']
+  'JavaScript & Bootstrap 5': ['javascript'],
+  'Odoo': ['odoo'],
+  'Odoo ERP': ['odoo'],
+  'Power BI': ['powerbi'],
+  'Microsoft Power BI': ['powerbi'],
+  'Google Antigravity': ['antigravity'],
+  'Antigravity': ['antigravity']
 };
 
 /** Id ikon untuk satu label; array kosong bila label belum dipetakan. */

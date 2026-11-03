@@ -250,19 +250,19 @@ const IVSS_MODULES: Record<string, {
 
 const AIAAS_NLP_SAMPLES = [
   {
-    raw: '"Beli kopi 25rb & makan siang 45rb kemarin"',
-    json: '{ "type": "EXPENSE", "amount": 70000, "category": "Makanan & Minuman", "date": "2026-10-30" }',
-    consultant: 'Rasio pengeluaran Makanan & Minuman masih aman (Rp 920rb / Rp 1,5jt). Surplus Rp 1,2jt siap dialokasikan ke Target Tabungan.'
+    raw: '"Beli kopi susu 25rb kemarin"',
+    json: '{ "type": "EXPENSE", "amount": 25000, "category": "Makanan & Minuman", "date": "2026-10-30" }',
+    consultant: 'Pengeluaran kopi susu Rp 25.000 tercatat di kategori Makanan & Minuman. Anggaran bulanan aman.'
   },
   {
-    raw: '"Terima honor proyek web 1.5jt hari ini"',
-    json: '{ "type": "INCOME", "amount": 1500000, "category": "Pemasukan", "date": "2026-10-31" }',
-    consultant: 'Pemasukan +Rp 1,5jt tercatat! AI Core 4.0 menyarankan alokasi 30% (Rp 450rb) ke Target Tabungan Dana Darurat.'
+    raw: '"Gajian masuk 5 juta hari ini"',
+    json: '{ "type": "INCOME", "amount": 5000000, "category": "Pendapatan", "date": "2026-11-01" }',
+    consultant: 'Pemasukan gaji Rp 5.000.000 berhasil dicatat! Saldo kas meningkat menjadi Rp 10.420.000.'
   },
   {
-    raw: '"Isi bensin pertamax 50k & parkir 5rb 2 hari lalu"',
-    json: '{ "type": "EXPENSE", "amount": 55000, "category": "Transportasi", "date": "2026-10-29" }',
-    consultant: 'Anggaran Transportasi bulan ini terpakai 48% (Rp 240rb / Rp 500rb). Pengeluaran harian terkendali.'
+    raw: '"Bayar internet 350k tanggal 10"',
+    json: '{ "type": "EXPENSE", "amount": 350000, "category": "Tagihan", "date": "2026-10-10" }',
+    consultant: 'Tagihan bulanan internet Rp 350.000 telah dialokasikan sesuai batas Anggaran Bulanan.'
   }
 ];
 
@@ -768,6 +768,161 @@ export function initLiveDemo(): void {
           (key === 'Publikasi' && pText.includes('Riset'));
         pill.classList.toggle('active-pill', isMatch);
       });
+      return;
+    }
+
+    // ========================================================================
+    // 5. AIAAS KEUANGAN: Parse AI Simulation & Period Filters
+    // ========================================================================
+    const chipBtn = target.closest<HTMLElement>('.ai-chip-btn');
+    if (chipBtn) {
+      e.preventDefault();
+      const aiaas = chipBtn.closest<HTMLElement>('.app-aiaas');
+      if (aiaas) {
+        const sampleText = chipBtn.getAttribute('data-sample') || chipBtn.textContent?.replace(/"/g, '').trim() || '';
+        const foundIdx = AIAAS_NLP_SAMPLES.findIndex(s => s.raw.includes(sampleText) || sampleText.includes(s.raw.replace(/"/g, '')));
+        const sampleIdx = foundIdx >= 0 ? foundIdx : 0;
+        const currentData = AIAAS_NLP_SAMPLES[sampleIdx];
+
+        aiaas.querySelectorAll('.ai-chip-btn').forEach(b => b.classList.remove('active'));
+        chipBtn.classList.add('active');
+
+        const sampleEl = aiaas.querySelector<HTMLElement>('.ai-nlp-sample');
+        const jsonEl = aiaas.querySelector<HTMLElement>('.ai-json-code');
+        const consultEl = aiaas.querySelector<HTMLElement>('.ai-consultant-msg');
+        const jsonBox = aiaas.querySelector<HTMLElement>('.ai-json-output');
+
+        if (sampleEl) {
+          sampleEl.setAttribute('data-nlp-idx', sampleIdx.toString());
+          sampleEl.textContent = currentData.raw;
+        }
+        if (jsonEl) {
+          jsonEl.textContent = currentData.json;
+        }
+        if (consultEl) {
+          consultEl.textContent = currentData.consultant;
+        }
+        if (jsonBox) {
+          jsonBox.classList.remove('ai-parsed-pulse');
+          void jsonBox.offsetWidth;
+          jsonBox.classList.add('ai-parsed-pulse');
+        }
+      }
+      return;
+    }
+
+    const parseBtn = target.closest<HTMLElement>('.ai-parse-btn');
+    if (parseBtn) {
+      e.preventDefault();
+      const aiaas = parseBtn.closest<HTMLElement>('.app-aiaas');
+      if (aiaas) {
+        const sampleEl = aiaas.querySelector<HTMLElement>('.ai-nlp-sample');
+        const jsonEl = aiaas.querySelector<HTMLElement>('.ai-json-code');
+        const consultEl = aiaas.querySelector<HTMLElement>('.ai-consultant-msg');
+        const jsonBox = aiaas.querySelector<HTMLElement>('.ai-json-output');
+
+        let currentIdx = parseInt(sampleEl?.getAttribute('data-nlp-idx') || '0', 10);
+        currentIdx = (currentIdx + 1) % AIAAS_NLP_SAMPLES.length;
+        const nextSample = AIAAS_NLP_SAMPLES[currentIdx];
+
+        if (sampleEl) {
+          sampleEl.setAttribute('data-nlp-idx', currentIdx.toString());
+          sampleEl.textContent = nextSample.raw;
+        }
+        if (jsonEl) {
+          jsonEl.textContent = nextSample.json;
+        }
+        if (consultEl) {
+          consultEl.textContent = nextSample.consultant;
+        }
+
+        // Update active chip
+        const chips = aiaas.querySelectorAll('.ai-chip-btn');
+        chips.forEach((c, idx) => {
+          if (idx === currentIdx) c.classList.add('active');
+          else c.classList.remove('active');
+        });
+
+        if (jsonBox) {
+          jsonBox.classList.remove('ai-parsed-pulse');
+          void jsonBox.offsetWidth; // trigger reflow
+          jsonBox.classList.add('ai-parsed-pulse');
+        }
+      }
+      return;
+    }
+
+    const periodBtn = target.closest<HTMLElement>('.ai-period-btn');
+    if (periodBtn) {
+      e.preventDefault();
+      const aiaas = periodBtn.closest<HTMLElement>('.app-aiaas');
+      const tabs = periodBtn.closest<HTMLElement>('.ai-period-tabs');
+      if (aiaas && tabs) {
+        tabs.querySelectorAll('.ai-period-btn').forEach(b => b.classList.remove('active'));
+        periodBtn.classList.add('active');
+
+        const periodKey = (periodBtn.getAttribute('data-period') || 'Bulanan') as keyof typeof AIAAS_PERIODS;
+        const data = AIAAS_PERIODS[periodKey] || AIAAS_PERIODS.Bulanan;
+
+        const valBalance = aiaas.querySelector<HTMLElement>('.ai-val-balance');
+        const valIncome = aiaas.querySelector<HTMLElement>('.ai-val-income');
+        const valExpense = aiaas.querySelector<HTMLElement>('.ai-val-expense');
+        const valIncomeSoft = aiaas.querySelector<HTMLElement>('.ai-val-income-soft');
+        const valExpenseSoft = aiaas.querySelector<HTMLElement>('.ai-val-expense-soft');
+
+        if (valBalance) valBalance.textContent = data.balance;
+        if (valIncome) valIncome.textContent = data.income;
+        if (valExpense) valExpense.textContent = data.expense;
+        if (valIncomeSoft) valIncomeSoft.textContent = data.income;
+        if (valExpenseSoft) valExpenseSoft.textContent = data.expense;
+      }
+      return;
+    }
+
+    const txFilterBtn = target.closest<HTMLElement>('.ai-tx-filter-btn');
+    if (txFilterBtn) {
+      e.preventDefault();
+      const aiaas = txFilterBtn.closest<HTMLElement>('.app-aiaas');
+      const filterWrap = txFilterBtn.closest<HTMLElement>('.ai-tx-filter-chips');
+      if (aiaas && filterWrap) {
+        filterWrap.querySelectorAll('.ai-tx-filter-btn').forEach(b => b.classList.remove('active'));
+        txFilterBtn.classList.add('active');
+
+        const filterMode = txFilterBtn.textContent?.trim().toLowerCase() || 'semua';
+        const rows = aiaas.querySelectorAll<HTMLElement>('.ai-tx-row');
+        rows.forEach(row => {
+          if (filterMode === 'semua') {
+            row.style.display = 'grid';
+          } else if (filterMode === 'pemasukan') {
+            const isIncome = row.querySelector('.ai-tx-badge.income') !== null;
+            row.style.display = isIncome ? 'grid' : 'none';
+          } else if (filterMode === 'pengeluaran') {
+            const isExpense = row.querySelector('.ai-tx-badge.food, .ai-tx-badge.bill') !== null;
+            row.style.display = isExpense ? 'grid' : 'none';
+          }
+        });
+      }
+      return;
+    }
+
+    const aiNavLink = target.closest<HTMLElement>('.ai-nav-link');
+    if (aiNavLink) {
+      e.preventDefault();
+      const aiaas = aiNavLink.closest<HTMLElement>('.app-aiaas');
+      if (aiaas) {
+        aiaas.querySelectorAll('.ai-nav-link').forEach(l => {
+          l.classList.remove('active');
+          const indicator = l.querySelector('.ai-nav-indicator');
+          if (indicator) indicator.remove();
+        });
+        aiNavLink.classList.add('active');
+        if (!aiNavLink.querySelector('.ai-nav-indicator')) {
+          const indicator = document.createElement('span');
+          indicator.className = 'ai-nav-indicator';
+          indicator.setAttribute('aria-hidden', 'true');
+          aiNavLink.appendChild(indicator);
+        }
+      }
       return;
     }
   });

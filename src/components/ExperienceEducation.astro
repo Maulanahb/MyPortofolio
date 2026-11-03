@@ -1,5 +1,5 @@
 ---
-import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../data/projects';
+import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
 ---
 
 <!-- 5. PENGALAMAN & ORGANISASI -->
@@ -7,7 +7,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
   <div class="chapter-kicker mono">✦ CHAPTER 03 <span>PENGALAMAN &amp; KERJA TIM</span></div>
   <div class="section-head">
     <div>
-      <div class="eyebrow mono">04 / Pengalaman proyek</div>
+      <div class="eyebrow mono">✦ REKAM JEJAK &amp; KERJA TIM</div>
       <h2 class="section-title display" id="exp-title">PENGALAMAN PROYEK<br/><span class="title-highlight">&amp; KOLABORASI TIM.</span></h2>
     </div>
   </div>
@@ -32,11 +32,6 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
             ))}
           </ul>
         </div>
-
-        <div class="exp-result-banner mono">
-          <span class="exp-result-dot"></span>
-          <span>{exp.resultHighlight}</span>
-        </div>
         <span class="exp-index-watermark display" aria-hidden="true">0{idx + 1}</span>
       </article>
     ))}
@@ -50,7 +45,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
   <div class="chapter-kicker mono">✦ CHAPTER 04 <span>PENDIDIKAN &amp; CAPAIAN</span></div>
   <div class="section-head">
     <div>
-      <div class="eyebrow mono">05 / Latar akademik &amp; capaian</div>
+      <div class="eyebrow mono">✦ LATAR AKADEMIK &amp; PRESTASI</div>
       <h2 class="section-title display" id="edu-title">RIWAYAT PENDIDIKAN<br/><span class="title-highlight">&amp; PENCAPAIAN.</span></h2>
     </div>
   </div>
@@ -75,8 +70,8 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
           <strong>{EDUCATION_INFO.semester}</strong>
         </div>
         <div class="edu-stat-box highlight">
-          <span class="mono">PEMINATAN</span>
-          <strong>Rekayasa Sistem &amp; Web/Mobile</strong>
+          <span class="mono">KETERSEDIAAN</span>
+          <strong>Siap Magang / PKL</strong>
         </div>
         <div class="edu-stat-box">
           <span class="mono">REPOSITORI PUBLIK</span>
@@ -85,62 +80,36 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS, ACHIEVEMENTS } from '../da
       </div>
 
       <p class="edu-summary">{EDUCATION_INFO.summary}</p>
-
-      <div class="edu-coursework">
-        <div class="coursework-title mono">MATA KULIAH YANG RELEVAN:</div>
-        <div class="coursework-pills">
-          {EDUCATION_INFO.coursework.map(course => (
-            <span class="course-pill mono">{course}</span>
-          ))}
-        </div>
-      </div>
     </article>
 
-    <!-- Kolom Kanan: Capaian & Pengakuan -->
+    <!-- Kolom Kanan: Sertifikasi Resmi -->
     <div class="edu-side-stack">
-      {CERTIFICATIONS.length > 0 && (
-        <article class="cred-box comic-panel">
-          <div class="cred-box-head">
-            <span class="cred-tag mono">SERTIFIKASI</span>
-            <h3 class="display">SERTIFIKAT KOMPETENSI</h3>
-          </div>
-          <ul class="cred-list">
-            {CERTIFICATIONS.map(cert => (
-              <li class="cred-item">
-                <div class="cred-item-top">
-                  <strong class="cred-name">{cert.name}</strong>
-                  <span class="cred-meta mono">{cert.issuer} · {cert.year}</span>
-                </div>
-                <p class="cred-focus">{cert.focus}</p>
-                {cert.credentialUrl && (
+      <article class="cred-box comic-panel">
+        <div class="cred-box-head">
+          <span class="cred-tag pop mono">SERTIFIKASI RESMI</span>
+          <h3 class="display">SERTIFIKAT KOMPETENSI</h3>
+        </div>
+        <ul class="cred-list">
+          {CERTIFICATIONS.map(cert => (
+            <li class="cred-item">
+              <div class="cred-item-top">
+                <span class="ach-badge mono">{cert.issuer} · {cert.year}</span>
+                <strong class="cred-name">{cert.name}</strong>
+              </div>
+              <p class="cred-focus">{cert.focus}</p>
+              {cert.credentialUrl && (
+                <div class="cred-link-wrap">
                   <a
                     class="cert-link mono"
                     href={cert.credentialUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                  >Lihat Repositori ↗</a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </article>
-      )}
-
-      <!-- Blok Prestasi, Lomba & Karya Unggulan -->
-      <article class="cred-box comic-panel">
-        <div class="cred-box-head">
-          <span class="cred-tag pop mono">CAPAIAN</span>
-          <h3 class="display">YANG BISA DICEK</h3>
-        </div>
-        <ul class="cred-list">
-          {ACHIEVEMENTS.map(ach => (
-            <li class="cred-item">
-              <div class="cred-item-top">
-                <span class="ach-badge mono">{ach.badge} · {ach.year}</span>
-                <strong class="cred-name">{ach.title}</strong>
-                <span class="cred-meta mono">{ach.organizer}</span>
-              </div>
-              <p class="cred-focus">{ach.description}</p>
+                  >
+                    <span>Verifikasi Sertifikat</span>
+                    <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7m0 0H8m9 0v9"/></svg>
+                  </a>
+                </div>
+              )}
             </li>
           ))}
         </ul>

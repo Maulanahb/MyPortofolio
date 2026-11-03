@@ -209,8 +209,7 @@ export const PALETTES = [
   { id: 'morioh', name: 'MORIOH POP' },
   { id: 'golden', name: 'GOLDEN WIND' },
   { id: 'ocean', name: 'STONE OCEAN' },
-  { id: 'sbr', name: 'STEEL BALL RUN' },
-  { id: 'dark', name: 'DARK STARDUST' }
+  { id: 'sbr', name: 'STEEL BALL RUN' }
 ] as const;
 
 let currentPaletteIdx = 0;
@@ -243,9 +242,6 @@ export function cyclePalette(manual = false): void {
 
 export function startAutoPaletteCycle(): void {
   if (autoPaletteTimer) clearInterval(autoPaletteTimer);
-
-  // Siklus warna otomatis tidak dijalankan saat pengguna meminta reduced-motion.
-  if (prefersReducedMotion()) return;
 
   autoPaletteTimer = window.setInterval(() => {
     cyclePalette(false);
@@ -545,7 +541,6 @@ interface CommandItem {
 
 const COMMANDS: CommandItem[] = [
   { label: 'Ganti / siklus tema warna berikutnya', meta: 'Tema Warna', action: () => cyclePalette(true) },
-  { label: 'Aktifkan Tema Dark Stardust (Dark Mode)', meta: 'Tema Warna', action: () => setPalette('dark', true) },
   { label: 'Aktifkan Tema Steel Ball Run (Vintage Sepia)', meta: 'Tema Warna', action: () => setPalette('sbr', true) },
   { label: 'Aktifkan Tema Morioh Pop (Default Pop)', meta: 'Tema Warna', action: () => setPalette('morioh', true) },
   { label: 'Aktifkan Tema Golden Wind (Warm Gold)', meta: 'Tema Warna', action: () => setPalette('golden', true) },
@@ -619,9 +614,14 @@ export function showCommands(): void {
 export function initPortfolioApp(): void {
   const reduceMotion = prefersReducedMotion();
 
-  // 1. Inisialisasi Palet (Manual / Saved Preference, tanpa auto-cycle timer)
-  const savedPalette = localStorage.getItem('porto_palette') || 'morioh';
+  // 1. Inisialisasi Palet & Mulai Auto-Cycle Transisi Warna Otomatis
+  let savedPalette = localStorage.getItem('porto_palette') || 'morioh';
+  if (savedPalette === 'dark' || !PALETTES.some(p => p.id === savedPalette)) {
+    savedPalette = 'morioh';
+    localStorage.setItem('porto_palette', 'morioh');
+  }
   setPalette(savedPalette, false);
+  startAutoPaletteCycle();
 
   if (!reduceMotion) {
     // 2. Ikon vektor bergerak acak di background (Wanderer Engine)
@@ -883,5 +883,27 @@ export function initPortfolioApp(): void {
 
   // 9. Interactive Limited Live Demo for Project Previews
   initLiveDemo();
+
+  // 10. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
+  document.querySelectorAll<HTMLButtonElement>('.project-details-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      const targetId = btn.getAttribute('aria-controls');
+      const targetEl = targetId ? document.getElementById(targetId) : null;
+      const toggleText = btn.querySelector('.toggle-text');
+
+      if (!targetEl) return;
+
+      if (isExpanded) {
+        btn.setAttribute('aria-expanded', 'false');
+        targetEl.classList.remove('is-expanded');
+        if (toggleText) toggleText.textContent = 'LIHAT RINCIAN PROSES';
+      } else {
+        btn.setAttribute('aria-expanded', 'true');
+        targetEl.classList.add('is-expanded');
+        if (toggleText) toggleText.textContent = 'TUTUP RINCIAN PROSES';
+      }
+    });
+  });
 }
 

@@ -57,8 +57,8 @@
   --shadow: 6px 6px 0 var(--line);
   --panel-gap: 12px;
 
-  /* Transition Durations */
-  --theme-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transition Durations (Halus dan Terasa Mengalir) */
+  --theme-transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Palette: Golden Wind (Part 5) */
@@ -147,15 +147,11 @@ body[data-palette="dark"] .photo-caption .mono,
 body[data-palette="dark"] .photo-caption-sub,
 body[data-palette="dark"] .comic-page-index,
 body[data-palette="dark"] .comic-page-index *,
-body[data-palette="dark"] .preview-mode-tag,
-body[data-palette="dark"] .preview-mode-tag *,
 body[data-palette="dark"] .about-meta-item.highlight,
 body[data-palette="dark"] .about-meta-item.highlight *,
 body[data-palette="dark"] .about-starburst,
 body[data-palette="dark"] .edu-stat-box.highlight,
 body[data-palette="dark"] .edu-stat-box.highlight *,
-body[data-palette="dark"] .exp-result-banner,
-body[data-palette="dark"] .exp-result-banner *,
 body[data-palette="dark"] .cred-tag,
 body[data-palette="dark"] .dialog-close,
 body[data-palette="dark"] .dialog-type-badge,
@@ -163,12 +159,12 @@ body[data-palette="dark"] .step-chapter,
 body[data-palette="dark"] .step-output-label,
 body[data-palette="dark"] .photo-upload-button:hover,
 body[data-palette="dark"] .cert-link:hover,
+body[data-palette="dark"] .project-details-toggle[aria-expanded="true"],
+body[data-palette="dark"] .project-details-toggle[aria-expanded="true"] *,
+body[data-palette="dark"] .project-details-toggle:hover,
+body[data-palette="dark"] .project-details-toggle:hover *,
 body[data-palette="dark"] .strip-big {
   color: #121118 !important;
-}
-
-body[data-palette="dark"] .preview-mode-tag svg {
-  stroke: #121118 !important;
 }
 
 body[data-palette="dark"] .skill-icon-tile:hover .skill-icon,
