@@ -4722,8 +4722,8 @@ footer {
   min-height: 368px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
+  justify-content: flex-start;
+  gap: 20px;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -7356,15 +7356,15 @@ footer {
 /* 2. Tentang Saya — Quick Profile Metadata & Interest Pills */
 .about-meta-list {
   display: grid;
-  gap: 8px;
-  margin: 0;
+  gap: 9px;
+  margin: auto 0;
 }
 
 .about-meta-item {
   background: var(--paper-2);
   border: 2px solid var(--ink);
   box-shadow: 2.5px 2.5px 0 var(--ink);
-  padding: 7px 11px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -7457,6 +7457,7 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  height: 100%;
 }
 
 .comic-skill-card.skill-card-wide {
@@ -7469,7 +7470,9 @@ footer {
   flex-direction: column;
   gap: 4px;
   border-bottom: 2px solid var(--ink);
-  padding-bottom: 10px;
+  padding-bottom: 12px;
+  min-height: 98px;
+  justify-content: flex-start;
 }
 
 .skill-code {
@@ -7493,6 +7496,7 @@ footer {
   font-size: 10px;
   color: var(--muted);
   font-weight: 700;
+  line-height: 1.35;
 }
 
 .skill-desc {
@@ -7500,6 +7504,7 @@ footer {
   line-height: 1.65 !important;
   color: var(--ink) !important;
   margin: 0 !important;
+  min-height: 44px;
 }
 
 /* Screen-reader only utility */
@@ -7519,8 +7524,8 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: auto;
-  padding-top: 10px;
+  margin-top: 14px;
+  padding-top: 0;
 }
 
 .skill-icon-tile {
