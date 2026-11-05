@@ -1,17 +1,110 @@
 ---
+import '../styles/style.css';
+import BackgroundElements from '../components/BackgroundElements.astro';
+import TechIconSprite from '../components/TechIconSprite.astro';
+import { SITE_CONFIG, PROJECTS, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
+
 interface Props {
   title?: string;
   description?: string;
 }
 
 const {
-  title = "Maulana · Portofolio Junior System Analyst & Web/Mobile Developer",
-  description = "Portofolio Maulana · Junior System Analyst & Developer. Fokus pada web Laravel/React, mobile Flutter, dan perancangan sistem terstruktur."
+  title = "Maulana Ahmad Bukhori · Portofolio Junior System Analyst & Web/Mobile Developer",
+  description = "Portofolio Maulana Ahmad Bukhori, mahasiswa D-IV Sistem Informasi Bisnis Politeknik Negeri Malang. Fokus pada analisis kebutuhan sistem, pengembangan web (Laravel & React), dan mobile (Flutter)."
 } = Astro.props;
 
-import '../styles/style.css';
-import BackgroundElements from '../components/BackgroundElements.astro';
-import TechIconSprite from '../components/TechIconSprite.astro';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://maulana.dev';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL('/foto-profil.jpg', siteUrl).toString();
+const googleFontsUrl = 'https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: `${SITE_CONFIG.fullName} · Portofolio`,
+      description,
+      inLanguage: 'id-ID'
+    },
+    {
+      '@type': 'ProfilePage',
+      '@id': `${canonicalUrl}#profilepage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      isPartOf: { '@id': `${siteUrl}/#website` },
+      mainEntity: { '@id': `${siteUrl}/#person` },
+      inLanguage: 'id-ID'
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: SITE_CONFIG.fullName,
+      alternateName: SITE_CONFIG.name,
+      jobTitle: 'Junior System Analyst & Web/Mobile Developer',
+      description: SITE_CONFIG.positioning,
+      url: siteUrl,
+      image: ogImageUrl,
+      email: `mailto:${SITE_CONFIG.email}`,
+      sameAs: [
+        SITE_CONFIG.github,
+        SITE_CONFIG.linkedin
+      ],
+      affiliation: {
+        '@type': 'CollegeOrUniversity',
+        name: EDUCATION_INFO.campus,
+        department: EDUCATION_INFO.faculty
+      },
+      alumniOf: {
+        '@type': 'CollegeOrUniversity',
+        name: EDUCATION_INFO.campus
+      },
+      knowsAbout: [
+        'System Analysis',
+        'Requirements Engineering',
+        'Relational Database Design',
+        'Laravel',
+        'React',
+        'TypeScript',
+        'Flutter',
+        'PostgreSQL',
+        'MySQL'
+      ],
+      hasCredential: CERTIFICATIONS.map(cert => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: cert.name,
+        recognizedBy: {
+          '@type': 'Organization',
+          name: cert.issuer
+        },
+        url: cert.credentialUrl
+      }))
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${siteUrl}/#projects`,
+      name: 'Studi Kasus Proyek Sistem Informasi & Pengembangan Aplikasi',
+      itemListElement: PROJECTS.map((proj, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'SoftwareApplication',
+          name: proj.title,
+          description: proj.description,
+          applicationCategory: 'WebApplication, MobileApplication',
+          operatingSystem: 'Web, Android, iOS',
+          author: { '@id': `${siteUrl}/#person` },
+          url: proj.demoUrl || proj.repoUrl,
+          codeRepository: proj.repoUrl
+        }
+      }))
+    }
+  ]
+};
 ---
 
 <!DOCTYPE html>
@@ -20,20 +113,50 @@ import TechIconSprite from '../components/TechIconSprite.astro';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f3f0e8" />
-  <meta name="description" content={description} />
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content="/foto-profil.jpg" />
-  <meta property="og:type" content="website" />
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content={SITE_CONFIG.fullName} />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="keywords" content="Maulana Ahmad Bukhori, Portofolio Sistem Informasi, Junior System Analyst, Web Developer, Mobile Developer, Laravel, React, Flutter, Politeknik Negeri Malang, Polinema" />
+  <link rel="canonical" href={canonicalUrl} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Google Web Fonts: Anton, DM Sans, IBM Plex Mono -->
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content={`${SITE_CONFIG.fullName} · Portofolio`} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:alt" content={`Foto profil profesional ${SITE_CONFIG.fullName}`} />
+  <meta property="og:image:width" content="560" />
+  <meta property="og:image:height" content="700" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+  <meta name="twitter:image:alt" content={`Foto profil profesional ${SITE_CONFIG.fullName}`} />
+
+  <!-- Preload Critical LCP Hero Image -->
+  <link rel="preload" as="image" href="/foto-profil.webp" type="image/webp" fetchpriority="high" />
+
+  <!-- Non-Render-Blocking Google Web Fonts: Anton, DM Sans, IBM Plex Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href={googleFontsUrl} />
+  <link rel="stylesheet" href={googleFontsUrl} media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href={googleFontsUrl} />
+  </noscript>
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </head>
 <body data-palette="morioh">
+  <a href="#beranda" class="skip-link mono">Langsung ke konten utama</a>
   <BackgroundElements />
   <TechIconSprite />
   <slot />
@@ -53,4 +176,3 @@ import TechIconSprite from '../components/TechIconSprite.astro';
   </script>
 </body>
 </html>
-

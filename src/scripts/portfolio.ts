@@ -6,17 +6,13 @@
  */
 
 import { PROJECTS, SITE_CONFIG } from '../data/projects';
-import { initBackgroundWanderers } from './wanderer';
-import { initMangaUIFX } from './manga-fx';
 import { prefersReducedMotion } from './motion';
-import { initLiveDemo, switchCuciinSlide, fitProjectPreviews } from './live-demo';
 import { techIconIds } from '../data/tech-icon-ids';
 
 // State
 const overlayStack: HTMLElement[] = [];
 let priorFocus: HTMLElement | null = null;
 let toastTimer: number | null = null;
-let photoObjectUrl: string | null = null;
 
 // Notifikasi Toast
 export function notify(msg: string): void {
@@ -96,7 +92,10 @@ export function showProjectDetail(key: string): void {
       ...(project.artifacts || []).map(art => {
         const pill = document.createElement('span');
         pill.className = 'artifact-pill mono';
-        pill.textContent = '📄 ' + art;
+        pill.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+        const txt = document.createElement('span');
+        txt.textContent = art;
+        pill.appendChild(txt);
         return pill;
       })
     );
@@ -111,11 +110,13 @@ export function showProjectDetail(key: string): void {
       detailPreview.appendChild(clonedArt);
 
       const cuciinApp = clonedArt.querySelector<HTMLElement>('.app-cuciin');
-      if (cuciinApp) {
-        switchCuciinSlide(cuciinApp, 0);
-      }
-      requestAnimationFrame(() => {
-        fitProjectPreviews();
+      import('./live-demo').then(({ switchCuciinSlide, fitProjectPreviews }) => {
+        if (cuciinApp) {
+          switchCuciinSlide(cuciinApp, 0);
+        }
+        requestAnimationFrame(() => {
+          fitProjectPreviews();
+        });
       });
     }
   }
@@ -624,11 +625,11 @@ export function initPortfolioApp(): void {
   startAutoPaletteCycle();
 
   if (!reduceMotion) {
-    // 2. Ikon vektor bergerak acak di background (Wanderer Engine)
-    initBackgroundWanderers();
-
-    // 3. Manga & JoJo Hover SFX
-    initMangaUIFX();
+    const scheduleIdle = window.requestIdleCallback || ((cb: () => void) => window.setTimeout(cb, 120));
+    scheduleIdle(() => {
+      import('./wanderer').then(m => m.initBackgroundWanderers());
+      import('./manga-fx').then(m => m.initMangaUIFX());
+    });
   }
 
   // 2. Modals & Project Click Bindings
@@ -679,44 +680,7 @@ export function initPortfolioApp(): void {
     });
   }
 
-  // 4. Photo Upload Panel
-  const profilePhoto = document.getElementById('profile-photo') as HTMLImageElement | null;
-  const photoFrame = document.getElementById('photo-frame');
-  const photoUpload = document.getElementById('photo-upload') as HTMLInputElement | null;
-  const photoUploadLabel = document.getElementById('photo-upload-label');
-
-  if (profilePhoto && photoFrame) {
-    profilePhoto.addEventListener('load', () => photoFrame.classList.add('has-photo'));
-    profilePhoto.addEventListener('error', () => photoFrame.classList.remove('has-photo'));
-    if (profilePhoto.complete && profilePhoto.naturalWidth) {
-      photoFrame.classList.add('has-photo');
-    }
-  }
-
-  if (photoUpload && profilePhoto) {
-    photoUpload.addEventListener('change', () => {
-      const file = photoUpload.files?.[0];
-      if (!file) return;
-
-      if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
-        notify('Pilih format gambar yang valid (JPG, PNG, WebP, GIF).');
-        return;
-      }
-
-      if (file.size > 12 * 1024 * 1024) {
-        notify('Ukuran file foto maksimal 12 MB.');
-        return;
-      }
-
-      if (photoObjectUrl) URL.revokeObjectURL(photoObjectUrl);
-      photoObjectUrl = URL.createObjectURL(file);
-      profilePhoto.src = photoObjectUrl;
-      if (photoUploadLabel) photoUploadLabel.textContent = 'GANTI LAGI';
-      notify('Foto profil diperbarui! Simpan sebagai public/foto-profil.jpg agar permanen.');
-    });
-  }
-
-  // 5. Mobile Menu & Navigation (Adaptive Island & Scroll Spy)
+  // 4. Mobile Menu & Navigation (Adaptive Island & Scroll Spy)
   initStickyAdaptiveNavbar();
   const menuToggle = document.getElementById('menu-toggle');
   const nav = document.getElementById('nav');
@@ -881,8 +845,8 @@ export function initPortfolioApp(): void {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // 9. Interactive Limited Live Demo for Project Previews
-  initLiveDemo();
+  // 9. Interactive Limited Live Demo for Project Previews (Code-split async chunk)
+  import('./live-demo').then(m => m.initLiveDemo());
 
   // 10. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
   document.querySelectorAll<HTMLButtonElement>('.project-details-toggle').forEach((btn) => {

@@ -40,7 +40,7 @@ const { project } = Astro.props;
         {/* Dashboard Layout: Sidebar + Main Content */}
         <div class="bh-desktop-layout">
           {/* Sidebar */}
-          <aside class="bh-side-nav">
+          <div class="bh-side-nav">
             <div class="bh-nav-brand">
               <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
@@ -48,7 +48,7 @@ const { project } = Astro.props;
               </svg>
               <span>Bawang<strong>Hub</strong></span>
             </div>
-            <nav class="bh-nav-links">
+            <div class="bh-nav-links">
               <div class="bh-link active">
                 <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                 <span>Dashboard</span>
@@ -73,14 +73,14 @@ const { project } = Astro.props;
                 <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
                 <span>Galeri</span>
               </div>
-            </nav>
+            </div>
             <div class="bh-side-footer">
               <span class="bh-farmer-pill">Petani Bawang</span>
             </div>
-          </aside>
+          </div>
 
           {/* Main Dashboard Canvas */}
-          <main class="bh-main-canvas">
+          <div class="bh-main-canvas">
             {/* Top Grid: Hero Box + Weather Card */}
             <div class="bh-top-row">
               <div class="bh-hero-card">
@@ -149,7 +149,7 @@ const { project } = Astro.props;
                 <div class="bh-card-action purple">Buka Forum →</div>
               </div>
             </div>
-          </main>
+          </div>
         </div>
       </div>
     )}
@@ -185,7 +185,7 @@ const { project } = Astro.props;
 
                 <div class="lk-greeting-row">
                   <div class="lk-user-info">
-                    <img src="./projects/lapangku-icon.png" alt="Lapangku Icon" class="lk-app-icon" loading="lazy" />
+                    <img src="/projects/lapangku-icon.webp" alt="Lapangku Icon" class="lk-app-icon" width="22" height="22" loading="lazy" decoding="async" />
                     <div>
                       <div class="lk-hello">Halo, Sobat Maulana</div>
                       <div class="lk-loc">
@@ -228,7 +228,7 @@ const { project } = Astro.props;
                   {/* Card 1: Champions Futsal Malang with Real Photo Asset */}
                   <div class="lk-field-card">
                     <div class="lk-field-banner">
-                      <img src="./projects/futsal.jpg" alt="Foto Lapangan Futsal" class="lk-banner-photo" loading="lazy" />
+                      <img src="/projects/futsal.webp" alt="Foto Lapangan Futsal" class="lk-banner-photo" width="360" height="210" loading="lazy" decoding="async" />
                       <div class="lk-banner-badges">
                         <span class="lk-badge-cat">FUTSAL</span>
                         <span class="lk-badge-type">INDOOR</span>
@@ -256,7 +256,7 @@ const { project } = Astro.props;
                   {/* Card 2: Stadion Gajayana Mini Soccer with Real Photo Asset */}
                   <div class="lk-field-card">
                     <div class="lk-field-banner">
-                      <img src="./projects/minisoccer.jpg" alt="Foto Stadion Gajayana" class="lk-banner-photo" loading="lazy" />
+                      <img src="/projects/minisoccer.webp" alt="Foto Stadion Gajayana" class="lk-banner-photo" width="360" height="240" loading="lazy" decoding="async" />
                       <div class="lk-banner-badges">
                         <span class="lk-badge-cat">MINI SOCCER</span>
                         <span class="lk-badge-type">OUTDOOR</span>
@@ -347,7 +347,7 @@ const { project } = Astro.props;
                   {/* Ticket Header */}
                   <div class="lk-pass-head">
                     <div class="lk-pass-brand">
-                      <img src="./projects/lapangku-icon.png" alt="Lapangku Icon" class="lk-pass-logo" loading="lazy" />
+                      <img src="/projects/lapangku-icon.webp" alt="Lapangku Icon" class="lk-pass-logo" width="16" height="16" loading="lazy" decoding="async" />
                       <span>LAPANGKU PASS</span>
                     </div>
                     <span class="lk-status-lunas">● LUNAS • QRIS</span>
@@ -462,32 +462,32 @@ const { project } = Astro.props;
           </div>
         </div>
 
-        {/* Portal Navbar (#0A192F + IVSS.png) */}
-        <header class="ivss-navbar">
+        {/* Portal Navbar (#0A192F + IVSS.webp) */}
+        <div class="ivss-navbar">
           <div class="ivss-logo-area">
-            <img src="./projects/IVSS.png" alt="Logo IVSS" class="ivss-logo-img" loading="lazy" />
+            <img src="/projects/IVSS.webp" alt="Logo IVSS" class="ivss-logo-img" width="18" height="18" loading="lazy" decoding="async" />
             <span class="ivss-site-title">IVSS</span>
             <span class="ivss-campus-tag mono">POLINEMA</span>
           </div>
-          <nav class="ivss-menu">
+          <div class="ivss-menu">
             <span class="active">Home</span>
             <span>About</span>
             <span>News</span>
             <span>Research</span>
             <span>Members</span>
-          </nav>
+          </div>
           <div class="ivss-auth-area">
             <span class="ivss-portal-login">Login Admin</span>
           </div>
-        </header>
+        </div>
 
         {/* Hero Section with Official Gedung Background & Gradient Overlay */}
-        <div class="ivss-hero" style="background-image: linear-gradient(135deg, rgba(10, 35, 66, 0.90) 0%, rgba(0, 30, 60, 0.92) 50%, rgba(31, 66, 110, 0.90) 100%), url('./projects/gedung.png');">
+        <div class="ivss-hero" style="background-image: linear-gradient(135deg, rgba(10, 35, 66, 0.90) 0%, rgba(0, 30, 60, 0.92) 50%, rgba(31, 66, 110, 0.90) 100%), url('/projects/gedung.webp');">
           <div class="ivss-hero-content">
             <div class="ivss-kicker mono">LABORATORIUM INTELLIGENT VISION &amp; SMART SYSTEM</div>
-            <h4 class="ivss-h1">
+            <div class="ivss-h1">
               INTELLIGENT VISION<br/>AND SMART SYSTEM
-            </h4>
+            </div>
             <p class="ivss-tagline">
               Shaping the Future through Intelligent Vision and Adaptive Systems
             </p>
@@ -543,18 +543,18 @@ const { project } = Astro.props;
             {/* SLIDE 0: Landing Page & Public Tracking (resources/views/welcome.blade.php & lookup/_content.blade.php) */}
             <div class="ci-slide-pane active" data-pane="0">
               {/* Sticky White Glassmorphism Header */}
-              <header class="ci-navbar">
+              <div class="ci-navbar">
                 <div class="ci-brand">
-                  <img src="./projects/cuciin-logo.svg" alt="Logo CUCI.IN" class="ci-logo-img" loading="lazy" />
+                  <img src="/projects/cuciin-logo.svg" alt="Logo CUCI.IN" class="ci-logo-img" width="18" height="18" loading="lazy" decoding="async" />
                   <span class="ci-brand-text">CUCI<span>.IN</span></span>
                 </div>
 
-                <nav class="ci-nav-links">
+                <div class="ci-nav-links">
                   <span>Fitur Layanan</span>
                   <span>Kalkulator Tarif</span>
                   <span>Keunggulan</span>
                   <span>Cara Kerja</span>
-                </nav>
+                </div>
 
                 <div class="ci-nav-actions">
                   <span class="ci-btn-outline ci-reset-btn" role="button" tabindex="0">
@@ -563,7 +563,7 @@ const { project } = Astro.props;
                   </span>
                   <span class="ci-btn-solid ci-quick-switch" data-target="1" role="button" tabindex="0">Buka Dashboard</span>
                 </div>
-              </header>
+              </div>
 
               {/* Hero Section */}
               <div class="ci-hero">
@@ -675,12 +675,12 @@ const { project } = Astro.props;
             <div class="ci-slide-pane" data-pane="1">
               <div class="ci-app-container">
                 {/* Authentic Left Sidebar */}
-                <aside class="ci-sidebar">
+                <div class="ci-sidebar">
                   <div class="ci-sidebar-brand">
-                    <img src="./projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" loading="lazy" />
+                    <img src="/projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" width="16" height="16" loading="lazy" decoding="async" />
                     <span class="ci-sidebar-title">CUCI<span>.IN</span></span>
                   </div>
-                  <nav class="ci-sidebar-nav">
+                  <div class="ci-sidebar-nav">
                     <div class="ci-nav-item active">
                       <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
                       <span>Dashboard</span>
@@ -705,8 +705,8 @@ const { project } = Astro.props;
                       <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
                       <span>Layanan</span>
                     </div>
-                  </nav>
-                </aside>
+                  </div>
+                </div>
 
                 <div class="ci-admin-wrap">
                   {/* Banner Sapaan Administrator & Aksi Cepat */}
@@ -817,12 +817,12 @@ const { project } = Astro.props;
             <div class="ci-slide-pane" data-pane="2">
               <div class="ci-app-container">
                 {/* Authentic Left Sidebar for Customer */}
-                <aside class="ci-sidebar">
+                <div class="ci-sidebar">
                   <div class="ci-sidebar-brand">
-                    <img src="./projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" loading="lazy" />
+                    <img src="/projects/cuciin-logo.svg" alt="CUCI.IN" class="ci-sidebar-logo" width="16" height="16" loading="lazy" decoding="async" />
                     <span class="ci-sidebar-title">CUCI<span>.IN</span></span>
                   </div>
-                  <nav class="ci-sidebar-nav">
+                  <div class="ci-sidebar-nav">
                     <div class="ci-nav-item active">
                       <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
                       <span>Beranda</span>
@@ -839,8 +839,8 @@ const { project } = Astro.props;
                       <svg viewBox="0 0 24 24" width="7" height="7" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                       <span>Lacak Nota</span>
                     </div>
-                  </nav>
-                </aside>
+                  </div>
+                </div>
 
                 <div class="ci-cust-wrap">
                   {/* Banner Sapaan Pelanggan & Aksi Cepat */}
@@ -972,7 +972,7 @@ const { project } = Astro.props;
 
         <div class="ai-desktop-layout">
           {/* Sidebar Navigation (resources/components/layout/Sidebar.tsx) */}
-          <aside class="ai-side-nav">
+          <div class="ai-side-nav">
             <div class="ai-nav-brand">
               <span class="ai-brand-icon">AI</span>
               <div>
@@ -989,7 +989,7 @@ const { project } = Astro.props;
               </div>
             </div>
 
-            <nav class="ai-nav-links">
+            <div class="ai-nav-links">
               <div class="ai-nav-link active" data-ai-tab="overview">
                 <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                 <span>Overview</span>
@@ -1015,7 +1015,7 @@ const { project } = Astro.props;
                 <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                 <span>AI Konsultan</span>
               </div>
-            </nav>
+            </div>
 
             <div class="ai-side-footer">
               <div class="ai-core-chip">
@@ -1028,17 +1028,17 @@ const { project } = Astro.props;
                 </div>
               </div>
             </div>
-          </aside>
+          </div>
 
           {/* Main Dashboard Canvas (resources/pages/Dashboard.tsx) */}
-          <main class="ai-main-canvas bg-mesh">
+          <div class="ai-main-canvas bg-mesh">
             {/* Header: AI Ledger Pill, Title, Period Filter */}
             <div class="ai-top-bar">
               <div>
                 <span class="ai-kicker mono">AI LEDGER • PROYEK INDIVIDU</span>
                 <div class="ai-hero-title">Overview <strong>Arus Kas</strong></div>
               </div>
-              <div class="ai-period-tabs mono" role="tablist" aria-label="Filter Periode Arus Kas">
+              <div class="ai-period-tabs mono" role="group" aria-label="Filter Periode Arus Kas">
                 <button type="button" class="ai-period-btn active" data-period="Bulanan">Bulanan</button>
                 <button type="button" class="ai-period-btn" data-period="Mingguan">Mingguan</button>
                 <button type="button" class="ai-period-btn" data-period="Semua">Semua</button>
@@ -1153,7 +1153,7 @@ const { project } = Astro.props;
                 </div>
               </div>
             </div>
-          </main>
+          </div>
         </div>
       </div>
     )}
@@ -1209,25 +1209,31 @@ const { project } = Astro.props;
     </div>
 
     <div class="project-actions" style="display: flex; gap: 8px; margin-top: auto; flex-wrap: wrap;">
-      <button class="button flat" type="button" data-project={project.id} style="flex: 1;">
-        STUDI KASUS &amp; DEMO <span class="arrow">↗</span>
+      <button class="button flat project-btn-primary" type="button" data-project={project.id} style="flex: 1;">
+        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        <span>STUDI KASUS <span class="btn-label">&amp; DEMO</span></span> <span class="arrow">↗</span>
       </button>
       {project.demoUrl && (
         <a
-          class="button tiny"
+          class="button tiny project-btn-icon"
           href={project.demoUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Buka Live Web Showcase ${project.title}`}
           title={`Buka Live Web Showcase ${project.title}`}
-          style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 10px 12px;"
+          style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 12px;"
         >
-          <span class="mono" style="font-size: 10px;">WEB LIVE ↗</span>
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="mono btn-label" style="font-size: 10px;">WEB LIVE ↗</span>
         </a>
       )}
       {project.repoUrl && (
         <a 
-          class="button dark tiny" 
+          class="button dark tiny project-btn-icon" 
           href={project.repoUrl} 
           target="_blank" 
           rel="noopener noreferrer" 
@@ -1235,10 +1241,10 @@ const { project } = Astro.props;
           title={`Buka Repositori GitHub ${project.title}`}
           style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 12px;"
         >
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
           </svg>
-          <span class="mono" style="font-size: 10px;">REPO</span>
+          <span class="mono btn-label" style="font-size: 10px;">REPO</span>
         </a>
       )}
     </div>
