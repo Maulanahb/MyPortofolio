@@ -92,7 +92,7 @@ export const SITE_CONFIG: SiteConfig = {
   email: "maulanahmad2287@gmail.com",
   github: "https://github.com/Maulanahb",
   linkedin: "https://linkedin.com/in/maulanahb",
-  cvUrl: "/cv-maulana.pdf",
+  cvUrl: "/CV-Maulana-Ahmad-Bukhori.pdf",
   cvDocxUrl: "/CV-Maulana-Ahmad-Bukhori.docx"
 };
 
