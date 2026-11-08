@@ -62,7 +62,6 @@ export interface SiteConfig {
   github: string;
   linkedin: string;
   cvUrl: string;
-  cvDocxUrl?: string;
 }
 
 export const SITE_CONFIG: SiteConfig = {
@@ -92,8 +91,7 @@ export const SITE_CONFIG: SiteConfig = {
   email: "maulanahmad2287@gmail.com",
   github: "https://github.com/Maulanahb",
   linkedin: "https://linkedin.com/in/maulanahb",
-  cvUrl: "/CV-Maulana-Ahmad-Bukhori.pdf",
-  cvDocxUrl: "/CV-Maulana-Ahmad-Bukhori.docx"
+  cvUrl: "/CV-Maulana-Ahmad-Bukhori.pdf"
 };
 
 export const PROJECTS: ProjectItem[] = [
