@@ -168,8 +168,11 @@ export const TECH_ICONS: Record<string, TechIconDef> = {
   },
   'mysql': {
     paths: [
-      "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"
+      "M3 5c0-1.7 4-3 9-3s9 1.3 9 3-4 3-9 3-9-1.3-9-3z",
+      "M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5",
+      "M3 12c0 1.7 4 3 9 3s9-1.3 9-3"
     ],
+    stroke: true,
   },
   'git': {
     paths: [
