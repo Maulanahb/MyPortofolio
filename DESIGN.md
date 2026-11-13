@@ -1,130 +1,89 @@
 ---
-name: Maulana — Developer Portfolio
-description: High-energy Manga/Comic editorial storytelling developer portfolio with Araki Tri-Palette theme shifting and interactive photo panel.
-colors:
-  # Ink & Paper Foundations
-  ink: "#16151c"
-  paper-base: "#f3f0e8"
-  paper-surface: "#fffdf7"
-  paper-card: "#ffffff"
-  muted-ink: "#5f5b62"
-  border-line: "#16151c"
-
-  # Palette A: Morioh Pop (Part 4 / Default)
-  morioh-paper: "#f3f0e8"
-  morioh-surface: "#fffdf7"
-  morioh-accent: "#c6b5f7"
-  morioh-accent-strong: "#6a37bd"
-  morioh-bright: "#f3dc55"
-  morioh-pop: "#ef7aa8"
-
-  # Palette B: Golden Wind (Part 5)
-  golden-paper: "#f7eddb"
-  golden-surface: "#fff9eb"
-  golden-accent: "#f7ad84"
-  golden-accent-strong: "#a82f35"
-  golden-bright: "#edc44b"
-  golden-pop: "#e78b65"
-
-  # Palette C: Stone Ocean (Part 6)
-  ocean-paper: "#e9f3f2"
-  ocean-surface: "#fafffe"
-  ocean-accent: "#9bcfdd"
-  ocean-accent-strong: "#245e8b"
-  ocean-bright: "#b3e8ad"
-  ocean-pop: "#b5a2e9"
-
-  # Project Art Themes
-  agri-theme: "#d8e7bc"
-  sport-theme: "#efc6d6"
-  pos-theme: "#c5d8e9"
-  lab-theme: "#d7d1f5"
-typography:
-  display:
-    fontFamily: "Anton, Impact, 'Arial Narrow', sans-serif"
-    fontWeight: 400
-    letterSpacing: "0.015em"
-    textTransform: "uppercase"
-  body:
-    fontFamily: "'DM Sans', Arial, sans-serif"
-    fontSize: "15px"
-    lineHeight: 1.55
-  mono:
-    fontFamily: "'IBM Plex Mono', Consolas, monospace"
-    fontSize: "10px - 12px"
-    fontWeight: 700
+title: "Maulana Ahmad Bukhori — Clean Product Showcase + Bento Design System"
+category: "Personal Portfolio & Engineering Case Study Showcase"
+stack: ["Astro 6", "TypeScript", "Vanilla CSS", "HyperFrames Motion", "Playwright"]
+source_inspo: ["Apple", "Framer", "Linear", "Vercel", "Stripe"]
 ---
-
-# Design System: Maulana Developer Portfolio
 
 <!-- impeccable:design-system -->
+# Design System: MAULANA.DEV (Clean Product Showcase + Bento + HyperFrames)
 
-## 1. 📖 Konsep & Filosofi Desain
-
-Portofolio ini mengusung pendekatan naratif komik/manga yang berani, berkarakter, dan interaktif:
-
-- **Garis & Bayangan:** Garis *ink* tegas (`2px`, `3px`, dan `4px solid #16151c`) dengan bayangan kaku (*hard offset drop shadow*) `4px 4px 0`, `7px 7px 0`, hingga `10px 10px 0`.
-- **Dinamika Tata Letak:** Sudut miring rotasi yang dinamis (`-2deg`, `3deg`, `-4deg`, `9deg`).
-- **Efek Komik:** Latar belakang pola titik-titik (*halftone dots pattern*) dan efek garis aksi komik (*speedlines*).
-- **Tipografi Editorial:** Judul bergaya display raksasa menggunakan font *Anton*, dipadukan dengan *DM Sans* untuk kenyamanan membaca konten, dan partikel SFX katakana (`ゴゴゴ`, `ドン!!`).
-- **Fitur Unggulan:** **Comic Photo Panel** dengan preview upload foto profil interaktif secara lokal.
+## 1. Visual Philosophy & Aesthetic Direction
+**Clean Product Showcase + Bento Grid + HyperFrames Motion** builds an editorial, Apple/Framer-caliber hardware/software exhibition around Maulana Ahmad Bukhori's production engineering systems:
+- **Clarity Over Ornamentation**: Crisp `1px solid var(--line)` hairlines, rounded Bento geometry (`20px` outer bento cards, `16px` studio stages, `12px` controls, `9999px` navigation pill), generous breathing room, and layered tonal elevation (`--paper` -> `--paper-2` -> `--surface-3`).
+- **Authentic UI Replicas**: All 5 interactive desktop and mobile product replicas (`BawangHub`, `Lapangku`, `PBL-IVSS`, `CUCI.IN`, `AIAAS`) live inside recessed Bento studio stages with isolated app palettes (`replicas.css`), ensuring interactive light/dark UI fidelity regardless of the portfolio shell theme.
+- **Deterministic HyperFrames Motion**: System architecture flows (`Analysis & PRD` -> `Laravel / React / Flutter / Gemini AI` -> `PostgreSQL / PHPUnit CI`) animate with timeline scrubbing and full `prefers-reduced-motion` support (`HyperFramesFlow.astro` + `hyperframes/portfolio-showcase/index.html`).
 
 ---
 
-## 2. 🎨 Tri-Palette Architecture (Theme Shifter)
+## 2. Dual / Tri-Mode Theme System (`data-palette`)
 
-Tema berganti otomatis setiap **8,5 detik** (`src/scripts/portfolio.ts` → `startAutoPaletteCycle`), dapat diganti manual lewat badge palet di header, dan tersimpan di `localStorage` (`porto_palette`). Transisi warna memakai CSS `@property` sehingga perubahan token berjalan halus tanpa flash.
+Themes switch immediately on click via Header pill or Command Palette (`⌘K` / `Ctrl+K`), persisting across reloads via `localStorage('porto_palette')`. Auto-cycling on scroll is disabled to prevent visual fatigue. Root `color-scheme` stays synchronized via `:root { color-scheme: light; }` and `:root:has(body[data-palette='obsidian']) { color-scheme: dark; }`.
 
-| Token | Morioh Pop (Default) | Golden Wind (Part 5) | Stone Ocean (Part 6) | Peran |
-| :--- | :--- | :--- | :--- | :--- |
-| `--paper` | `#f3f0e8` (Krem) | `#f7eddb` (Parchment) | `#e9f3f2` (Mint Fog) | Background kanvas utama |
-| `--paper-2` | `#fffdf7` (Warm White) | `#fff9eb` (Ivory) | `#fafffe` (Crisp Ice) | Background kartu & dialog |
-| `--accent` | `#c6b5f7` (Lilac) | `#f7ad84` (Peach) | `#9bcfdd` (Sky Cerulean) | Latar panel foto & badge |
-| `--accent-strong` | `#6a37bd` (Violet) | `#a82f35` (Crimson) | `#245e8b` (Deep Ocean) | Highlight nama & aksen teks |
-| `--bright` | `#f3dc55` (Kuning Komik)| `#edc44b` (Gilded Sun) | `#b3e8ad` (Lime) | Tombol aksi & stiker CTA |
-| `--pop` | `#ef7aa8` (Punch Pink) | `#e78b65` (Tangerine) | `#b5a2e9` (Electric Violet)| Partikel SFX & dot chapter |
+| Palette ID | Label | `--paper` (Canvas) | `--paper-2` (Surface) | `--surface-3` (Recessed) | `--ink` (Primary) | `--muted` (Secondary) | `--accent` (Action) | `--line` (Hairline) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `daylight` | **Daylight** | `#f5f5f7` | `#ffffff` | `#e8e8ed` | `#1d1d1f` | `#6e6e73` | `#0066cc` | `rgba(0, 0, 0, 0.08)` |
+| `obsidian` | **Obsidian** | `#09090b` | `#141417` | `#1f1f25` | `#f5f5f7` | `#a1a1aa` | `#0a84ff` | `rgba(255, 255, 255, 0.10)` |
+| `graphite` | **Graphite** | `#eae9e4` | `#f7f6f2` | `#dedcd3` | `#18181b` | `#52525b` | `#2563eb` | `rgba(24, 24, 27, 0.10)` |
 
----
+### Tri-Mode Backdrop & Atmosphere Tokens (`--bg-*`)
 
-## 3. 🔤 Tipografi
+Every section ground adapts cleanly across Daylight, Obsidian, and Graphite while preserving high-contrast readability behind `.shell` cards (`src/styles/backgrounds.css`). The opening stage renders center-masked clamped container vertical alignment rails (`--bg-arc-line` at `--rail-x: max(var(--rail-inset), calc(50% - 600px))`) paired with a `24px` perimeter coordinate dot matrix (`--bg-dot-color`):
 
-- **Display (Judul & Aksen Utama):** `Anton` — Tebal, kapital, berdampak tinggi.
-- **Body (Teks & Paragraf):** `DM Sans` — Geometris, bersih, tingkat keterbacaan tinggi.
-- **Code & Telemetry (Tag, Tanggal, Metrik):** `IBM Plex Mono` — Monospace developer dengan karakter teknis kuat.
-
----
-
-## 4. 🧩 Struktur Modul CSS
-
-Stylesheet berada di **`src/styles/`** dan diimpor berurutan lewat `src/styles/style.css`:
-
-- **`variables.css`**: Deklarasi `@property` untuk animasi token, variabel `:root`, dan tiga palet tema (`body[data-palette="morioh|golden|ocean"]`).
-- **`base.css`**: Reset, latar halftone, kontainer `.shell`, kelas tipografi (`.display`, `.mono`), state `:focus-visible`, dan aturan `prefers-reduced-motion`.
-- **`components.css`**: Seluruh komponen UI — ticker, header & navigasi, tombol, panel komik Hero, photo panel, comic strip, project card beserta miniatur UI aplikasi, Process, About, Contact, dialog, command palette, toast, SFX manga, serta seluruh media query responsif.
-- **`style.css`**: Titik masuk (*entry point*) yang mengimpor ketiga modul di atas.
-
-Catatan **Training Arc (Chapter 02)**: setiap tahap dibungkus `.step-wrap` supaya panah alur `.step-arrow` bisa diletakkan di celah antar kartu — di luar `.step` yang memakai `overflow: hidden`. Kartu memakai flex column dengan `.step-output` ber-`margin-top: auto`, jadi baris hasil selalu menempel di dasar sementara label `CH. 0N` dan lipatan halaman tetap di pojok kiri/kanan bawah.
-
-Catatan **Sertifikasi**: data `CERTIFICATIONS` dirender sebagai strip di dalam About (`.cert-block`), bukan section tersendiri, karena jumlahnya sedikit. Bila `credentialUrl` kosong, tautan VERIFY tidak dirender.
-
-Catatan **`.section.shell`**: beberapa section memakai kedua class itu. Karena spesifisitasnya sama, `padding: 73px 0` pada `.section` menimpa padding horizontal `.shell` dan membuat konten menempel ke tepi layar. Aturan `.section.shell` (beserta variannya di media query 860 px dan 580 px) mengembalikan padding tersebut.
+| Palette ID | `--bg-glow-1` / `--bg-glow-2` | `--bg-dot-color` | `--bg-dusk-band` / `--bg-dusk-muted` | `--bg-arc-line` | `--bg-horizon-rim` | `--bg-grain-opacity` / `--bg-grain-blend` |
+| --- | --- | --- | --- | --- | --- | --- |
+| `daylight` | `rgba(0, 102, 204, 0.09)` / `rgba(14, 116, 144, 0.06)` | `rgba(29, 29, 31, 0.13)` | `#ebedf2` / `#55555a` | `rgba(29, 29, 31, 0.085)` | `rgba(0, 102, 204, 0.24)` | `0.024` / `multiply` |
+| `obsidian` | `rgba(10, 132, 255, 0.16)` / `rgba(20, 184, 166, 0.08)` | `rgba(255, 255, 255, 0.12)` | `#101218` / `#a1a1aa` | `rgba(255, 255, 255, 0.08)` | `rgba(10, 132, 255, 0.56)` | `0.036` / `screen` |
+| `graphite` | `rgba(37, 99, 235, 0.08)` / `rgba(120, 113, 108, 0.09)` | `rgba(24, 24, 27, 0.14)` | `#e0dfd7` / `#4a4a52` | `rgba(24, 24, 27, 0.095)` | `rgba(37, 99, 235, 0.24)` | `0.028` / `multiply` |
 
 ---
 
-## 5. 🎞️ Lapisan Interaksi & Motion
+## 3. Typography & Type Scale
 
-Seluruh interaksi klien diinisialisasi dari satu entry point di `src/layouts/Layout.astro`:
+- **Display Font (`--font-display`)**: `'Manrope', -apple-system, BlinkMacSystemFont, sans-serif` (weights `600`, `700`, `800`).
+- **Body Font (`--font-sans`)**: `'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` (`15px`, `line-height: 1.65`).
+- **Monospace Font (`--font-mono`)**: `'JetBrains Mono', ui-monospace, monospace` (used strictly for code tags, architecture IDs, timeline timecodes, and keyboard shortcut badges `⌘K`).
 
-| Modul | Tanggung jawab |
-| :--- | :--- |
-| `src/scripts/portfolio.ts` | Orkestrator utama: siklus palet, modal studi kasus, command palette (Ctrl/Cmd + K), focus trap, menu mobile, upload pratinjau foto, tombol kontak, tahun footer. |
-| `src/scripts/wanderer.ts` | Menggerakkan 12 ikon `BackgroundElements.astro` dengan fisika inersia + pantulan viewport memakai `requestAnimationFrame` dan `translate3d`. |
-| `src/scripts/manga-fx.ts` | Memunculkan popup SFX onomatope (`ゴゴゴ`, `ドン!!`, `DUARR!!`) saat pointer **masuk** ke kartu proyek, panel foto, strip komik, kartu About, atau tombol CTA utama. Pergerakan di dalam elemen yang sama diabaikan dan jarak antar popup minimal 180 ms, jadi responsif tanpa spam. |
+### Type Hierarchy Rules
+- Display headings use tight negative tracking (`-0.025em` to `-0.03em`) and natural mixed/sentence casing—never all-caps `Anton` comic banners.
+- Do not render uppercase tracked eyebrows (`letter-spacing > 0.12em` + `text-transform: uppercase`) above titles; use crisp neutral labels, step indices (`01`, `02`, `03`), or inline status pills instead.
 
-Ikon teknologi pada tag (`.tag-row` di kartu dan `.dialog-stack` di modal) berasal dari satu sprite SVG `TechIconSprite.astro` yang dirender sekali di `Layout.astro`. Path logo disimpan build-time di `src/data/tech-icons.ts` (Simple Icons, CC0, plus ikon garis generik untuk entri tanpa logo resmi), sedangkan klien hanya menerima peta kecil `src/data/tech-icon-ids.ts`. Ikon dirender lewat `<use href="#tech-*">` sehingga nol request jaringan dan bundle JS tidak ikut membengkak. Warna default mengikuti tinta (`currentColor`); warna brand hanya muncul saat tag di-hover lewat `--tech-hover` per `data-icon`.
+---
 
-Aturan motion:
-- Preferensi `prefers-reduced-motion: reduce` dinilai lewat helper `src/scripts/motion.ts` dan mematikan **siklus palet otomatis, popup SFX, serta kanvas ikon melayang**. Palet manual (klik badge), modal, dan Command Palette tetap berfungsi karena dipicu pengguna.
-- Saat reduced-motion aktif, `.bg-floating-canvas` disembunyikan lewat CSS — posisi ikon hanya dihitung JS, sehingga tanpa guard mereka akan menumpuk di pojok kiri atas.
-- `scrollIntoView` memakai `auto` (bukan `smooth`) saat reduced-motion, dan transisi CSS dimatikan global di `base.css`.
-- Efek visual bersifat dekoratif: tidak ada elemen motion yang menangkap klik (`pointer-events: none`) atau menggeser layout.
+## 4. Layout Grid, Spacing & Elevation
+
+- **Max Container Width (`.shell`)**: `1200px` centered with `24px` horizontal padding (`16px` on mobile).
+- **Floating Frosted Header (`#site-header`)**: Pill-shaped sticky navbar with `backdrop-filter: blur(18px) saturate(180%)` backed by `--glass` and bordered with `1px solid var(--line)`.
+- **Bento Grid Rhythm**:
+  - **Hero Bento (`.hero-grid`)**: `minmax(0, 1.35fr) minmax(300px, 0.65fr)`, pairing primary identity/KPIs with an asymmetric studio portrait panel.
+  - **Pipeline Bento (`.pipeline-grid`)**: Equal 3-column system engineering cards (`1px solid var(--line)`).
+  - **HyperFrames Showcase (`.hf-showcase`)**: Deterministic interactive architecture player with Play/Pause, step selectors, and scrubber bar.
+  - **Projects Bento (`.projects-grid`)**: Asymmetric 6-column grid (`span 4` feature + `span 2` companion, followed by `span 3` + `span 3`, finishing with `span 6` full-width interactive CUCI.IN 3-screen showcase).
+  - **About & Competency (`.about-grid`, `.si-skill-grid`)**: Structured narrative alongside structured stack & engineering capabilities.
+  - **Experience & Education (`.exp-grid`, `.edu-credentials-grid`)**: Structured timeline grid + certifications & GPA panel.
+
+---
+
+## 5. Floor Rules & Engineering Guardrails
+
+1. **Zero Hard Comic Artifacts**: No `3px`/`4px` black borders, no `6px 6px 0` hard offset shadows, no rotated cards, no halftone dots, and no katakana SFX overlays.
+2. **Token Discipline**: Every background, text, border, and focus color derives from CSS custom properties in `src/styles/variables.css` (`src/styles/replicas.css` cleanly scopes `--ink: #18181b` inside interactive product mockups).
+3. **Motion Restraint**:
+   - No `transition: all` anywhere in `variables.css`, `base.css`, `components.css`, or `replicas.css`.
+   - Never animate `width`, `height`, `top`, `left`, `margin`, or `padding`; animate `transform` and `opacity` only.
+   - `prefers-reduced-motion: reduce` flattens animations and renders deterministic timelines statically at rest.
+4. **Overflow & Accessibility**:
+   - Root uses `overflow-x: clip` (preserving `position: sticky`).
+   - All controls have visible, instant `:focus-visible` `2px solid var(--accent)` focus outlines.
+   - Minimum body font size `14px–15px` and WCAG AA contrast (`>= 4.5:1`) verified across all 3 palettes.
+
+---
+
+## 6. Architecture Overview (`src/`)
+
+- `src/styles/variables.css`: `@property` color registrations, root `color-scheme` sync (`:root:has(...)`), + `daylight`, `obsidian`, `graphite` palette and `--bg-*` backdrop tokens.
+- `src/styles/base.css`: Global resets, `overflow-x: clip`, `:focus-visible`, typography helpers, reduced-motion guard.
+- `src/styles/backgrounds.css`: Tri-mode CSS background atmosphere system (`.page-atmosphere` static SVG `<feTurbulence>` noise tile, `.bg-opening-stage` topglow, center-masked clamped container vertical alignment rails & `24px` perimeter coordinate dots, `.ambient-mesh` GPU-only drift with `.ambient-motion-bar` / `.ambient-motion-btn` pause toggle, `.bg-dusk-band` 9-stop `oklab` smoothstep section melt, `.bg-closing-arcs` concentric rings, `.site-footer-horizon` horizon dome rim, and `forced-colors` / `print` fallbacks).
+- `src/styles/components.css`: Clean Bento shell, frosted navbar, Hero Bento, Pipeline Bento, HyperFrames Showcase, Project Bento cards, Modal & Command Palette.
+- `src/styles/replicas.css`: Isolated CSS for all 5 interactive UI replicas (`BawangHub`, `Lapangku`, `PBL-IVSS`, `CUCI.IN`, `AIAAS`) + modal scale rules.
+- `src/components/HyperFramesFlow.astro` & `hyperframes/portfolio-showcase/index.html`: Deterministic motion architecture timeline component and standalone HyperFrames composition.

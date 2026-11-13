@@ -5,4 +5,5 @@
 @import './variables.css';
 @import './base.css';
 @import './components.css';
-
+@import './backgrounds.css';
+@import './replicas.css';

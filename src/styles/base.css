@@ -1,64 +1,36 @@
 /* ==========================================================================
-   BASE & RESET STYLES (base.css)
+   BASE RESET, TYPOGRAPHY & ACCESSIBILITY DEFAULTS
    ========================================================================== */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 92px;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  background: var(--paper);
-  background-image: radial-gradient(#17141c19 0.8px, transparent 0.8px);
-  background-size: 22px 22px;
   color: var(--ink);
-  font-family: 'DM Sans', Arial, sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
-  line-height: 1.55;
-  transition: background-color var(--theme-transition), 
-              color var(--theme-transition), 
-              --paper var(--theme-transition), 
-              --paper-2 var(--theme-transition), 
-              --accent var(--theme-transition), 
-              --accent-strong var(--theme-transition), 
-              --bright var(--theme-transition), 
-              --pop var(--theme-transition);
-}
-
-.site-header,
-.hero-main-panel,
-.photo-comic-panel,
-.strip-panel,
-.project-card,
-.about-badge,
-.contact-box,
-.top-note,
-footer,
-.dialog,
-.button,
-.tag {
-  transition: background-color var(--theme-transition), 
-              border-color var(--theme-transition), 
-              color var(--theme-transition), 
-              box-shadow var(--theme-transition);
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
+  line-height: 1.65;
+  background-color: var(--paper);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.28s ease,
+    color 0.28s ease,
+    --paper 0.28s ease,
+    --paper-2 0.28s ease,
+    --surface-3 0.28s ease,
+    --accent 0.28s ease,
+    --accent-strong 0.28s ease;
 }
 
 a {
@@ -66,69 +38,91 @@ a {
   text-decoration: none;
 }
 
-button:focus-visible,
-a:focus-visible,
-select:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-[tabindex]:focus-visible {
-  outline: 3px solid var(--accent-strong);
-  outline-offset: 4px;
+button {
+  font: inherit;
+  color: inherit;
 }
 
-.skip-link {
-  position: fixed;
-  top: -100px;
-  left: 16px;
-  z-index: 1000;
-  padding: 10px 16px;
-  background: var(--bright);
-  color: var(--ink);
-  border: 3px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
-  font-size: 12px;
-  font-weight: 700;
-  transition: top 0.2s ease;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-.skip-link:focus {
-  top: 16px;
+/* Global Accessible Keyboard Focus Ring & Interactive States (Hallmark Floor Rule) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* Typography Classes */
+button:active:not(:disabled),
+a.button:active {
+  transform: scale(0.985);
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Typography Helpers */
 .display {
-  font-family: 'Anton', Impact, 'Arial Narrow', sans-serif;
-  font-weight: 400;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .mono {
-  font-family: 'IBM Plex Mono', Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
+/* Global Container */
 .shell {
-  max-width: 1190px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 34px;
+  padding-inline: 24px;
+  position: relative;
+  z-index: 2;
 }
 
-.muted {
-  color: var(--muted);
-}
-
+/* Subtle Hairline Rule Utility */
 .section-rule {
-  border: 0;
-  border-top: 4px solid var(--ink);
-  margin: 0;
+  border-top: 1px solid var(--line);
 }
 
+.section-anchor,
+section[id],
+#keahlian {
+  scroll-margin-top: 94px;
+}
+
+/* Skip Link Accessibility */
+.skip-link {
+  position: fixed;
+  left: -9999px;
+  top: 12px;
+  background: var(--badge-bg);
+  color: var(--badge-ink);
+  border-radius: var(--radius-btn);
+  padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 500;
+}
+
+.skip-link:focus {
+  left: 16px;
+}
+
+/* Motion Reduction Compliance (Opt-in keyframes & gentle cross-dissolve fallback) */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *:before,
-  *:after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-    animation: none !important;
+  html {
+    scroll-behavior: auto;
   }
 }

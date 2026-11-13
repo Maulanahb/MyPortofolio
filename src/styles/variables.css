@@ -1,111 +1,172 @@
 /* ==========================================================================
-   DESIGN TOKENS & COLOR PALETTES (variables.css)
-   Mendukung transisi halus otomatis per palet tema (CSS @property & tokens)
+   COLOR TOKENS, DUAL/TRI-MODE THEMES & TYPOGRAPHY SYSTEM
+   Clean Product Showcase + Bento Grid + HyperFrames Motion
    ========================================================================== */
 
 @property --paper {
   syntax: '<color>';
   inherits: true;
-  initial-value: #f3f0e8;
+  initial-value: #f5f5f7;
 }
-
 @property --paper-2 {
   syntax: '<color>';
   inherits: true;
-  initial-value: #fffdf7;
+  initial-value: #ffffff;
 }
-
+@property --surface-3 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e8e8ed;
+}
 @property --accent {
   syntax: '<color>';
   inherits: true;
-  initial-value: #c6b5f7;
+  initial-value: #0066cc;
 }
-
 @property --accent-strong {
   syntax: '<color>';
   inherits: true;
-  initial-value: #6a37bd;
+  initial-value: #004999;
 }
 
-@property --bright {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #f3dc55;
-}
-
-@property --pop {
-  syntax: '<color>';
-  inherits: true;
-  initial-value: #ef7aa8;
-}
-
+/* Root Color-Scheme Sync */
 :root {
-  /* Paper Canvas & Ink */
-  --paper: #f3f0e8;
-  --paper-2: #fffdf7;
-  --ink: #16151c;
-  --muted: #5f5b62;
-  --line: #16151c;
-
-  /* Default Palette: Morioh Pop (Part 4) */
-  --accent: #c6b5f7;
-  --accent-strong: #6a37bd;
-  --bright: #f3dc55;
-  --pop: #ef7aa8;
-
-  /* Elevation & Structure */
-  --shadow: 6px 6px 0 var(--line);
-  --panel-gap: 12px;
-
-  /* Transition Durations (Halus dan Terasa Mengalir) */
-  --theme-transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: light;
 }
 
-/* Palette: Golden Wind (Part 5) */
-body[data-palette="golden"] {
-  --paper: #f7eddb;
-  --paper-2: #fff9eb;
-  --accent: #f7ad84;
-  --accent-strong: #a82f35;
-  --bright: #edc44b;
-  --pop: #e78b65;
+:root:has(body[data-palette='obsidian']) {
+  color-scheme: dark;
 }
 
-/* Palette: Stone Ocean (Part 6) */
-body[data-palette="ocean"] {
-  --paper: #e9f3f2;
-  --paper-2: #fafffe;
-  --accent: #9bcfdd;
-  --accent-strong: #245e8b;
-  --bright: #b3e8ad;
-  --pop: #b5a2e9;
+/* 1. DAYLIGHT (Default — Apple Daylight Light Mode) */
+:root,
+body[data-palette='daylight'] {
+  color-scheme: light;
+
+  --paper: #f5f5f7;
+  --paper-2: #ffffff;
+  --surface-3: #e8e8ed;
+  --glass: rgba(255, 255, 255, 0.78);
+
+  --ink: #1d1d1f;
+  --muted: #6e6e73;
+
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.16);
+
+  --accent: #0066cc;
+  --accent-soft: rgba(0, 102, 204, 0.1);
+  --accent-strong: #004999;
+  --accent-ink: #ffffff;
+  --success: #16a34a;
+  --badge-bg: #1d1d1f;
+  --badge-ink: #ffffff;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.09);
+
+  /* Background Atmosphere & Surface Depth Tokens */
+  --bg-glow-1: rgba(0, 102, 204, 0.09);
+  --bg-glow-2: rgba(14, 116, 144, 0.06);
+  --bg-dot-color: rgba(29, 29, 31, 0.13);
+  --bg-dusk-band: #ebedf2;
+  --bg-dusk-muted: #55555a;
+  --bg-arc-line: rgba(29, 29, 31, 0.085);
+  --bg-horizon-rim: rgba(0, 102, 204, 0.24);
+  --bg-grain-opacity: 0.024;
+  --bg-grain-blend: multiply;
+
+  /* Typography */
+  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Geometry */
+  --radius-card: 20px;
+  --radius-panel: 16px;
+  --radius-btn: 12px;
+  --radius-pill: 9999px;
+  --nav-height: 58px;
 }
 
-/* Palette: Steel Ball Run (Part 7 Vintage Sepia Comic) */
-body[data-palette="sbr"] {
-  --paper: #f4ebd9;
-  --paper-2: #fff9ed;
-  --ink: #2b221a;
-  --muted: #63564a;
-  --line: #2b221a;
-  --accent: #d8683f;
-  --accent-strong: #9b3718;
-  --bright: #ebb844;
-  --pop: #4d8472;
-  --shadow: 6px 6px 0 var(--line);
-  background-image: radial-gradient(#2b221a1c 0.8px, transparent 0.8px);
+/* 2. OBSIDIAN (Framer Dark Studio Mode) */
+body[data-palette='obsidian'] {
+  color-scheme: dark;
+
+  --paper: #09090b;
+  --paper-2: #141417;
+  --surface-3: #1f1f25;
+  --glass: rgba(20, 20, 23, 0.8);
+
+  --ink: #f5f5f7;
+  --muted: #a1a1aa;
+
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.2);
+
+  --accent: #0a84ff;
+  --accent-soft: rgba(10, 132, 255, 0.16);
+  --accent-strong: #409cff;
+  --accent-ink: #ffffff;
+  --success: #22c55e;
+  --badge-bg: #f5f5f7;
+  --badge-ink: #09090b;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.72);
+  --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  /* Background Atmosphere & Surface Depth Tokens */
+  --bg-glow-1: rgba(10, 132, 255, 0.16);
+  --bg-glow-2: rgba(20, 184, 166, 0.08);
+  --bg-dot-color: rgba(255, 255, 255, 0.12);
+  --bg-dusk-band: #101218;
+  --bg-dusk-muted: #a1a1aa;
+  --bg-arc-line: rgba(255, 255, 255, 0.08);
+  --bg-horizon-rim: rgba(10, 132, 255, 0.56);
+  --bg-grain-opacity: 0.036;
+  --bg-grain-blend: screen;
 }
 
-body[data-palette="sbr"] .button.yellow,
-body[data-palette="sbr"] .button.yellow *,
-body[data-palette="sbr"] .mobile-menu-btn,
-body[data-palette="sbr"] .photo-caption .display,
-body[data-palette="sbr"] .photo-caption-name,
-body[data-palette="sbr"] .photo-caption .mono,
-body[data-palette="sbr"] .photo-caption-sub,
-body[data-palette="sbr"] .about-meta-item.highlight strong,
-body[data-palette="sbr"] .about-meta-item.highlight .meta-label,
-body[data-palette="sbr"] .edu-stat-box.highlight strong,
-body[data-palette="sbr"] .edu-stat-box.highlight span {
-  color: #2b221a !important;
+/* 3. GRAPHITE (Warm Titanium Neutral Mode) */
+body[data-palette='graphite'] {
+  color-scheme: light;
+
+  --paper: #eae9e4;
+  --paper-2: #f7f6f2;
+  --surface-3: #dedcd3;
+  --glass: rgba(247, 246, 242, 0.82);
+
+  --ink: #18181b;
+  --muted: #52525b;
+
+  --line: rgba(24, 24, 27, 0.1);
+  --line-strong: rgba(24, 24, 27, 0.18);
+
+  --accent: #2563eb;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --accent-strong: #1d4ed8;
+  --accent-ink: #ffffff;
+  --success: #15803d;
+  --badge-bg: #18181b;
+  --badge-ink: #f7f6f2;
+
+  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.05);
+  --shadow-md: 0 8px 24px rgba(24, 24, 27, 0.07);
+  --shadow-lg: 0 24px 60px rgba(24, 24, 27, 0.14);
+  --shadow-hover: 0 14px 34px rgba(24, 24, 27, 0.11);
+
+  /* Background Atmosphere & Surface Depth Tokens */
+  --bg-glow-1: rgba(37, 99, 235, 0.08);
+  --bg-glow-2: rgba(120, 113, 108, 0.09);
+  --bg-dot-color: rgba(24, 24, 27, 0.14);
+  --bg-dusk-band: #e0dfd7;
+  --bg-dusk-muted: #4a4a52;
+  --bg-arc-line: rgba(24, 24, 27, 0.095);
+  --bg-horizon-rim: rgba(37, 99, 235, 0.24);
+  --bg-grain-opacity: 0.028;
+  --bg-grain-blend: multiply;
 }
