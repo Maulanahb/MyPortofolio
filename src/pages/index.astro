@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ComicStrip from '../components/ComicStrip.astro';
+import HyperFramesFlow from '../components/HyperFramesFlow.astro';
 import About from '../components/About.astro';
 import Projects from '../components/Projects.astro';
 import ExperienceEducation from '../components/ExperienceEducation.astro';
@@ -16,15 +16,15 @@ import CommandPalette from '../components/CommandPalette.astro';
   <Header />
 
   <main id="beranda">
-    <Hero />
-    <ComicStrip />
+    <div class="bg-opening-stage">
+      <div class="ambient-mesh" aria-hidden="true"></div>
+      <Hero />
+      <HyperFramesFlow />
+    </div>
     <hr class="section-rule" />
     <About />
-    <hr class="section-rule" />
     <Projects />
-    <hr class="section-rule" />
     <ExperienceEducation />
-    <hr class="section-rule" />
     <Contact />
   </main>
 

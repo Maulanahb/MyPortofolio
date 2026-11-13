@@ -6,13 +6,24 @@
  */
 
 import { PROJECTS, SITE_CONFIG } from '../data/projects';
-import { prefersReducedMotion } from './motion';
+import {
+  prefersReducedMotion,
+  animateOpenOverlay,
+  animateCloseOverlay,
+  initPointerSpotlight,
+  initHeroRoleDock,
+  initArchitectureWorkbench,
+  initProjectFilterAndSkillBridge,
+  initAmbientBackdrop
+} from './motion';
 import { techIconIds } from '../data/tech-icon-ids';
 
 // State
 const overlayStack: HTMLElement[] = [];
 let priorFocus: HTMLElement | null = null;
 let toastTimer: number | null = null;
+let fitPreviewsCached: (() => void) | null = null;
+let toggleAmbientMotion: (() => boolean) | null = null;
 
 // Notifikasi Toast
 export function notify(msg: string): void {
@@ -31,8 +42,10 @@ export function notify(msg: string): void {
 // Dialog Management
 export function openOverlay(el: HTMLElement, focusEl?: HTMLElement | null): void {
   priorFocus = document.activeElement as HTMLElement;
-  el.classList.add('open');
-  overlayStack.push(el);
+  animateOpenOverlay(el);
+  if (!overlayStack.includes(el)) {
+    overlayStack.push(el);
+  }
   document.body.style.overflow = 'hidden';
 
   requestAnimationFrame(() => {
@@ -41,14 +54,17 @@ export function openOverlay(el: HTMLElement, focusEl?: HTMLElement | null): void
 }
 
 export function closeOverlay(el: HTMLElement): void {
-  el.classList.remove('open');
   const idx = overlayStack.indexOf(el);
   if (idx > -1) overlayStack.splice(idx, 1);
 
   if (!overlayStack.length) {
     document.body.style.overflow = '';
   }
-  priorFocus?.focus?.();
+
+  void animateCloseOverlay(el);
+  if (priorFocus && !overlayStack.length) {
+    priorFocus.focus?.();
+  }
 }
 
 export function showProjectDetail(key: string): void {
@@ -205,48 +221,41 @@ export function showProjectDetail(key: string): void {
   openOverlay(projectOverlay, closeBtn);
 }
 
-// Theme Palette & Auto Transition Engine
+// Theme Palette Engine (Apple Daylight / Framer Obsidian / Graphite Studio)
 export const PALETTES = [
-  { id: 'morioh', name: 'MORIOH POP' },
-  { id: 'golden', name: 'GOLDEN WIND' },
-  { id: 'ocean', name: 'STONE OCEAN' },
-  { id: 'sbr', name: 'STEEL BALL RUN' }
+  { id: 'daylight', name: 'Daylight', themeColor: '#f5f5f7' },
+  { id: 'obsidian', name: 'Obsidian', themeColor: '#09090b' },
+  { id: 'graphite', name: 'Graphite', themeColor: '#eae9e4' }
 ] as const;
 
 let currentPaletteIdx = 0;
-let autoPaletteTimer: number | null = null;
-const AUTO_CYCLE_INTERVAL = 8500; // 8.5 detik pergantian transisi halus otomatis
 
 export function setPalette(paletteId: string, showNotification = false): void {
-  const normalizedId = paletteId;
-  document.body.dataset.palette = normalizedId;
-  localStorage.setItem('porto_palette', normalizedId);
+  const validPalette = PALETTES.find(p => p.id === paletteId) || PALETTES[0];
+  document.documentElement.dataset.palette = validPalette.id;
+  document.body.dataset.palette = validPalette.id;
+  localStorage.setItem('porto_palette', validPalette.id);
 
-  const matchIdx = PALETTES.findIndex(p => p.id === normalizedId);
-  if (matchIdx !== -1) currentPaletteIdx = matchIdx;
+  currentPaletteIdx = PALETTES.findIndex(p => p.id === validPalette.id);
 
-  const label = PALETTES[currentPaletteIdx]?.name || normalizedId.toUpperCase();
   const labelEl = document.getElementById('palette-label');
   if (labelEl) {
-    labelEl.textContent = label;
+    labelEl.textContent = validPalette.name;
+  }
+
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (themeMeta) {
+    themeMeta.content = validPalette.themeColor;
   }
 
   if (showNotification) {
-    notify('Tema: ' + label);
+    notify(`Tampilan: ${validPalette.name}`);
   }
 }
 
 export function cyclePalette(manual = false): void {
   currentPaletteIdx = (currentPaletteIdx + 1) % PALETTES.length;
   setPalette(PALETTES[currentPaletteIdx].id, manual);
-}
-
-export function startAutoPaletteCycle(): void {
-  if (autoPaletteTimer) clearInterval(autoPaletteTimer);
-
-  autoPaletteTimer = window.setInterval(() => {
-    cyclePalette(false);
-  }, AUTO_CYCLE_INTERVAL);
 }
 
 // Navigasi Smooth
@@ -272,10 +281,9 @@ export function toggleMobileMenu(force?: boolean): void {
   menuToggle.setAttribute('aria-expanded', String(isOpen));
 }
 
-// Sticky Adaptive Island Navbar & Scroll Spy
+// Sticky Frosted Navbar & Scroll Spy
 export function initStickyAdaptiveNavbar(): void {
   const header = document.getElementById('site-header');
-  const headerInner = document.getElementById('header-inner');
   const nav = document.getElementById('nav');
   if (!header || !nav) return;
 
@@ -286,12 +294,8 @@ export function initStickyAdaptiveNavbar(): void {
     .filter((sec): sec is HTMLElement => Boolean(sec));
 
   let ticking = false;
-
-  // Hysteresis window to prevent boundary jitter during rapid scrolling:
-  // Activate dynamic island pill past top navbar height (~80-100px).
-  // Deactivate and return smoothly to full original header layout when near top.
-  const ENTER_THRESHOLD = 85;
-  const EXIT_THRESHOLD = 55;
+  const ENTER_THRESHOLD = 40;
+  const EXIT_THRESHOLD = 20;
 
   const updateHeaderState = () => {
     const scrollY = window.scrollY || window.pageYOffset;
@@ -300,20 +304,12 @@ export function initStickyAdaptiveNavbar(): void {
     if (!isCurrentlyScrolled && scrollY > ENTER_THRESHOLD) {
       header.classList.add('is-scrolled');
       header.setAttribute('data-scrolled', 'true');
-      if (nav.classList.contains('open')) {
-        toggleMobileMenu(false);
-      }
     } else if (isCurrentlyScrolled && scrollY <= EXIT_THRESHOLD) {
       header.classList.remove('is-scrolled');
       header.setAttribute('data-scrolled', 'false');
-      headerInner?.classList.remove('is-expanded');
-      if (nav.classList.contains('open')) {
-        toggleMobileMenu(false);
-      }
     }
 
-    // 2. Scroll Spy: highlight active nav link
-    const scrollPos = scrollY + 140;
+    const scrollPos = scrollY + 150;
     let currentId = '';
 
     for (let i = sections.length - 1; i >= 0; i--) {
@@ -344,193 +340,7 @@ export function initStickyAdaptiveNavbar(): void {
     { passive: true }
   );
 
-  // Initial trigger on page load
   updateHeaderState();
-
-  // Mobile / Touch toggle & Draggable interaction for compact Dynamic Island
-  if (headerInner) {
-    let isDragging = false;
-    let didDrag = false;
-    let startX = 0;
-    let startY = 0;
-    let initialLeft = 0;
-    let initialTop = 0;
-    let currentWidth = 44;
-    let currentHeight = 44;
-    const DRAG_THRESHOLD = 8;
-
-    // Restore saved position from localStorage if exists
-    try {
-      const saved = localStorage.getItem('maul_island_pos');
-      if (saved) {
-        const { x, y } = JSON.parse(saved);
-        if (typeof x === 'number' && typeof y === 'number') {
-          const clampedX = Math.max(12, Math.min(window.innerWidth - 60, x));
-          const clampedY = Math.max(12, Math.min(window.innerHeight - 60, y));
-          headerInner.style.setProperty('--island-x', `${clampedX}px`);
-          headerInner.style.setProperty('--island-y', `${clampedY}px`);
-          if (clampedX > window.innerWidth / 2) {
-            headerInner.classList.add('dock-right');
-          } else {
-            headerInner.classList.remove('dock-right');
-          }
-        }
-      }
-    } catch {}
-
-    const onPointerMove = (e: PointerEvent) => {
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-
-      if (!isDragging && Math.hypot(dx, dy) >= DRAG_THRESHOLD) {
-        isDragging = true;
-        didDrag = true;
-        try {
-          headerInner.setPointerCapture?.(e.pointerId);
-        } catch {}
-        headerInner.classList.add('is-dragging');
-        headerInner.classList.remove('is-expanded');
-      }
-
-      if (isDragging) {
-        const newX = Math.max(12, Math.min(window.innerWidth - currentWidth - 12, initialLeft + dx));
-        const newY = Math.max(12, Math.min(window.innerHeight - currentHeight - 12, initialTop + dy));
-
-        headerInner.style.setProperty('--island-x', `${newX}px`);
-        headerInner.style.setProperty('--island-y', `${newY}px`);
-      }
-    };
-
-    const onPointerUp = (e: PointerEvent) => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-
-      if (isDragging) {
-        try {
-          headerInner.releasePointerCapture?.(e.pointerId);
-        } catch {}
-
-        headerInner.classList.remove('is-dragging');
-        const finalRect = headerInner.getBoundingClientRect();
-        const finalX = Math.max(12, Math.min(window.innerWidth - currentWidth - 12, finalRect.left));
-        const finalY = Math.max(12, Math.min(window.innerHeight - currentHeight - 12, finalRect.top));
-
-        headerInner.style.setProperty('--island-x', `${finalX}px`);
-        headerInner.style.setProperty('--island-y', `${finalY}px`);
-
-        if (finalX > window.innerWidth / 2) {
-          headerInner.classList.add('dock-right');
-        } else {
-          headerInner.classList.remove('dock-right');
-        }
-
-        try {
-          localStorage.setItem('maul_island_pos', JSON.stringify({ x: finalX, y: finalY }));
-        } catch {}
-
-        setTimeout(() => {
-          isDragging = false;
-          didDrag = false;
-        }, 120);
-      } else {
-        isDragging = false;
-        didDrag = false;
-      }
-    };
-
-    // Prevent native browser link drag
-    headerInner.addEventListener('dragstart', (e: DragEvent) => {
-      e.preventDefault();
-    });
-
-    headerInner.addEventListener('pointerdown', (e: PointerEvent) => {
-      // Only drag when in scrolled state
-      if (!header.classList.contains('is-scrolled')) return;
-      // Don't drag if user clicked inside navigation link
-      if ((e.target as HTMLElement).closest('.nav')) return;
-
-      const rect = headerInner.getBoundingClientRect();
-      startX = e.clientX;
-      startY = e.clientY;
-      initialLeft = rect.left;
-      initialTop = rect.top;
-      currentWidth = 44;
-      currentHeight = 44;
-      isDragging = false;
-      didDrag = false;
-
-      window.addEventListener('pointermove', onPointerMove);
-      window.addEventListener('pointerup', onPointerUp);
-      window.addEventListener('pointercancel', onPointerUp);
-    });
-
-    // Double click to reset position to default left
-    headerInner.addEventListener('dblclick', (e: MouseEvent) => {
-      if (!header.classList.contains('is-scrolled')) return;
-      e.preventDefault();
-      e.stopPropagation();
-      try {
-        localStorage.removeItem('maul_island_pos');
-      } catch {}
-      headerInner.style.removeProperty('--island-x');
-      headerInner.style.removeProperty('--island-y');
-      headerInner.classList.remove('dock-right');
-      notify('Posisi logo dinamis direset ke kiri');
-    });
-
-    headerInner.addEventListener('click', (e: MouseEvent) => {
-      if (!header.classList.contains('is-scrolled')) return;
-
-      // If user actually dragged the badge, suppress click
-      if (didDrag) {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
-      }
-
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-
-      // If user tapped a nav link, allow standard anchor navigation and close expanded pill
-      const navAnchor = target.closest<HTMLAnchorElement>('.nav a');
-      if (navAnchor) {
-        headerInner.classList.remove('is-expanded');
-        return;
-      }
-
-      // If user clicked inside the open navigation container, keep it open
-      if (target.closest('.nav')) {
-        return;
-      }
-
-      // User clicked the badge: toggle menu!
-      e.preventDefault();
-      e.stopPropagation();
-      headerInner.classList.toggle('is-expanded');
-    });
-
-    // Close expanded island pill when clicking outside
-    document.addEventListener('click', (e: MouseEvent) => {
-      if (!headerInner.classList.contains('is-expanded')) return;
-      const target = e.target as HTMLElement | null;
-      if (target && !headerInner.contains(target)) {
-        headerInner.classList.remove('is-expanded');
-      }
-    });
-
-    // Close on Escape & blur active element to collapse :focus-within
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        if (headerInner.classList.contains('is-expanded')) {
-          headerInner.classList.remove('is-expanded');
-        }
-        if (headerInner.contains(document.activeElement)) {
-          (document.activeElement as HTMLElement)?.blur();
-        }
-      }
-    });
-  }
 }
 
 // Command Palette Definition
@@ -541,23 +351,33 @@ interface CommandItem {
 }
 
 const COMMANDS: CommandItem[] = [
-  { label: 'Ganti siklus tema warna berikutnya', meta: 'Tema Warna', action: () => cyclePalette(true) },
-  { label: 'Aktifkan Tema Steel Ball Run (Vintage Sepia)', meta: 'Tema Warna', action: () => setPalette('sbr', true) },
-  { label: 'Aktifkan Tema Morioh Pop (Default Pop)', meta: 'Tema Warna', action: () => setPalette('morioh', true) },
-  { label: 'Aktifkan Tema Golden Wind (Warm Gold)', meta: 'Tema Warna', action: () => setPalette('golden', true) },
-  { label: 'Aktifkan Tema Stone Ocean (Cool Cyan)', meta: 'Tema Warna', action: () => setPalette('ocean', true) },
-  { label: 'Ke tentang saya & tujuan magang', meta: 'Navigasi', action: () => goToSection('#tentang') },
-  { label: 'Ke keahlian lintas bidang SI (Skills)', meta: 'Navigasi', action: () => goToSection('#keahlian') },
-  { label: 'Ke proyek unggulan SI', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
-  { label: 'Ke pengalaman & organisasi', meta: 'Navigasi', action: () => goToSection('#pengalaman') },
-  { label: 'Ke pendidikan, sertifikasi & prestasi', meta: 'Navigasi', action: () => goToSection('#pendidikan') },
-  { label: 'Ke kontak & form pesan', meta: 'Navigasi', action: () => goToSection('#kontak') },
-  { label: 'Unduh CV Maulana (PDF)', meta: 'Dokumen', action: () => window.open(SITE_CONFIG.cvUrl, '_blank') },
-  { label: 'Buka Studi Kasus: CUCI.IN (POS Laundry)', meta: 'Proyek', action: () => showProjectDetail('cuciin') },
-  { label: 'Buka Studi Kasus: BAWANGHUB (AI Agritech)', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
-  { label: 'Buka Studi Kasus: LAPANGKU (Mobile GOR)', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
-  { label: 'Buka Studi Kasus: PBL-IVSS (Lab Polinema)', meta: 'Proyek', action: () => showProjectDetail('ivss') },
-  { label: 'Buka Studi Kasus: AIAAS (AI Finansial)', meta: 'Proyek', action: () => showProjectDetail('aiaas') }
+  { label: 'Ganti mode tema berikutnya (Daylight / Obsidian / Graphite)', meta: 'Tema', action: () => cyclePalette(true) },
+  { label: 'Aktifkan Tema Daylight (Light Mode)', meta: 'Tema', action: () => setPalette('daylight', true) },
+  { label: 'Aktifkan Tema Obsidian (Dark Mode)', meta: 'Tema', action: () => setPalette('obsidian', true) },
+  { label: 'Aktifkan Tema Graphite (Warm Titanium)', meta: 'Tema', action: () => setPalette('graphite', true) },
+  {
+    label: 'Jeda / Putar Gerak Latar',
+    meta: 'Atmosfer',
+    action: () => {
+      const nextPaused = toggleAmbientMotion?.();
+      if (typeof nextPaused === 'boolean') {
+        notify(nextPaused ? 'Gerak latar dijeda' : 'Gerak latar diaktifkan');
+      }
+    }
+  },
+  { label: 'Alur Kerja Proyek', meta: 'Navigasi', action: () => goToSection('#arsitektur') },
+  { label: 'Tentang Saya & Status', meta: 'Navigasi', action: () => goToSection('#tentang') },
+  { label: 'Tech Stack & Keahlian', meta: 'Navigasi', action: () => goToSection('#keahlian') },
+  { label: 'Proyek Pilihan', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
+  { label: 'Pengalaman Proyek', meta: 'Navigasi', action: () => goToSection('#pengalaman') },
+  { label: 'Pendidikan & Sertifikasi', meta: 'Navigasi', action: () => goToSection('#pendidikan') },
+  { label: 'Kontak', meta: 'Navigasi', action: () => goToSection('#kontak') },
+  { label: 'Unduh CV (PDF)', meta: 'Dokumen', action: () => window.open(SITE_CONFIG.cvUrl, '_blank') },
+  { label: 'CUCI.IN · Kasir Laundry', meta: 'Proyek', action: () => showProjectDetail('cuciin') },
+  { label: 'BAWANGHUB · AI Agritech', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
+  { label: 'LAPANGKU · Booking Lapangan', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
+  { label: 'PORTAL LAB IVSS · Polinema', meta: 'Proyek', action: () => showProjectDetail('ivss') },
+  { label: 'AI FINANCE (AIAAS) · Gemini', meta: 'Proyek', action: () => showProjectDetail('aiaas') }
 ];
 
 export function renderCommands(search = ''): void {
@@ -566,9 +386,11 @@ export function renderCommands(search = ''): void {
   if (!commandResults || !commandOverlay) return;
 
   const query = search.trim().toLowerCase();
-  const matched = COMMANDS.filter(cmd => 
-    (cmd.label + ' ' + cmd.meta).toLowerCase().includes(query)
-  );
+  const reduced = prefersReducedMotion();
+  const matched = COMMANDS.filter(cmd => {
+    if (reduced && cmd.meta === 'Atmosfer') return false;
+    return (cmd.label + ' ' + cmd.meta).toLowerCase().includes(query);
+  });
 
   commandResults.replaceChildren();
 
@@ -613,23 +435,17 @@ export function showCommands(): void {
 
 // Inisialisasi Utama saat DOM Siap
 export function initPortfolioApp(): void {
-  const reduceMotion = prefersReducedMotion();
-
-  // 1. Inisialisasi Palet & Mulai Auto-Cycle Transisi Warna Otomatis
-  let savedPalette = localStorage.getItem('porto_palette') || 'morioh';
-  if (savedPalette === 'dark' || !PALETTES.some(p => p.id === savedPalette)) {
-    savedPalette = 'morioh';
-    localStorage.setItem('porto_palette', 'morioh');
+  // 1. Inisialisasi Mode Tampilan (Migrasi nilai lama ke Daylight + bind tombol switcher)
+  let savedPalette = localStorage.getItem('porto_palette') || 'daylight';
+  if (!PALETTES.some(p => p.id === savedPalette)) {
+    savedPalette = 'daylight';
+    localStorage.setItem('porto_palette', 'daylight');
   }
   setPalette(savedPalette, false);
-  startAutoPaletteCycle();
 
-  if (!reduceMotion) {
-    const scheduleIdle = window.requestIdleCallback || ((cb: () => void) => window.setTimeout(cb, 120));
-    scheduleIdle(() => {
-      import('./wanderer').then(m => m.initBackgroundWanderers());
-      import('./manga-fx').then(m => m.initMangaUIFX());
-    });
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => cyclePalette(true));
   }
 
   // 2. Modals & Project Click Bindings
@@ -846,9 +662,21 @@ export function initPortfolioApp(): void {
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   // 9. Interactive Limited Live Demo for Project Previews (Code-split async chunk)
-  import('./live-demo').then(m => m.initLiveDemo());
+  import('./live-demo').then(m => {
+    m.initLiveDemo();
+    fitPreviewsCached = m.fitProjectPreviews;
+  });
 
-  // 10. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
+  // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Signal Pipeline, Project Filters)
+  toggleAmbientMotion = initAmbientBackdrop();
+  initPointerSpotlight();
+  initHeroRoleDock();
+  initArchitectureWorkbench();
+  initProjectFilterAndSkillBridge(showProjectDetail, () => {
+    fitPreviewsCached?.();
+  });
+
+  // 11. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
   document.querySelectorAll<HTMLButtonElement>('.project-details-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
       const isExpanded = btn.getAttribute('aria-expanded') === 'true';
@@ -861,11 +689,11 @@ export function initPortfolioApp(): void {
       if (isExpanded) {
         btn.setAttribute('aria-expanded', 'false');
         targetEl.classList.remove('is-expanded');
-        if (toggleText) toggleText.textContent = 'LIHAT RINCIAN PROSES';
+        if (toggleText) toggleText.textContent = 'Rincian Proses';
       } else {
         btn.setAttribute('aria-expanded', 'true');
         targetEl.classList.add('is-expanded');
-        if (toggleText) toggleText.textContent = 'TUTUP RINCIAN PROSES';
+        if (toggleText) toggleText.textContent = 'Tutup Rincian';
       }
     });
   });

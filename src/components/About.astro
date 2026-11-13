@@ -2,103 +2,118 @@
 import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
 ---
 
-<section class="section shell" id="tentang" aria-labelledby="about-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 01 <span>TENTANG SAYA &amp; KEAHLIAN</span></div>
+<section class="section" id="tentang" aria-labelledby="about-title">
+  <div class="shell">
+    <div class="section-head">
+    <div>
+      <h2 class="section-title display" id="about-title">Tentang <span class="title-highlight">Saya</span></h2>
+      <p class="section-subtitle">Profil akademik, keahlian teknis, dan fokus peran di sistem informasi.</p>
+    </div>
+  </div>
 
   <div class="about-grid">
-    <!-- Left Comic Badge & Quick Profile Card -->
-    <div class="about-badge">
-      <div>
-        <div class="eyebrow mono">PROFIL SINGKAT</div>
-        <div class="big-quote display">PERANCANGAN SISTEM &amp; PENGEMBANGAN APLIKASI.</div>
-      </div>
+    <!-- Left Summary Card -->
+    <div class="about-badge" data-spotlight>
+      <div class="big-quote display">Analisis sistem sampai rilis aplikasi.</div>
 
       <div class="about-meta-list">
         <div class="about-meta-item">
-          <span class="meta-label mono">KAMPUS &amp; PRODI</span>
+          <span class="meta-label mono">Pendidikan</span>
           <strong>{SITE_CONFIG.program} · {SITE_CONFIG.campus}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">STATUS AKADEMIK</span>
+          <span class="meta-label mono">Semester</span>
           <strong>{SITE_CONFIG.semester} · Angkatan 2024</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">MINAT POSISI</span>
-          <strong>Junior System Analyst · Junior Web &amp; Mobile Dev</strong>
+          <span class="meta-label mono">Fokus</span>
+          <strong>{SITE_CONFIG.role}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">STACK TEKNOLOGI UTAMA</span>
-          <strong>Laravel · React · Flutter · PostgreSQL</strong>
+          <span class="meta-label mono">Stack Utama</span>
+          <strong>Laravel, React, Flutter, PostgreSQL</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">REPOSITORI PUBLIK</span>
-          <strong>{SITE_CONFIG.githubRepos} (github.com/{SITE_CONFIG.githubHandle})</strong>
+          <span class="meta-label mono">GitHub</span>
+          <strong>github.com/{SITE_CONFIG.githubHandle}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">KETERSEDIAAN</span>
-          <strong>Siap ditempatkan On-site maupun Remote</strong>
+          <span class="meta-label mono">Status</span>
+          <strong>{SITE_CONFIG.availability}</strong>
         </div>
       </div>
     </div>
 
-    <!-- Right Narrative: 3 Paragraphs (Professional & Personal) -->
-    <div class="about-copy">
-      <div class="eyebrow mono">✦ PROFIL &amp; LATAR BELAKANG</div>
-      <h2 class="section-title display" id="about-title">LATAR BELAKANG<br/><span class="title-highlight">&amp; KOMPETENSI.</span></h2>
-
+    <!-- Right Narrative -->
+    <div class="about-copy" data-spotlight>
       <p>
-        Saya {SITE_CONFIG.fullName}, mahasiswa semester 5 {SITE_CONFIG.program} di Politeknik Negeri Malang. Saya memiliki ketertarikan besar pada dunia teknologi dan bagaimana perangkat lunak memecahkan masalah nyata, mulai dari memahami kebutuhan pengguna hingga menjadikannya aplikasi yang fungsional dan nyaman digunakan.
+        Saya {SITE_CONFIG.fullName}, mahasiswa semester 5 {SITE_CONFIG.program} di Politeknik Negeri Malang. Saya terbiasa memulai proyek dari analisis kebutuhan, menulis PRD, merancang ERD database, hingga mengimplementasikan aplikasinya.
       </p>
 
       <p>
-        Secara teknis, saya terbiasa mengembangkan aplikasi web berbasis Laravel dan React serta aplikasi mobile dengan Flutter. Didorong oleh rasa ingin tahu yang tinggi, saya selalu terbuka dan bersemangat mempelajari hal-hal baru, baik itu tools baru, bahasa pemrograman lain, maupun standar kerja di tim industri.
-      </p>
-
-      <p>
-        Saat ini saya aktif mencari peluang magang, PKL, maupun kesempatan kerja tingkat junior pada peran Junior System Analyst, Full-Stack Web Developer, atau Mobile Developer. Sebagai talenta junior, saya siap beradaptasi dengan cepat, berkolaborasi aktif dengan tim, dan terus belajar hal baru untuk memberikan kontribusi nyata.
+        Di pengembangan aplikasi, saya menggunakan Laravel, React, TypeScript, dan Flutter dengan PostgreSQL serta MySQL. Saat ini berstatus Open to Work untuk kesempatan magang, PKL, atau peran junior developer.
       </p>
 
       <div class="about-interest-pills" aria-label="Fokus bidang yang diminati">
         {SITE_CONFIG.interests.map(item => (
-          <span class="interest-pill mono">✦ {item}</span>
+          <span class="interest-pill mono">{item}</span>
         ))}
       </div>
     </div>
   </div>
 
-  <!-- Sub-section 3: Skills Lintas Bidang Sistem Informasi -->
+  <!-- Skills Section -->
   <div class="skills-section-wrap" id="keahlian" aria-labelledby="skills-title">
     <div class="skills-head">
       <div>
-        <div class="eyebrow mono">✦ TOOLKIT &amp; TEKNOLOGI</div>
-        <h3 class="skills-main-title display" id="skills-title">KEAHLIAN TEKNIS &amp; BAHASA PEMROGRAMAN.</h3>
+        <h3 class="skills-main-title display" id="skills-title">Tech Stack &amp; Keahlian</h3>
+        <p class="section-subtitle skills-sub">Klik salah satu teknologi untuk melihat studi kasus proyek yang menggunakannya.</p>
+      </div>
+    </div>
+
+    <!-- Interactive Skill-to-Project Bridge Banner -->
+    <div class="skill-bridge-bar" id="skill-bridge-bar" hidden>
+      <div class="skill-bridge-inner">
+        <div class="skill-bridge-info">
+          <strong id="skill-bridge-title" class="display">Stack</strong>
+          <span id="skill-bridge-summary" class="skill-bridge-summary"></span>
+        </div>
+        <div class="skill-bridge-actions" id="skill-bridge-actions">
+          <div class="skill-bridge-chips" id="skill-bridge-projects"></div>
+          <button type="button" class="button tiny primary" id="skill-bridge-filter-btn" hidden>
+            Filter Proyek ↓
+          </button>
+          <button type="button" class="skill-bridge-close mono" id="skill-bridge-clear" aria-label="Tutup detail stack">
+            ×
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="skill-groups si-skill-grid">
       {SKILL_GROUPS.map(group => (
-        <article class={`skill-box comic-skill-card ${group.proofs ? 'skill-card-wide' : ''}`}>
+        <article class={`skill-box ${group.proofs ? 'skill-card-wide' : ''}`} data-spotlight>
           <div class="skill-card-top">
-            <span class="skill-code mono">{group.code}</span>
             <h4 class="display">{group.title}</h4>
-            <span class="skill-subtitle mono">{group.subtitle}</span>
+            <span class="skill-subtitle">{group.subtitle}</span>
           </div>
 
-          <p class="skill-desc">{group.items}</p>
-
           {group.icons && group.icons.length > 0 && (
-            <div class="skill-icon-grid" role="list" aria-label={`Daftar icon ${group.title}`}>
+            <div class="skill-icon-grid" role="list" aria-label={group.title}>
               {group.icons.map(icon => (
-                <div
-                  class="skill-icon-tile"
-                  role="listitem"
-                  aria-label={icon.name}
-                  data-tooltip={icon.name}
-                  tabindex="0"
-                >
-                  <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <use href={`#tech-${icon.iconId}`} />
-                  </svg>
+                <div class="skill-chip-item" role="listitem">
+                  <button
+                    type="button"
+                    class="skill-chip"
+                    data-skill-id={icon.iconId}
+                    data-skill-name={icon.name}
+                    aria-pressed="false"
+                  >
+                    <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <use href={`#tech-${icon.iconId}`} />
+                    </svg>
+                    <span class="skill-chip-name">{icon.name}</span>
+                  </button>
                 </div>
               ))}
             </div>
@@ -128,5 +143,6 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
         </article>
       ))}
     </div>
+  </div>
   </div>
 </section>

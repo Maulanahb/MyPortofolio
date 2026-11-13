@@ -1,6 +1,5 @@
 ---
 import '../styles/style.css';
-import BackgroundElements from '../components/BackgroundElements.astro';
 import TechIconSprite from '../components/TechIconSprite.astro';
 import { SITE_CONFIG, PROJECTS, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
 
@@ -17,7 +16,7 @@ const {
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://maulana.dev';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageUrl = new URL('/foto-profil.jpg', siteUrl).toString();
-const googleFontsUrl = 'https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap';
+const googleFontsUrl = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -112,7 +111,8 @@ const jsonLd = {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#f3f0e8" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5f5f7" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta name="author" content={SITE_CONFIG.fullName} />
@@ -143,7 +143,7 @@ const jsonLd = {
   <!-- Preload Critical LCP Hero Image -->
   <link rel="preload" as="image" href="/foto-profil.webp" type="image/webp" fetchpriority="high" />
 
-  <!-- Non-Render-Blocking Google Web Fonts: Anton, DM Sans, IBM Plex Mono -->
+  <!-- Non-Render-Blocking Google Web Fonts: Manrope, IBM Plex Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="style" href={googleFontsUrl} />
@@ -155,17 +155,30 @@ const jsonLd = {
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </head>
-<body data-palette="morioh">
+<body data-palette="daylight">
+  <script is:inline>
+    (function () {
+      try {
+        var palette = localStorage.getItem('porto_palette');
+        if (palette === 'obsidian' || palette === 'graphite') {
+          document.documentElement.dataset.palette = palette;
+          document.body.dataset.palette = palette;
+        }
+        if (localStorage.getItem('porto_ambient_motion') === 'paused') {
+          document.body.dataset.ambientMotion = 'paused';
+        }
+      } catch (_e) {
+        // Ignore storage read errors in restricted contexts
+      }
+    })();
+  </script>
+  <div class="page-atmosphere" aria-hidden="true"></div>
   <a href="#beranda" class="skip-link mono">Langsung ke konten utama</a>
-  <BackgroundElements />
   <TechIconSprite />
   <slot />
 
   <!-- Toast Notification Container -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <!-- JoJo / Manga SFX Floating Overlay Container -->
-  <div id="manga-fx-container" class="manga-fx-container" aria-hidden="true"></div>
 
   <!-- Client-side Interaction Runtime -->
   <script>

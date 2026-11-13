@@ -1,0 +1,245 @@
+---
+// Interactive Signal-Pulse System Architecture & Live Workbench (#arsitektur)
+---
+<section class="hf-section" id="arsitektur" aria-labelledby="hf-section-title">
+  <div class="shell">
+    <div class="hf-shell-card" data-hf-player data-spotlight>
+    <div class="hf-header">
+      <div class="hf-title-group">
+        <h2 class="hf-heading display" id="hf-section-title">
+          Alur Kerja &amp; Arsitektur Proyek
+        </h2>
+        <p class="hf-subcopy">
+          Simulasi tahap pengerjaan dari pemodelan data hingga rilis — klik node atau uji panel pratinjau di bawah.
+        </p>
+      </div>
+
+      <div class="hf-controls-top">
+        <button
+          type="button"
+          class="hf-play-btn"
+          id="hf-play-toggle"
+          aria-label="Putar atau jeda simulasi alur kerja"
+          aria-pressed="true"
+        >
+          <svg id="hf-icon-pause" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>
+          </svg>
+          <svg id="hf-icon-play" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:none;" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span id="hf-play-label">Jeda</span>
+        </button>
+        <div class="hf-timecode mono" id="hf-timecode" aria-live="off">00.0s / 09.0s</div>
+      </div>
+    </div>
+
+    <div class="hf-stage">
+      <!-- 3-Node Architecture Pipeline with SVG Signal Comet Connectors -->
+      <div class="hf-nodes-row" role="region" aria-label="Tahapan pengerjaan aplikasi">
+        <!-- Node 01 -->
+        <article class="hf-node is-active" data-hf-node="0" tabindex="0">
+          <div class="hf-node-top">
+            <h3 class="hf-node-title display">01 · Analisis &amp; Skema</h3>
+            <span class="hf-node-step mono" aria-hidden="true">Step 01</span>
+          </div>
+          <p class="hf-node-desc">
+            Observasi alur pengguna, penulisan Project Charter &amp; PRD, pemodelan ERD, serta aturan hak akses (RBAC).
+          </p>
+          <div class="hf-node-pills">
+            <span class="hf-tech-chip mono">Project Charter</span>
+            <span class="hf-tech-chip mono">PRD</span>
+            <span class="hf-tech-chip mono">ERD</span>
+            <span class="hf-tech-chip mono">RBAC</span>
+          </div>
+        </article>
+
+        <div class="hf-connector" data-hf-connector="0" aria-hidden="true">
+          <svg class="hf-signal-svg" viewBox="0 0 64 16" preserveAspectRatio="none">
+            <path class="hf-signal-base" d="M 2 8 H 62" />
+            <path class="hf-signal-fill" d="M 2 8 H 62" />
+            <path class="hf-signal-comet" d="M 2 8 H 62" pathLength="100" />
+            <circle class="hf-signal-dot" cx="4" cy="8" r="2.2" />
+            <circle class="hf-signal-dot hf-signal-dot-end" cx="60" cy="8" r="2.2" />
+          </svg>
+        </div>
+
+        <!-- Node 02 -->
+        <article class="hf-node" data-hf-node="1" tabindex="0">
+          <div class="hf-node-top">
+            <h3 class="hf-node-title display">02 · Aplikasi &amp; AI</h3>
+            <span class="hf-node-step mono" aria-hidden="true">Step 02</span>
+          </div>
+          <p class="hf-node-desc">
+            Membangun frontend responsif, REST API tervalidasi, integrasi Gemini API via proxy server, dan payment gateway.
+          </p>
+          <div class="hf-node-pills">
+            <span class="hf-tech-chip mono">Laravel</span>
+            <span class="hf-tech-chip mono">React</span>
+            <span class="hf-tech-chip mono">Flutter</span>
+            <span class="hf-tech-chip mono">Gemini API</span>
+          </div>
+        </article>
+
+        <div class="hf-connector" data-hf-connector="1" aria-hidden="true">
+          <svg class="hf-signal-svg" viewBox="0 0 64 16" preserveAspectRatio="none">
+            <path class="hf-signal-base" d="M 2 8 H 62" />
+            <path class="hf-signal-fill" d="M 2 8 H 62" />
+            <path class="hf-signal-comet" d="M 2 8 H 62" pathLength="100" />
+            <circle class="hf-signal-dot" cx="4" cy="8" r="2.2" />
+            <circle class="hf-signal-dot hf-signal-dot-end" cx="60" cy="8" r="2.2" />
+          </svg>
+        </div>
+
+        <!-- Node 03 -->
+        <article class="hf-node" data-hf-node="2" tabindex="0">
+          <div class="hf-node-top">
+            <h3 class="hf-node-title display">03 · Data &amp; Rilis</h3>
+            <span class="hf-node-step mono" aria-hidden="true">Step 03</span>
+          </div>
+          <p class="hf-node-desc">
+            Optimasi kueri PostgreSQL (Index &amp; Materialized View), feature test PHPUnit, CI GitHub Actions, dan container Docker.
+          </p>
+          <div class="hf-node-pills">
+            <span class="hf-tech-chip mono">PostgreSQL</span>
+            <span class="hf-tech-chip mono">PHPUnit</span>
+            <span class="hf-tech-chip mono">Docker</span>
+            <span class="hf-tech-chip mono">Cloud Run</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Interactive Stage Workbench Panels (Synchronized with Timeline Tabs) -->
+      <div class="hf-workbench" id="hf-workbench">
+        <!-- Panel 0: Interactive ERD & RBAC Matrix -->
+        <div role="tabpanel" id="hf-wb-0" aria-labelledby="hf-tab-0" tabindex="0">
+          <div class="hf-wb-card">
+            <div class="hf-wb-head">
+              <div>
+                <span class="hf-wb-title display">Inspektor RBAC &amp; Relasi Skema · CUCI.IN</span>
+                <p class="hf-wb-caption">Pilih peran pengguna untuk melihat batas akses tabel database dan rute aplikasi.</p>
+              </div>
+              <div class="hf-wb-controls" role="group" aria-label="Pilih peran RBAC">
+                <button type="button" class="hf-wb-pill is-selected mono" data-rbac-role="admin" aria-pressed="true">Admin</button>
+                <button type="button" class="hf-wb-pill mono" data-rbac-role="kasir" aria-pressed="false">Kasir</button>
+                <button type="button" class="hf-wb-pill mono" data-rbac-role="pelanggan" aria-pressed="false">Pelanggan</button>
+              </div>
+            </div>
+
+            <div class="hf-wb-grid">
+              <div class="hf-wb-schema-flow mono" aria-label="Relasi entitas utama">
+                <span class="hf-entity">users</span>
+                <span class="hf-rel">1 → N</span>
+                <span class="hf-entity">laundry_orders</span>
+                <span class="hf-rel">1 → 1</span>
+                <span class="hf-entity">payments</span>
+                <span class="hf-rel">1 → N</span>
+                <span class="hf-entity">complaints</span>
+              </div>
+              <div class="hf-wb-output mono" id="hf-rbac-output">
+                <span class="hf-perm is-allow">✓ users (Kelola Akun + Proteksi Self-Disable)</span>
+                <span class="hf-perm is-allow">✓ financial_reports (Index Komposit)</span>
+                <span class="hf-perm is-allow">✓ orders &amp; complaints (Semua Cabang)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 1: Interactive Gemini Natural Language -> JSON Proxy Tester -->
+        <div role="tabpanel" id="hf-wb-1" aria-labelledby="hf-tab-1" hidden="until-found">
+          <div class="hf-wb-card">
+            <div class="hf-wb-head">
+              <div>
+                <span class="hf-wb-title display">Simulasi Ekstraksi Bahasa Alami · AI Finance (AIAAS)</span>
+                <p class="hf-wb-caption">Pilih kalimat input untuk melihat kontrak JSON hasil validasi backend PHP 8 sebelum disimpan ke MySQL.</p>
+              </div>
+              <div class="hf-wb-controls" role="group" aria-label="Contoh kalimat transaksi">
+                <button type="button" class="hf-wb-pill is-selected mono" data-ai-preset="0" aria-pressed="true">"Beli kopi 25rb kemarin"</button>
+                <button type="button" class="hf-wb-pill mono" data-ai-preset="1" aria-pressed="false">"Bayar listrik 320rb"</button>
+                <button type="button" class="hf-wb-pill mono" data-ai-preset="2" aria-pressed="false">"Terima proyek 3.5jt"</button>
+              </div>
+            </div>
+
+            <pre class="hf-wb-json mono" id="hf-ai-json-output"><code>{`{
+  "raw_input": "Beli kopi 25rb kemarin",
+  "type": "expense",
+  "amount": 25000,
+  "category": "Konsumsi",
+  "relative_date": "yesterday",
+  "proxy": "server-side-validated"
+}`}</code></pre>
+          </div>
+        </div>
+
+        <!-- Panel 2: Query Strategy & Automated Check Inspector -->
+        <div role="tabpanel" id="hf-wb-2" aria-labelledby="hf-tab-2" hidden="until-found">
+          <div class="hf-wb-card">
+            <div class="hf-wb-head">
+              <div>
+                <span class="hf-wb-title display">Strategi Query Dashboard &amp; CI Gate · IVSS &amp; CUCI.IN</span>
+                <p class="hf-wb-caption">Bandingkan pendekatan eksekusi query PostgreSQL serta tahapan uji otomatis sebelum rilis.</p>
+              </div>
+              <div class="hf-wb-controls" role="group" aria-label="Pilih strategi query">
+                <button type="button" class="hf-wb-pill is-selected mono" data-sql-mode="matview" aria-pressed="true">Materialized View</button>
+                <button type="button" class="hf-wb-pill mono" data-sql-mode="raw" aria-pressed="false">Standard Aggregation</button>
+              </div>
+            </div>
+
+            <div class="hf-wb-grid">
+              <div class="hf-wb-bench" id="hf-sql-bench">
+                <div class="hf-bench-row">
+                  <span class="mono" id="hf-sql-label">Materialized View PostgreSQL (Precomputed)</span>
+                  <span class="hf-bench-tag mono" id="hf-sql-badge">Ringan Saat Read</span>
+                </div>
+                <div class="hf-bench-track" aria-hidden="true">
+                  <div class="hf-bench-bar" id="hf-sql-bar" style="transform: scaleX(0.32);"></div>
+                </div>
+                <p class="hf-wb-note" id="hf-sql-desc">Data agregasi statistik Portal IVSS disiapkan lebih awal sehingga halaman dashboard tidak melakukan scan berulang.</p>
+              </div>
+
+              <div class="hf-wb-output mono">
+                <span class="hf-perm is-allow">✓ PHPUnit Feature Suite (CUCI.IN Auth &amp; Transaksi)</span>
+                <span class="hf-perm is-allow">✓ GitHub Actions Workflow (PR Gate)</span>
+                <span class="hf-perm is-allow">✓ Docker Container (BawangHub Cloud Run)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hf-timeline-bar">
+      <div class="hf-scrubber-wrap">
+        <div class="hf-scrubber-track">
+          <div class="hf-scrubber-progress" id="hf-scrubber-progress"></div>
+        </div>
+        <input
+          type="range"
+          id="hf-scrubber"
+          class="hf-scrubber-input"
+          min="0"
+          max="9000"
+          step="16"
+          value="0"
+          aria-label="Geser posisi waktu simulasi arsitektur"
+        />
+      </div>
+
+      <div class="hf-steps-tabs" role="tablist" focusgroup="tablist nomemory" aria-label="Pilih tahapan timeline">
+        <button type="button" id="hf-tab-0" class="hf-step-tab is-active" data-hf-step="0" role="tab" aria-selected="true" focusgroupstart>
+          <span>01 · Analisis &amp; Skema</span>
+          <span class="mono">0.0s</span>
+        </button>
+        <button type="button" id="hf-tab-1" class="hf-step-tab" data-hf-step="1" role="tab" aria-selected="false">
+          <span>02 · Aplikasi &amp; AI</span>
+          <span class="mono">3.0s</span>
+        </button>
+        <button type="button" id="hf-tab-2" class="hf-step-tab" data-hf-step="2" role="tab" aria-selected="false">
+          <span>03 · Data &amp; Rilis</span>
+          <span class="mono">6.0s</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

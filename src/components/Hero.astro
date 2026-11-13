@@ -1,48 +1,128 @@
 ---
-// Hero Section with Main Bio Panel & Interactive Photo Frame
----
-<section class="hero shell" aria-labelledby="hero-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 00 <span>PERKENALAN &amp; PROFIL UTAMA</span></div>
+import { SITE_CONFIG } from '../data/projects';
 
-  <div class="hero-grid">
-    <!-- Main Bio Panel -->
-    <div class="hero-main-panel comic-panel">
-      <div class="comic-page-index mono">P.001 <span>✦</span> PROFIL UTAMA</div>
-      <h1 class="hero-title display" id="hero-title">HALO, SAYA<br/><span class="highlight hero-name">MAULANA AHMAD BUKHORI!</span></h1>
-      <div class="hero-lead">
-        <span>JUNIOR SYSTEM ANALYST</span>
-        <span class="star-divider">✳</span>
-        <span>JUNIOR WEB &amp; MOBILE DEVELOPER</span>
+const ROLE_LENSES = [
+  {
+    id: 'analyst',
+    label: 'System Analyst',
+    summary: 'Project Charter, PRD terstruktur, pemodelan ERD, dan pembagian hak akses RBAC sebelum mulai ngoding.',
+    proofs: [
+      { id: 'cuciin', name: 'CUCI.IN · PRD & ERD' },
+      { id: 'aiaas', name: 'AIAAS · Kontrak JSON' }
+    ]
+  },
+  {
+    id: 'fullstack',
+    label: 'Full-Stack Web',
+    summary: 'Aplikasi Laravel, React TypeScript, API proxy server-side, optimasi Materialized View PostgreSQL & PHPUnit CI.',
+    proofs: [
+      { id: 'bawanghub', name: 'BawangHub · React PWA' },
+      { id: 'ivss', name: 'Portal IVSS · PostgreSQL' }
+    ]
+  },
+  {
+    id: 'mobile',
+    label: 'Mobile & AI',
+    summary: 'Aplikasi mobile Flutter dengan Riverpod, Midtrans Snap gateway, dan parser natural language berbasis Gemini API.',
+    proofs: [
+      { id: 'lapangku', name: 'Lapangku · Flutter' },
+      { id: 'aiaas', name: 'AIAAS · Gemini 2.5 Flash' }
+    ]
+  }
+];
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="shell">
+    <div class="hero-grid">
+    <!-- Primary Profile Card -->
+    <div class="hero-main-panel" data-spotlight>
+      <div class="hero-lead-content">
+        <div class="hero-status-row" data-enter="1">
+          <span class="status-pill">
+            <span class="status-dot" aria-hidden="true"></span>
+            {SITE_CONFIG.availability}
+          </span>
+        </div>
+
+        <h1 class="hero-title display" id="hero-title" data-enter="2" style="margin-top: 20px;">
+          {SITE_CONFIG.fullName}
+          <span class="hero-name">{SITE_CONFIG.role}</span>
+        </h1>
+
+        <p class="hero-desc" data-enter="3" style="margin-top: 16px;">
+          Mahasiswa D-IV Sistem Informasi Bisnis Polinema: analisis sistem, web, mobile, dan database.
+        </p>
+
+        <div class="hero-actions" data-enter="3" style="margin-top: 24px;">
+          <a class="button primary hero-btn-primary" href="#pekerjaan">
+            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            <span>Lihat Proyek</span>
+          </a>
+          <a class="button hero-btn-icon" href={SITE_CONFIG.cvUrl} download="CV-Maulana-Ahmad-Bukhori.pdf" aria-label="Unduh CV (PDF)" title="Unduh CV (PDF)">
+            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
+            </svg>
+            <span class="btn-label">Unduh CV</span>
+          </a>
+          <a class="button hero-btn-icon" href="#kontak" aria-label="Kontak" title="Kontak">
+            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <span class="btn-label">Kontak</span>
+          </a>
+        </div>
       </div>
-      <p class="hero-desc">Mahasiswa D-IV Sistem Informasi Bisnis (Semester 5), Politeknik Negeri Malang. Fokus pada analisis sistem, pemodelan basis data, serta pengembangan web dan mobile di tingkat junior.</p>
-      <div class="hero-actions">
-        <a class="button dark action-manga hero-btn-primary" href="#pekerjaan">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          <span>LIHAT PROYEK</span> <span class="arrow">↗</span>
-        </a>
-        <a class="button yellow hero-btn-icon" href="/CV-Maulana-Ahmad-Bukhori.pdf" download="CV-Maulana-Ahmad-Bukhori.pdf" aria-label="Unduh CV (PDF)" title="Unduh CV (PDF)">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/>
-          </svg>
-          <span class="btn-label">UNDUH CV <span class="arrow">↓</span></span>
-        </a>
-        <a class="button hero-btn-icon" href="#kontak" aria-label="Hubungi Saya" title="Hubungi Saya">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-          </svg>
-          <span class="btn-label">HUBUNGI SAYA <span class="arrow">→</span></span>
-        </a>
+
+      <!-- Interactive Role & Proof Dock (Menyeimbangkan tinggi kartu & memberi interaksi instan) -->
+      <div class="hero-role-dock" data-enter="4">
+        <div class="hero-role-head">
+          <div class="hero-role-tabs" role="tablist" focusgroup="tablist nomemory" aria-label="Pilih fokus peran dan studi kasus">
+            {ROLE_LENSES.map((lens, idx) => (
+              <button
+                type="button"
+                id={`hero-role-tab-${lens.id}`}
+                class="hero-role-tab"
+                role="tab"
+                aria-selected={idx === 0 ? 'true' : 'false'}
+                data-role-tab={lens.id}
+                {...(idx === 0 ? { focusgroupstart: '' } : {})}
+              >
+                {lens.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="hero-role-panels">
+          {ROLE_LENSES.map((lens, idx) => (
+            <div
+              role="tabpanel"
+              id={`hero-role-panel-${lens.id}`}
+              aria-labelledby={`hero-role-tab-${lens.id}`}
+              hidden={idx !== 0 ? 'until-found' : undefined}
+              tabindex={idx === 0 ? 0 : undefined}
+            >
+              <div class="hero-role-card">
+                <p class="hero-role-summary">{lens.summary}</p>
+                <div class="hero-proof-links">
+                  {lens.proofs.map(proof => (
+                    <button type="button" class="hero-proof-chip mono" data-project={proof.id}>
+                      <span>{proof.name}</span>
+                      <span aria-hidden="true">↗</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <span class="background-sfx display" aria-hidden="true">ドン!!</span>
     </div>
 
-    <!-- Interactive Photo Panel -->
-    <div class="photo-comic-panel comic-panel" id="photo-panel">
-      <div class="photo-speedlines" aria-hidden="true"></div>
-      <div class="photo-halftone" aria-hidden="true"></div>
-      <div class="photo-label mono">CHARACTER FILE <strong>#001</strong></div>
+    <!-- Portrait Panel -->
+    <aside class="photo-showcase-panel" id="photo-panel" aria-label="Foto profil" data-spotlight data-enter="4">
       <div class="photo-frame has-photo" id="photo-frame">
         <picture>
           <source srcset="/foto-profil.webp" type="image/webp" />
@@ -50,20 +130,37 @@
             id="profile-photo"
             class="profile-photo"
             src="/foto-profil.jpg"
-            alt="Foto profil profesional Maulana Ahmad Bukhori"
+            alt="Foto profil Maulana Ahmad Bukhori"
             width="560"
             height="700"
             fetchpriority="high"
             decoding="async"
           />
         </picture>
+        <div class="photo-dock">
+          <strong class="photo-dock-title display">Polinema · D-IV SIB</strong>
+          <span class="photo-dock-sub mono">Laravel · React · Flutter · PostgreSQL</span>
+        </div>
       </div>
-      <div class="photo-sfx display" aria-hidden="true">ゴゴゴ</div>
-      <div class="photo-caption">
-        <span class="photo-caption-name display">MAULANA AHMAD BUKHORI</span>
-        <span class="photo-caption-sub mono">D-IV SISTEM INFORMASI BISNIS · POLINEMA (SMT 5)</span>
-      </div>
-    </div>
+    </aside>
+  </div>
+
+  <div class="ambient-motion-bar">
+    <button
+      type="button"
+      id="ambient-motion-toggle"
+      class="ambient-motion-btn mono"
+      title="Jeda gerak latar"
+    >
+      <svg class="ambient-icon-pause" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true">
+        <rect x="3.5" y="2.5" width="3" height="11" rx="1" />
+        <rect x="9.5" y="2.5" width="3" height="11" rx="1" />
+      </svg>
+      <svg class="ambient-icon-play" viewBox="0 0 16 16" width="12" height="12" fill="currentColor" aria-hidden="true">
+        <path d="M4.5 2.75a.75.75 0 0 1 1.13-.65l7.5 4.25a.75.75 0 0 1 0 1.3l-7.5 4.25A.75.75 0 0 1 4.5 11.25z" />
+      </svg>
+      <span class="ambient-motion-label">Jeda gerak latar</span>
+    </button>
+  </div>
   </div>
 </section>
-

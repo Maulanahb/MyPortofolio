@@ -5,94 +5,92 @@
   <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="detail-name" tabindex="-1">
     <div id="detail-brand-bar" class="dialog-brand-bar" aria-hidden="true"></div>
     <button class="dialog-close" type="button" data-close aria-label="Tutup dialog">×</button>
-    <span class="eyebrow mono" id="detail-category">STUDI KASUS</span>
-    <h2 id="detail-name" class="display">PROJECT</h2>
-    <div id="detail-type" class="dialog-type-badge mono"></div>
+    <h2 id="detail-name" class="display">Project</h2>
+    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:18px;">
+      <span class="section-kicker mono" id="detail-category" style="margin:0;">Studi Kasus</span>
+      <span id="detail-type" class="dialog-type-badge mono" style="margin:0;"></span>
+    </div>
 
     <div class="dialog-preview-wrap">
       <div class="dialog-preview-head mono">
-        <span>PRATINJAU INTERAKTIF HALAMAN UTAMA APLIKASI</span>
-        <span id="detail-preview-badge">LIVE UI REPLICA</span>
+        <span>Pratinjau Antarmuka</span>
+        <span id="detail-preview-badge">Pratinjau</span>
       </div>
       <div id="detail-preview" class="dialog-preview"></div>
     </div>
 
     <div class="dialog-role-box">
       <div class="dialog-role-col">
-        <span class="dialog-role-label mono">PERAN &amp; TANGGUNG JAWAB</span>
+        <span class="dialog-role-label mono">Peran</span>
         <p id="detail-role" class="dialog-role-text"></p>
       </div>
       <div class="dialog-role-col">
-        <span class="dialog-role-label mono">DOKUMENTASI &amp; ARTEFAK PROYEK</span>
+        <span class="dialog-role-label mono">Artefak Proyek</span>
         <div id="detail-artifacts" class="dialog-artifacts-list"></div>
       </div>
     </div>
 
     <div class="dialog-grid">
       <div>
-        <h3 class="mono">Masalah Bisnis (Kondisi As-Is)</h3>
+        <h3 class="mono">Masalah</h3>
         <p id="detail-problem"></p>
       </div>
       <div>
-        <h3 class="mono">Solusi &amp; Arsitektur (Kondisi To-Be)</h3>
+        <h3 class="mono">Solusi</h3>
         <p id="detail-approach"></p>
       </div>
     </div>
 
-    <h3 class="mono">Proses Pengerjaan (Analisis Kebutuhan → Desain → Implementasi)</h3>
+    <h3 class="mono">Proses Pengerjaan</h3>
     <div class="dialog-process-grid">
       <div class="dialog-process-step">
-        <span class="process-step-num mono">01 · ANALISIS KEBUTUHAN</span>
+        <span class="process-step-num mono">01 · Analisis</span>
         <p id="detail-process-analysis"></p>
       </div>
       <div class="dialog-process-step">
-        <span class="process-step-num mono">02 · DESAIN SISTEM &amp; UI/UX</span>
+        <span class="process-step-num mono">02 · Desain</span>
         <p id="detail-process-design"></p>
       </div>
       <div class="dialog-process-step">
-        <span class="process-step-num mono">03 · IMPLEMENTASI &amp; PENGUJIAN</span>
+        <span class="process-step-num mono">03 · Implementasi</span>
         <p id="detail-process-impl"></p>
       </div>
     </div>
 
-    <h3 class="mono">Hasil &amp; Dampak Terukur</h3>
+    <h3 class="mono">Hasil</h3>
     <ul class="dialog-highlights dialog-impact-list" id="detail-impact-list"></ul>
 
-    <h3 class="mono">Fitur &amp; Kapabilitas Utama Aplikasi</h3>
+    <h3 class="mono">Fitur Utama</h3>
     <ul class="dialog-highlights" id="detail-highlights"></ul>
 
-    <h3 class="mono">Tools &amp; Teknologi yang Dipakai</h3>
+    <h3 class="mono">Teknologi</h3>
     <div class="dialog-stack" id="detail-stack"></div>
 
-    <div class="dialog-actions" style="margin-top: 22px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <div class="dialog-actions">
       <button id="detail-demo-jump" class="button tiny modal-btn-primary" type="button">
-        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
-        <span>Coba Pratinjau <span class="btn-label">Interaktif</span></span> <span class="arrow">↑</span>
+        <span>Coba Pratinjau <span class="btn-label">Interaktif</span></span>
       </button>
-      <a id="detail-demo-url" class="button yellow tiny modal-btn-icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Buka Live Demo" title="Buka Live Demo" style="display: none;">
-        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <a id="detail-demo-url" class="button primary tiny modal-btn-icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Buka Live Demo" title="Buka Live Demo" style="display: none;">
+        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
         </svg>
-        <span class="btn-label">Buka Live Demo <span class="arrow">↗</span></span>
+        <span class="btn-label">Live Demo</span>
       </a>
       <a id="detail-figma-url" class="button tiny modal-btn-icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Prototipe Figma" title="Prototipe Figma" style="display: none;">
-        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/>
         </svg>
-        <span class="btn-label">Prototipe Figma <span class="arrow">↗</span></span>
+        <span class="btn-label">Figma</span>
       </a>
-      <a id="detail-repo" class="button dark tiny modal-btn-icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Kunjungi GitHub Repository" title="Kunjungi GitHub Repository">
+      <a id="detail-repo" class="button secondary tiny modal-btn-icon" href="#" target="_blank" rel="noopener noreferrer" aria-label="Buka GitHub Repository" title="Buka GitHub Repository">
         <svg class="btn-svg" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
           <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
         </svg>
-        <span class="btn-label">Kunjungi GitHub Repository <span class="arrow">↗</span></span>
+        <span class="btn-label">GitHub</span>
       </a>
-    </div>
-
-    <div class="dialog-note">
-      Studi kasus disusun berdasarkan rekam jejak nyata commit, Pull Request, artefak perancangan (Project Charter, PRD, Procurement Plan, Skema DB), dan implementasi kode sumber pada repositori GitHub resmi.
     </div>
   </div>
 </div>

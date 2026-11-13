@@ -1,20 +1,88 @@
 ---
 import { PROJECTS } from '../data/projects';
 import ProjectCard from './ProjectCard.astro';
+
+const totalCount = PROJECTS.length;
+const webCount = PROJECTS.filter(p => p.domains.includes('web')).length;
+const mobileCount = PROJECTS.filter(p => p.domains.includes('mobile')).length;
+const aiCount = PROJECTS.filter(p => p.domains.includes('ai')).length;
 ---
 
-<section class="section shell" id="pekerjaan" aria-labelledby="project-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 02 <span>STUDI KASUS PROYEK UTAMA</span></div>
-  <div class="section-head">
-    <div>
-      <div class="eyebrow mono">✦ STUDI KASUS PILIHAN</div>
-      <h2 id="project-title" class="section-title display">STUDI KASUS PROYEK<br/><span class="title-highlight">&amp; PENGEMBANGAN SISTEM.</span></h2>
-    </div>
-  </div>
+<section class="section bg-dusk-band" id="pekerjaan" aria-labelledby="project-title">
+  <div class="shell">
+    <div class="section-head projects-head">
+      <div>
+        <h2 id="project-title" class="section-title display">Proyek <span class="title-highlight">Pilihan</span></h2>
+        <p class="section-subtitle">
+          Klik elemen di dalam pratinjau aplikasi atau buka studi kasus untuk meninjau analisis, database, dan implementasinya.
+        </p>
+      </div>
 
-  <div class="projects-grid">
-    {PROJECTS.map(project => (
-      <ProjectCard project={project} />
-    ))}
+      <div class="projects-filter-wrap">
+        <div
+          class="projects-filter-tabs"
+          role="tablist"
+          focusgroup="tablist nomemory"
+          aria-label="Filter kategori proyek"
+        >
+          <button
+            type="button"
+            class="filter-tab"
+            role="tab"
+            data-project-filter="all"
+            aria-selected="true"
+            focusgroupstart
+          >
+            <span>Semua</span>
+            <span class="filter-count mono">{totalCount}</span>
+          </button>
+          <button
+            type="button"
+            class="filter-tab"
+            role="tab"
+            data-project-filter="web"
+            aria-selected="false"
+          >
+            <span>Web</span>
+            <span class="filter-count mono">{webCount}</span>
+          </button>
+          <button
+            type="button"
+            class="filter-tab"
+            role="tab"
+            data-project-filter="mobile"
+            aria-selected="false"
+          >
+            <span>Mobile</span>
+            <span class="filter-count mono">{mobileCount}</span>
+          </button>
+          <button
+            type="button"
+            class="filter-tab"
+            role="tab"
+            data-project-filter="ai"
+            aria-selected="false"
+          >
+            <span>AI Integration</span>
+            <span class="filter-count mono">{aiCount}</span>
+          </button>
+        </div>
+
+        <div class="project-active-filter" id="project-skill-filter-pill" hidden>
+          <div class="project-active-filter-inner mono">
+            <span id="project-skill-filter-label">Stack: Laravel</span>
+            <button type="button" class="project-filter-reset" id="project-skill-filter-reset">
+              Reset ×
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="projects-grid" id="projects-grid">
+      {PROJECTS.map(project => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
   </div>
 </section>

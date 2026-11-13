@@ -2,58 +2,58 @@
 import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
 ---
 
-<!-- 5. PENGALAMAN & ORGANISASI -->
-<section class="section shell" id="pengalaman" aria-labelledby="exp-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 03 <span>PENGALAMAN &amp; KERJA TIM</span></div>
-  <div class="section-head">
+<!-- PENGALAMAN PROYEK -->
+<section class="section" id="pengalaman" aria-labelledby="exp-title">
+  <div class="shell">
+    <div class="section-head">
     <div>
-      <div class="eyebrow mono">✦ REKAM JEJAK &amp; KERJA TIM</div>
-      <h2 class="section-title display" id="exp-title">PENGALAMAN PROYEK<br/><span class="title-highlight">&amp; KOLABORASI TIM.</span></h2>
+      <h2 class="section-title display" id="exp-title">Pengalaman <span class="title-highlight">Proyek</span></h2>
+      <p class="section-subtitle">Peran sebagai system analyst, web developer, dan mobile developer di proyek tim maupun individu.</p>
     </div>
   </div>
 
   <div class="exp-grid">
-    {EXPERIENCES.map((exp, idx) => (
-      <article class="exp-card comic-panel">
+    {EXPERIENCES.map(exp => (
+      <article class="exp-card" data-spotlight>
         <div class="exp-card-head">
+          <h3 class="exp-role display">{exp.role}</h3>
           <span class="exp-period mono">{exp.period}</span>
-          <span class="exp-type-badge mono">{exp.type}</span>
         </div>
-
-        <h3 class="exp-role display">{exp.role}</h3>
         <div class="exp-org mono">{exp.organization}</div>
         <p class="exp-summary">{exp.summary}</p>
 
         <div class="exp-contrib-wrap">
-          <div class="exp-contrib-label mono">TANGGUNG JAWAB &amp; KONTRIBUSI:</div>
+          <div class="exp-contrib-label mono">Kontribusi</div>
           <ul class="exp-contrib-list">
             {exp.contributions.map(item => (
               <li>{item}</li>
             ))}
           </ul>
+          <div class="exp-meta-foot">
+            <span class="exp-type-badge mono">{exp.type}</span>
+          </div>
         </div>
-        <span class="exp-index-watermark display" aria-hidden="true">0{idx + 1}</span>
       </article>
     ))}
+  </div>
   </div>
 </section>
 
 <hr class="section-rule" />
 
-<!-- 6. PENDIDIKAN DAN CAPAIAN -->
-<section class="section shell" id="pendidikan" aria-labelledby="edu-title">
-  <div class="chapter-kicker mono">✦ CHAPTER 04 <span>PENDIDIKAN &amp; CAPAIAN</span></div>
-  <div class="section-head">
+<!-- PENDIDIKAN DAN SERTIFIKASI -->
+<section class="section" id="pendidikan" aria-labelledby="edu-title">
+  <div class="shell">
+    <div class="section-head">
     <div>
-      <div class="eyebrow mono">✦ LATAR AKADEMIK &amp; PRESTASI</div>
-      <h2 class="section-title display" id="edu-title">RIWAYAT PENDIDIKAN<br/><span class="title-highlight">&amp; PENCAPAIAN.</span></h2>
+      <h2 class="section-title display" id="edu-title">Pendidikan <span class="title-highlight">&amp; Sertifikasi</span></h2>
+      <p class="section-subtitle">Latar belakang pendidikan vokasi dan sertifikasi pendukung.</p>
     </div>
   </div>
 
   <div class="edu-credentials-grid">
     <!-- Kartu Utama Pendidikan -->
-    <article class="edu-main-card comic-panel">
-      <div class="edu-card-kicker mono">PENDIDIKAN TINGGI VOKASI</div>
+    <article class="edu-main-card" data-spotlight>
       <h3 class="edu-campus display">{EDUCATION_INFO.campus}</h3>
       <div class="edu-program-row">
         <strong class="edu-program">{EDUCATION_INFO.program}</strong>
@@ -62,39 +62,34 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
 
       <div class="edu-stats-strip">
         <div class="edu-stat-box">
-          <span class="mono">PERIODE STUDI</span>
+          <span class="mono">Periode</span>
           <strong>{EDUCATION_INFO.period}</strong>
         </div>
         <div class="edu-stat-box">
-          <span class="mono">STATUS SAAT INI</span>
+          <span class="mono">Semester</span>
           <strong>{EDUCATION_INFO.semester}</strong>
         </div>
         <div class="edu-stat-box highlight">
-          <span class="mono">KETERSEDIAAN</span>
-          <strong>Siap Magang atau PKL</strong>
-        </div>
-        <div class="edu-stat-box">
-          <span class="mono">REPOSITORI PUBLIK</span>
-          <strong>{EDUCATION_INFO.repoMetric}</strong>
+          <span class="mono">Status</span>
+          <strong class="status-inline"><span class="status-dot" aria-hidden="true"></span>{EDUCATION_INFO.status}</strong>
         </div>
       </div>
 
       <p class="edu-summary">{EDUCATION_INFO.summary}</p>
     </article>
 
-    <!-- Kolom Kanan: Sertifikasi Resmi -->
+    <!-- Kolom Kanan: Sertifikasi -->
     <div class="edu-side-stack">
-      <article class="cred-box comic-panel">
+      <article class="cred-box" data-spotlight>
         <div class="cred-box-head">
-          <span class="cred-tag pop mono">SERTIFIKASI RESMI</span>
-          <h3 class="display">SERTIFIKAT KOMPETENSI</h3>
+          <h3 class="display">Sertifikasi</h3>
         </div>
         <ul class="cred-list">
           {CERTIFICATIONS.map(cert => (
             <li class="cred-item">
               <div class="cred-item-top">
-                <span class="ach-badge mono">{cert.issuer} · {cert.year}</span>
                 <strong class="cred-name">{cert.name}</strong>
+                <span class="ach-badge mono">{cert.issuer} · {cert.year}</span>
               </div>
               <p class="cred-focus">{cert.focus}</p>
               {cert.credentialUrl && (
@@ -106,7 +101,7 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
                     rel="noopener noreferrer"
                   >
                     <span>Verifikasi Sertifikat</span>
-                    <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7m0 0H8m9 0v9"/></svg>
+                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7m0 0H8m9 0v9"/></svg>
                   </a>
                 </div>
               )}
@@ -115,5 +110,6 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
         </ul>
       </article>
     </div>
+  </div>
   </div>
 </section>
