@@ -158,17 +158,21 @@ const jsonLd = {
 <body data-palette="daylight">
   <script is:inline>
     (function () {
+      var schemeMeta = document.querySelector('meta[name="color-scheme"]');
+      var themeMeta = document.querySelector('meta[name="theme-color"]');
+      var palette = null;
       try {
-        var palette = localStorage.getItem('porto_palette');
-        if (palette === 'obsidian' || palette === 'graphite') {
-          document.documentElement.dataset.palette = palette;
-          document.body.dataset.palette = palette;
-        }
-        if (localStorage.getItem('porto_ambient_motion') === 'paused') {
-          document.body.dataset.ambientMotion = 'paused';
-        }
+        palette = localStorage.getItem('porto_palette');
       } catch (_e) {
-        // Ignore storage read errors in restricted contexts
+        palette = null;
+      }
+      if (palette === 'obsidian' || palette === 'graphite') {
+        document.documentElement.dataset.palette = palette;
+        document.body.dataset.palette = palette;
+        if (schemeMeta) schemeMeta.setAttribute('content', palette === 'obsidian' ? 'dark' : 'light');
+        if (themeMeta) themeMeta.setAttribute('content', palette === 'obsidian' ? '#09090b' : '#eae9e4');
+      } else {
+        if (schemeMeta) schemeMeta.setAttribute('content', 'light');
       }
     })();
   </script>

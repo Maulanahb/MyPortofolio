@@ -47,6 +47,7 @@ export interface SiteConfig {
   githubHandle: string;
   nim: string;
   role: string;
+  photoQuote: string;
   positioning: string;
   tagline: string;
   campus: string;
@@ -69,6 +70,7 @@ export const SITE_CONFIG: SiteConfig = {
   githubHandle: "Maulanahb",
   nim: "244107060133",
   role: "System Analyst & Web / Mobile Developer",
+  photoQuote: "Whatever my boss wants me to be or do",
   positioning: "Mahasiswa D-IV Sistem Informasi Bisnis di Politeknik Negeri Malang. Fokus pada analisis kebutuhan sistem, aplikasi web (Laravel & React), dan mobile (Flutter).",
   tagline: "Merancang kebutuhan sistem, skema database, hingga implementasi aplikasi web dan mobile.",
   campus: "Politeknik Negeri Malang (Polinema)",

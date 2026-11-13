@@ -13,8 +13,7 @@ import {
   initPointerSpotlight,
   initHeroRoleDock,
   initArchitectureWorkbench,
-  initProjectFilterAndSkillBridge,
-  initAmbientBackdrop
+  initProjectFilterAndSkillBridge
 } from './motion';
 import { techIconIds } from '../data/tech-icon-ids';
 
@@ -23,7 +22,6 @@ const overlayStack: HTMLElement[] = [];
 let priorFocus: HTMLElement | null = null;
 let toastTimer: number | null = null;
 let fitPreviewsCached: (() => void) | null = null;
-let toggleAmbientMotion: (() => boolean) | null = null;
 
 // Notifikasi Toast
 export function notify(msg: string): void {
@@ -234,13 +232,24 @@ export function setPalette(paletteId: string, showNotification = false): void {
   const validPalette = PALETTES.find(p => p.id === paletteId) || PALETTES[0];
   document.documentElement.dataset.palette = validPalette.id;
   document.body.dataset.palette = validPalette.id;
-  localStorage.setItem('porto_palette', validPalette.id);
+
+  try {
+    localStorage.setItem('porto_palette', validPalette.id);
+  } catch {
+    // Ignore storage write errors in restricted browsing contexts
+  }
 
   currentPaletteIdx = PALETTES.findIndex(p => p.id === validPalette.id);
 
-  const labelEl = document.getElementById('palette-label');
-  if (labelEl) {
-    labelEl.textContent = validPalette.name;
+  document.querySelectorAll<HTMLButtonElement>('[data-palette-option]').forEach(btn => {
+    const isActive = btn.dataset.paletteOption === validPalette.id;
+    btn.setAttribute('aria-checked', String(isActive));
+    btn.tabIndex = isActive ? 0 : -1;
+  });
+
+  const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+  if (colorSchemeMeta) {
+    colorSchemeMeta.content = validPalette.id === 'obsidian' ? 'dark' : 'light';
   }
 
   const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
@@ -355,16 +364,6 @@ const COMMANDS: CommandItem[] = [
   { label: 'Aktifkan Tema Daylight (Light Mode)', meta: 'Tema', action: () => setPalette('daylight', true) },
   { label: 'Aktifkan Tema Obsidian (Dark Mode)', meta: 'Tema', action: () => setPalette('obsidian', true) },
   { label: 'Aktifkan Tema Graphite (Warm Titanium)', meta: 'Tema', action: () => setPalette('graphite', true) },
-  {
-    label: 'Jeda / Putar Gerak Latar',
-    meta: 'Atmosfer',
-    action: () => {
-      const nextPaused = toggleAmbientMotion?.();
-      if (typeof nextPaused === 'boolean') {
-        notify(nextPaused ? 'Gerak latar dijeda' : 'Gerak latar diaktifkan');
-      }
-    }
-  },
   { label: 'Alur Kerja Proyek', meta: 'Navigasi', action: () => goToSection('#arsitektur') },
   { label: 'Tentang Saya & Status', meta: 'Navigasi', action: () => goToSection('#tentang') },
   { label: 'Tech Stack & Keahlian', meta: 'Navigasi', action: () => goToSection('#keahlian') },
@@ -386,11 +385,7 @@ export function renderCommands(search = ''): void {
   if (!commandResults || !commandOverlay) return;
 
   const query = search.trim().toLowerCase();
-  const reduced = prefersReducedMotion();
-  const matched = COMMANDS.filter(cmd => {
-    if (reduced && cmd.meta === 'Atmosfer') return false;
-    return (cmd.label + ' ' + cmd.meta).toLowerCase().includes(query);
-  });
+  const matched = COMMANDS.filter(cmd => (cmd.label + ' ' + cmd.meta).toLowerCase().includes(query));
 
   commandResults.replaceChildren();
 
@@ -435,18 +430,69 @@ export function showCommands(): void {
 
 // Inisialisasi Utama saat DOM Siap
 export function initPortfolioApp(): void {
-  // 1. Inisialisasi Mode Tampilan (Migrasi nilai lama ke Daylight + bind tombol switcher)
-  let savedPalette = localStorage.getItem('porto_palette') || 'daylight';
-  if (!PALETTES.some(p => p.id === savedPalette)) {
+  // 1. Inisialisasi Mode Tampilan (Migrasi nilai lama ke Daylight + bind segmented switch)
+  let savedPalette: string | null = null;
+  try {
+    savedPalette = localStorage.getItem('porto_palette');
+  } catch {
+    savedPalette = null;
+  }
+  if (!savedPalette || !PALETTES.some(p => p.id === savedPalette)) {
     savedPalette = 'daylight';
-    localStorage.setItem('porto_palette', 'daylight');
+    try {
+      localStorage.setItem('porto_palette', 'daylight');
+    } catch {
+      // Ignore storage write errors
+    }
   }
   setPalette(savedPalette, false);
 
-  const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => cyclePalette(true));
-  }
+  const themeSwitcher = document.getElementById('theme-switcher');
+  const paletteButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-palette-option]')];
+
+  paletteButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const optionId = btn.dataset.paletteOption;
+      if (optionId && optionId !== document.body.dataset.palette) {
+        setPalette(optionId, true);
+      }
+    });
+  });
+
+  themeSwitcher?.addEventListener('keydown', e => {
+    if (!paletteButtons.length) return;
+    const currentIdx = Math.max(
+      0,
+      paletteButtons.findIndex(btn => btn.getAttribute('aria-checked') === 'true')
+    );
+    let nextIdx: number | null = null;
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIdx = (currentIdx + 1) % paletteButtons.length;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIdx = (currentIdx - 1 + paletteButtons.length) % paletteButtons.length;
+    } else if (e.key === 'Home') {
+      nextIdx = 0;
+    } else if (e.key === 'End') {
+      nextIdx = paletteButtons.length - 1;
+    }
+
+    if (nextIdx !== null) {
+      e.preventDefault();
+      const targetBtn = paletteButtons[nextIdx];
+      const optionId = targetBtn?.dataset.paletteOption;
+      if (optionId) {
+        setPalette(optionId, true);
+        targetBtn.focus();
+      }
+    }
+  });
+
+  window.addEventListener('storage', e => {
+    if (e.key === 'porto_palette' && e.newValue && PALETTES.some(p => p.id === e.newValue)) {
+      setPalette(e.newValue, false);
+    }
+  });
 
   // 2. Modals & Project Click Bindings
   document.querySelectorAll('[data-project]').forEach(btn => {
@@ -668,7 +714,6 @@ export function initPortfolioApp(): void {
   });
 
   // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Signal Pipeline, Project Filters)
-  toggleAmbientMotion = initAmbientBackdrop();
   initPointerSpotlight();
   initHeroRoleDock();
   initArchitectureWorkbench();

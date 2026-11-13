@@ -24,18 +24,63 @@
         <a href="#kontak" data-nav="kontak">Kontak</a>
       </nav>
 
-      <!-- Header Utilities: Theme Mode Cycle, Quick Search (Cmd+K), Mobile Drawer -->
+      <!-- Header Utilities: 3-Mode Icon Switcher, Quick Search (Cmd+K), Mobile Drawer -->
       <div class="header-actions">
-        <button
-          type="button"
-          class="theme-pill-btn"
-          id="theme-toggle-btn"
-          aria-label="Ganti tema warna tampilan (tekan T)"
-          title="Ganti Tema: Daylight / Obsidian / Graphite (Shortcut: T)"
+        <div
+          class="theme-switch"
+          id="theme-switcher"
+          role="radiogroup"
+          aria-label="Pilih tema warna tampilan"
         >
-          <span class="theme-dot" aria-hidden="true"></span>
-          <span id="palette-label">Daylight</span>
-        </button>
+          <span class="theme-switch-thumb" aria-hidden="true"></span>
+
+          <button
+            type="button"
+            role="radio"
+            class="theme-switch-btn"
+            data-palette-option="daylight"
+            aria-checked="true"
+            aria-label="Tema Daylight (Terang)"
+            title="Daylight · Terang (Shortcut: T)"
+            tabindex="0"
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            role="radio"
+            class="theme-switch-btn"
+            data-palette-option="obsidian"
+            aria-checked="false"
+            aria-label="Tema Obsidian (Gelap)"
+            title="Obsidian · Gelap (Shortcut: T)"
+            tabindex="-1"
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            role="radio"
+            class="theme-switch-btn"
+            data-palette-option="graphite"
+            aria-checked="false"
+            aria-label="Tema Graphite (Netral Hangat)"
+            title="Graphite · Netral Hangat (Shortcut: T)"
+            tabindex="-1"
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" />
+            </svg>
+          </button>
+        </div>
 
         <button
           type="button"

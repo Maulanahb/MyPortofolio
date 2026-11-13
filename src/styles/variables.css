@@ -34,6 +34,7 @@
   color-scheme: light;
 }
 
+:root:has(> head > meta[name='color-scheme'][content='dark']),
 :root:has(body[data-palette='obsidian']) {
   color-scheme: dark;
 }
