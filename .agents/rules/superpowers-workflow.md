@@ -17,10 +17,14 @@ Aturan ini mewajibkan seluruh proses pengembangan fitur, perbaikan bug, atau res
 - **`copywriting` & `humanizer`**: Pastikan teks UI, label, pesan error, dan copy bebas dari tone generik AI dan sesuai standar editorial aplikasi.
 - **`generative_ui`**: Manfaatkan widget atau prototipe interaktif untuk menyepakati komponen visual kompleks.
 
-## 3. Fase 2: UI/UX & Design Standards
-- **`ui-ux-pro-max`**: Gunakan palet warna terstandar, tipografi modular, dan pedoman UX.
+## 3. Fase 2: UI/UX, Design System & Motion/Video Standards
+- **`awesome-design-md`**: Rujuk katalog 84 spesifikasi `DESIGN.md` standar industri (Linear, Stripe, Vercel, Claude, Apple, dll.) saat menyusun atau memperbarui `DESIGN.md` dan token sistem desain proyek.
+- **`ui-ux-pro-max` & `logo-design`**: Gunakan palet warna terstandar, tipografi modular, pedoman UX, serta perancangan identitas/logo SVG.
 - **`frontend-design` & `web-design-guidelines`**: Pastikan tata letak responsif, hierarki visual bersih, dan lolos standar WCAG accessibility.
+- **`design-taste-frontend` (`taste-skill`)**: Terapkan standar art direction anti-slop (satu section per layar, margin kiri-kanan seimbang, foto/UI asli, dan validasi browser `consistency.mjs` / `gate.mjs`).
+- **`hallmark`**: Gunakan katalog 50 tema (`theme.mjs`) untuk halaman baru atau `/hallmark redesign <path>`, serta jalankan `sloplint.mjs` (`--render`, `--before`, `--kept`) untuk mencegah regresi elemen dan *AI-slop*.
 - **`impeccable`**: Jalankan audit `impeccable detect` untuk mencegah *UI slop* (side-tabs palsu, clashing borders, font size liar di luar `DESIGN.md`).
+- **`hyperframes` Suite (`hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`, `style-sampling`, `reverse-any-video`, `figma`, `slideshow`, `remotion-to-hyperframes`)**: Gunakan saat membuat video promosi/demo deterministik berbasis HTML/CSS ke MP4, deck presentasi interaktif (`hyperframes present`), atau animasi motion dari Figma/Remotion.
 
 ## 4. Fase 3: Strategy & Planning
 - **`ponytail`**: Terapkan filter YAGNI — ambil solusi paling ringkas yang menuntaskan masalah secara kokoh tanpa over-engineering.
@@ -38,7 +42,8 @@ Aturan ini mewajibkan seluruh proses pengembangan fitur, perbaikan bug, atau res
 - **`diagnosing-superpowers`**: Jalankan evaluasi jika ada subagent atau proses otomasi yang macet / looping.
 
 ## 7. Fase 6: Verification & Completion
-- **`verification-before-completion`**: Bukti sebelum klaim — wajib jalankan test, linter, dan `npm run build` dan pastikan hasil exit code 0 sebelum menyatakan selesai.
+- **`verification-before-completion`**: Bukti sebelum klaim — wajib jalankan test, linter, audit UI (`impeccable detect`, `consistency.mjs`, `sloplint.mjs`, atau `npx hyperframes check --json` untuk proyek video), dan `npm run build` dengan hasil exit code 0 sebelum menyatakan selesai.
+- **`browser-use` Suite (`browser-use`, `qa`, `remote-browser`, `cloud`, `open-source`, `x402`)**: Gunakan saat membutuhkan verifikasi browser nyata via CDP/Cloud, QA testing end-to-end dengan skor `1–5` dan bukti error console/network (`qa`), kontrol browser terisolasi (`remote-browser`), atau integrasi SDK/Cloud (`open-source`, `cloud`, `x402`).
 - **`requesting-code-review` & `receiving-code-review`**: Tinjau hasil kerja terhadap kriteria penerimaan secara objektif dan teliti.
 - **`finishing-a-development-branch`**: Lakukan merge bersih dan hapus worktree sementara.
 - **`graphify update .`**: Selalu perbarui knowledge graph AST setelah memodifikasi file kode agar graphify tetap akurat.

@@ -7,7 +7,31 @@ node_modules/
 # Agent Workspaces & External Skill Repos
 .agents/teamwork/
 .agents/skills/logo-design/
+.agents/skills/awesome-design-md/
+.agents/skills/browser-use/
+.agents/skills/cloud/
+.agents/skills/design-taste-frontend/
+.agents/skills/figma/
+.agents/skills/hallmark/
+.agents/skills/hyperframes/
+.agents/skills/hyperframes-cli/
+.agents/skills/hyperframes-registry/
+.agents/skills/media-use/
+.agents/skills/open-source/
+.agents/skills/qa/
+.agents/skills/remote-browser/
+.agents/skills/remotion-to-hyperframes/
+.agents/skills/reverse-any-video/
+.agents/skills/slideshow/
+.agents/skills/style-sampling/
+.agents/skills/x402/
 .superpowers/
+docs/superpowers/
+
+# Knowledge Graph & Motion CLI Cache
+graphify-out/
+hyperframes/
+.hyperframes/
 
 # Environment Variables
 .env
