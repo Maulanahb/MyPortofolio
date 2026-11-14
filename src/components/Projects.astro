@@ -30,41 +30,45 @@ const aiCount = PROJECTS.filter(p => p.domains.includes('ai')).length;
             class="filter-tab"
             role="tab"
             data-project-filter="all"
+            data-spark
             aria-selected="true"
             focusgroupstart
           >
             <span>Semua</span>
-            <span class="filter-count mono">{totalCount}</span>
+            <span class="filter-count mono" data-countup-target={totalCount}>{totalCount}</span>
           </button>
           <button
             type="button"
             class="filter-tab"
             role="tab"
             data-project-filter="web"
+            data-spark
             aria-selected="false"
           >
             <span>Web</span>
-            <span class="filter-count mono">{webCount}</span>
+            <span class="filter-count mono" data-countup-target={webCount}>{webCount}</span>
           </button>
           <button
             type="button"
             class="filter-tab"
             role="tab"
             data-project-filter="mobile"
+            data-spark
             aria-selected="false"
           >
             <span>Mobile</span>
-            <span class="filter-count mono">{mobileCount}</span>
+            <span class="filter-count mono" data-countup-target={mobileCount}>{mobileCount}</span>
           </button>
           <button
             type="button"
             class="filter-tab"
             role="tab"
             data-project-filter="ai"
+            data-spark
             aria-selected="false"
           >
             <span>AI Integration</span>
-            <span class="filter-count mono">{aiCount}</span>
+            <span class="filter-count mono" data-countup-target={aiCount}>{aiCount}</span>
           </button>
         </div>
 

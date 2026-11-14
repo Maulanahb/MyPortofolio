@@ -52,10 +52,10 @@ Every section ground adapts cleanly across Daylight, Obsidian, and Graphite whil
 
 ## 4. Layout Grid, Spacing & Elevation
 
-- **Max Container Width (`.shell`)**: `1200px` centered with `24px` horizontal padding (`16px` on mobile).
-- **Floating Frosted Header (`#site-header`)**: Pill-shaped sticky navbar with `backdrop-filter: blur(18px) saturate(180%)` backed by `--glass` and bordered with `1px solid var(--line)`.
+- **Max Container Width (`.shell`)**: `1200px` centered with `24px` horizontal padding (`20px` on tablet, `16px` on `<= 580px` mobile — using **Clean Recruiter Mobile**: full-width primary cards + large live previews paired with structured 2/3-column metadata sub-grids).
+- **Floating Frosted Header (`#site-header`)**: Pill-shaped sticky navbar across all viewports (single-row on desktop, 2-tier scrollable pill bar without hamburger drawer on `<= 860px`) with `backdrop-filter: blur(18px) saturate(180%)` backed by `--glass` and bordered with `1px solid var(--line)`.
 - **Bento Grid Rhythm**:
-  - **Hero Bento (`.hero-grid`)**: `minmax(0, 1.35fr) minmax(300px, 0.65fr)`, pairing primary identity/KPIs with an asymmetric studio portrait panel.
+  - **Hero Bento (`.hero-grid`)**: `minmax(0, 1.35fr) minmax(300px, 0.72fr)`, pairing primary identity/Role Dock (with `.lanyard-panel` on the right column: WebGL Three.js 4-link woven strap & brushed metallic clamp, holographic foil + 6DOF rigid-body physics, and 2-sided Credential & Link Card flip with accessible LCP/reduced-motion DOM fallback; across desktop and mobile viewports the lanyard stage rides on the frontmost normal page layer with generous unclipped drag overscan and hit-accurate pointer passthrough; when scrolled past Hero on desktop `> 1050px`, `#floating-lanyard` drops into the frontmost top-right layer above sections & `.site-header` with scroll-velocity sway & quick actions, cleanly below modals/toasts).
   - **Pipeline Bento (`.pipeline-grid`)**: Equal 3-column system engineering cards (`1px solid var(--line)`).
   - **HyperFrames Showcase (`.hf-showcase`)**: Deterministic interactive architecture player with Play/Pause, step selectors, and scrubber bar.
   - **Projects Bento (`.projects-grid`)**: Asymmetric 6-column grid (`span 4` feature + `span 2` companion, followed by `span 3` + `span 3`, finishing with `span 6` full-width interactive CUCI.IN 3-screen showcase).
@@ -71,7 +71,7 @@ Every section ground adapts cleanly across Daylight, Obsidian, and Graphite whil
 3. **Motion Restraint**:
    - No `transition: all` anywhere in `variables.css`, `base.css`, `components.css`, or `replicas.css`.
    - Never animate `width`, `height`, `top`, `left`, `margin`, or `padding`; animate `transform` and `opacity` only.
-   - `prefers-reduced-motion: reduce` flattens animations and renders deterministic timelines statically at rest.
+   - `prefers-reduced-motion: reduce` flattens animations and renders deterministic timelines (keeping `<canvas class="page-swarm-canvas">` as a static resting orthogonal grid at `data-swarm-state="static"` and using an instant accessible DOM lanyard fallback without WebGL 3D spin or spring oscillation); `.page-swarm-canvas` renders a Charcoal UI–style interactive `CursorGrid` (`gap: 28px`, `radius: 140px`, micro-crosses that light up in `--accent`, scale up, rotate to face the pointer, and slowly cool down afterwards, settling to `0% Idle CPU`), while the WebGL lanyard yields to `0% Idle CPU` when offscreen, dismissed, tab-hidden, or settled under reduced motion.
 4. **Overflow & Accessibility**:
    - Root uses `overflow-x: clip` (preserving `position: sticky`).
    - All controls have visible, instant `:focus-visible` `2px solid var(--accent)` focus outlines.
@@ -83,7 +83,7 @@ Every section ground adapts cleanly across Daylight, Obsidian, and Graphite whil
 
 - `src/styles/variables.css`: `@property` color registrations, root `color-scheme` sync (`:root:has(...)`), + `daylight`, `obsidian`, `graphite` palette and `--bg-*` backdrop tokens.
 - `src/styles/base.css`: Global resets, `overflow-x: clip`, `:focus-visible`, typography helpers, reduced-motion guard.
-- `src/styles/backgrounds.css`: Tri-mode CSS background atmosphere system (`.page-atmosphere` static SVG `<feTurbulence>` noise tile, `.bg-opening-stage` topglow, center-masked clamped container vertical alignment rails & `24px` perimeter coordinate dots, `.ambient-mesh` scroll-driven glow depth (`@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%))`), `.bg-dusk-band` 9-stop `oklab` smoothstep section melt, `.bg-closing-arcs` concentric rings, `.site-footer-horizon` horizon dome rim, and `forced-colors` / `print` fallbacks).
+- `src/styles/backgrounds.css`: Full-page tri-mode CSS background atmosphere system (`.page-atmosphere` SVG film grain, `.page-swarm-canvas` Charcoal UI `CursorGrid` behind-cards canvas layer, `.page-stage-host` container-aligned vertical guide rails & crosshair `+` section dividers, `.bg-opening-stage` triple topglow, outer-gutter `.ambient-mesh` scroll-driven glow plumes, `.bg-blueprint-stage` diagonal prism light beam + center spine for `#tentang`/`#keahlian`, `.bg-dusk-band` 9-stop `oklab` smoothstep band + dual spotlight for `#pekerjaan`, `.bg-contour-stage` concentric technical contours for `#pengalaman`/`#pendidikan`, `.bg-closing-arcs` rings for `#kontak`, `.site-footer-horizon` dome rim, and `forced-colors`/`print` fallbacks).
 - `src/styles/components.css`: Clean Bento shell, frosted navbar (with segmented 3-icon theme switch), Hero Bento, Pipeline Bento, HyperFrames Showcase, Project Bento cards, Modal & Command Palette.
 - `src/styles/replicas.css`: Isolated CSS for all 5 interactive UI replicas (`BawangHub`, `Lapangku`, `PBL-IVSS`, `CUCI.IN`, `AIAAS`) + modal scale rules.
 - `src/components/HyperFramesFlow.astro` & `hyperframes/portfolio-showcase/index.html`: Deterministic motion architecture timeline component and standalone HyperFrames composition.

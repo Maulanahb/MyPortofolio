@@ -4313,7 +4313,7 @@
 }
 }
 
-/* Responsive Replica Scaling (Tablets & Mobile) */
+/* Responsive Replica Scaling (Tablets & Mobile - Dynamic fitProjectPreviews() handles exact ratios) */
 @media (max-width: 1050px) {
   .phone-mockup-wrap {
     margin: 4px auto;
@@ -4326,41 +4326,5 @@
   .app-ivss,
   .app-aiaas {
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
-  }
-  .phone-mockup-wrap {
-    transform: scale(0.82);
-    transform-origin: center center;
-    margin: -15px auto;
-    max-width: 100%;
-  }
-  .dialog-preview .phone-mockup-wrap {
-    transform: scale(0.78);
-    transform-origin: center center;
-    margin: -20px auto;
-    gap: 16px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .phone-mockup-wrap {
-    transform: scale(0.72);
-    transform-origin: center center;
-    margin: -26px auto;
-  }
-  .dialog-preview .phone-mockup-wrap {
-    transform: scale(0.68);
-    transform-origin: center center;
-    margin: -32px auto;
-  }
-}
-
-@media (max-width: 380px) {
-  .phone-mockup-wrap {
-    transform: scale(0.65);
-    margin: -36px auto;
-  }
-  .dialog-preview .phone-mockup-wrap {
-    transform: scale(0.62);
-    margin: -40px auto;
   }
 }

@@ -23,14 +23,6 @@ body {
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color 0.28s ease,
-    color 0.28s ease,
-    --paper 0.28s ease,
-    --paper-2 0.28s ease,
-    --surface-3 0.28s ease,
-    --accent 0.28s ease,
-    --accent-strong 0.28s ease;
 }
 
 a {
@@ -124,5 +116,13 @@ section[id],
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+@media (max-width: 860px) {
+  .section-anchor,
+  section[id],
+  #keahlian {
+    scroll-margin-top: 70px;
   }
 }

@@ -9,13 +9,12 @@ import ExperienceEducation from '../components/ExperienceEducation.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import Modal from '../components/Modal.astro';
-import CommandPalette from '../components/CommandPalette.astro';
 ---
 
 <Layout title="Maulana · Portofolio Junior System Analyst & Web/Mobile Developer">
   <Header />
 
-  <main id="beranda">
+  <main id="beranda" class="page-stage-host">
     <div class="bg-opening-stage">
       <div class="ambient-mesh" aria-hidden="true"></div>
       <Hero />
@@ -29,6 +28,28 @@ import CommandPalette from '../components/CommandPalette.astro';
   </main>
 
   <Footer />
+
+  <!-- Stage 2: Scroll-Triggered Hanging Mini 3D Lanyard (Desktop Only > 1050px, Frontmost Normal Layer) -->
+  <aside
+    class="floating-lanyard"
+    id="floating-lanyard"
+    aria-label="Pintasan kartu lanyard 3D melayang"
+    data-hanging="false"
+    data-lanyard-flipped="false"
+    data-lanyard-ready="pending"
+    inert
+  >
+    <div class="floating-lanyard-three-stage" id="floating-lanyard-three"></div>
+    <button
+      type="button"
+      class="floating-lanyard-close"
+      id="floating-lanyard-close"
+      aria-label="Tutup pintasan lanyard"
+      title="Tutup kartu"
+    >
+      ×
+    </button>
+  </aside>
+
   <Modal />
-  <CommandPalette />
 </Layout>

@@ -1,7 +1,7 @@
 /**
  * ==========================================================================
  * CLIENT-SIDE INTERACTION RUNTIME (portfolio.ts)
- * Menangani palet warna, dialog modal, command palette (Ctrl+K), & upload foto.
+ * Menangani palet warna, dialog modal, formulir kontak, & inisialisasi motion.
  * ==========================================================================
  */
 
@@ -12,8 +12,16 @@ import {
   animateCloseOverlay,
   initPointerSpotlight,
   initHeroRoleDock,
+  initPageSwarm,
+  initInteractiveLanyard,
   initArchitectureWorkbench,
-  initProjectFilterAndSkillBridge
+  initProjectFilterAndSkillBridge,
+  initMagnetElements,
+  initClickSpark,
+  initAnimatedContent,
+  initDecryptedText,
+  initEditorialMotion,
+  initCountUp
 } from './motion';
 import { techIconIds } from '../data/tech-icon-ids';
 
@@ -275,19 +283,7 @@ export function goToSection(hash: string): void {
       behavior: prefersReducedMotion() ? 'auto' : 'smooth'
     });
   }
-  toggleMobileMenu(false);
   document.getElementById('header-inner')?.classList.remove('is-expanded');
-}
-
-// Mobile Menu Drawer
-export function toggleMobileMenu(force?: boolean): void {
-  const nav = document.getElementById('nav');
-  const menuToggle = document.getElementById('menu-toggle');
-  if (!nav || !menuToggle) return;
-
-  const isOpen = typeof force === 'boolean' ? force : !nav.classList.contains('open');
-  nav.classList.toggle('open', isOpen);
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
 }
 
 // Sticky Frosted Navbar & Scroll Spy
@@ -323,7 +319,7 @@ export function initStickyAdaptiveNavbar(): void {
 
     for (let i = sections.length - 1; i >= 0; i--) {
       const sec = sections[i];
-      if (sec.offsetTop <= scrollPos) {
+      if (sec.getBoundingClientRect().top + scrollY <= scrollPos) {
         currentId = sec.id;
         break;
       }
@@ -350,82 +346,6 @@ export function initStickyAdaptiveNavbar(): void {
   );
 
   updateHeaderState();
-}
-
-// Command Palette Definition
-interface CommandItem {
-  label: string;
-  meta: string;
-  action: () => void;
-}
-
-const COMMANDS: CommandItem[] = [
-  { label: 'Ganti mode tema berikutnya (Daylight / Obsidian / Graphite)', meta: 'Tema', action: () => cyclePalette(true) },
-  { label: 'Aktifkan Tema Daylight (Light Mode)', meta: 'Tema', action: () => setPalette('daylight', true) },
-  { label: 'Aktifkan Tema Obsidian (Dark Mode)', meta: 'Tema', action: () => setPalette('obsidian', true) },
-  { label: 'Aktifkan Tema Graphite (Warm Titanium)', meta: 'Tema', action: () => setPalette('graphite', true) },
-  { label: 'Alur Kerja Proyek', meta: 'Navigasi', action: () => goToSection('#arsitektur') },
-  { label: 'Tentang Saya & Status', meta: 'Navigasi', action: () => goToSection('#tentang') },
-  { label: 'Tech Stack & Keahlian', meta: 'Navigasi', action: () => goToSection('#keahlian') },
-  { label: 'Proyek Pilihan', meta: 'Navigasi', action: () => goToSection('#pekerjaan') },
-  { label: 'Pengalaman Proyek', meta: 'Navigasi', action: () => goToSection('#pengalaman') },
-  { label: 'Pendidikan & Sertifikasi', meta: 'Navigasi', action: () => goToSection('#pendidikan') },
-  { label: 'Kontak', meta: 'Navigasi', action: () => goToSection('#kontak') },
-  { label: 'Unduh CV (PDF)', meta: 'Dokumen', action: () => window.open(SITE_CONFIG.cvUrl, '_blank') },
-  { label: 'CUCI.IN · Kasir Laundry', meta: 'Proyek', action: () => showProjectDetail('cuciin') },
-  { label: 'BAWANGHUB · AI Agritech', meta: 'Proyek', action: () => showProjectDetail('bawanghub') },
-  { label: 'LAPANGKU · Booking Lapangan', meta: 'Proyek', action: () => showProjectDetail('lapangku') },
-  { label: 'PORTAL LAB IVSS · Polinema', meta: 'Proyek', action: () => showProjectDetail('ivss') },
-  { label: 'AI FINANCE (AIAAS) · Gemini', meta: 'Proyek', action: () => showProjectDetail('aiaas') }
-];
-
-export function renderCommands(search = ''): void {
-  const commandResults = document.getElementById('command-results');
-  const commandOverlay = document.getElementById('command-overlay');
-  if (!commandResults || !commandOverlay) return;
-
-  const query = search.trim().toLowerCase();
-  const matched = COMMANDS.filter(cmd => (cmd.label + ' ' + cmd.meta).toLowerCase().includes(query));
-
-  commandResults.replaceChildren();
-
-  matched.forEach(cmd => {
-    const btn = document.createElement('button');
-    btn.className = 'command-item';
-    btn.type = 'button';
-
-    const label = document.createElement('span');
-    label.textContent = cmd.label;
-
-    const meta = document.createElement('small');
-    meta.className = 'mono';
-    meta.textContent = cmd.meta;
-
-    btn.append(label, meta);
-    btn.addEventListener('click', () => {
-      closeOverlay(commandOverlay);
-      cmd.action();
-    });
-
-    commandResults.append(btn);
-  });
-
-  if (!matched.length) {
-    const empty = document.createElement('div');
-    empty.className = 'command-empty';
-    empty.textContent = 'Tidak ada perintah atau bagian yang cocok.';
-    commandResults.append(empty);
-  }
-}
-
-export function showCommands(): void {
-  const commandOverlay = document.getElementById('command-overlay');
-  const commandInput = document.getElementById('command-search') as HTMLInputElement | null;
-  if (!commandOverlay || !commandInput) return;
-
-  commandInput.value = '';
-  renderCommands();
-  openOverlay(commandOverlay, commandInput);
 }
 
 // Inisialisasi Utama saat DOM Siap
@@ -518,72 +438,14 @@ export function initPortfolioApp(): void {
     });
   }
 
-  // 3. Command Palette
-  const commandOverlay = document.getElementById('command-overlay');
-  const commandInput = document.getElementById('command-search') as HTMLInputElement | null;
-  const commandBtn = document.getElementById('command-button');
-
-  if (commandBtn) commandBtn.addEventListener('click', showCommands);
-  if (commandInput) {
-    commandInput.addEventListener('input', () => renderCommands(commandInput.value));
-    commandInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const firstBtn = document.getElementById('command-results')?.querySelector('button');
-        if (firstBtn) {
-          e.preventDefault();
-          firstBtn.click();
-        }
-      }
-    });
-  }
-  if (commandOverlay) {
-    commandOverlay.addEventListener('mousedown', e => {
-      if (e.target === commandOverlay) closeOverlay(commandOverlay);
-    });
-  }
-
-  // 4. Mobile Menu & Navigation (Adaptive Island & Scroll Spy)
+  // 3. Unified Sticky Frosted Navbar & Scroll Spy
   initStickyAdaptiveNavbar();
-  const menuToggle = document.getElementById('menu-toggle');
   const nav = document.getElementById('nav');
-
-  if (menuToggle) menuToggle.addEventListener('click', () => toggleMobileMenu());
   nav?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      toggleMobileMenu(false);
       document.getElementById('header-inner')?.classList.remove('is-expanded');
     });
   });
-
-  // Close mobile drawer when clicking outside
-  document.addEventListener('click', (e: MouseEvent) => {
-    if (!nav?.classList.contains('open')) return;
-    const target = e.target as HTMLElement | null;
-    if (target && !nav.contains(target) && !menuToggle?.contains(target)) {
-      toggleMobileMenu(false);
-    }
-  });
-
-  // Close mobile drawer on Escape key for accessibility
-  document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && nav?.classList.contains('open')) {
-      toggleMobileMenu(false);
-    }
-  });
-
-  // Close mobile drawer and collapse island pill if resized to desktop viewport
-  window.addEventListener(
-    'resize',
-    () => {
-      if (window.innerWidth > 860) {
-        if (nav?.classList.contains('open')) {
-          toggleMobileMenu(false);
-        }
-        document.getElementById('header-inner')?.classList.remove('is-expanded');
-      }
-    },
-    { passive: true }
-  );
 
   // 6. Contact Buttons & Simple Contact Form
   const emailBtn = document.getElementById('email-button');
@@ -657,14 +519,8 @@ export function initPortfolioApp(): void {
     });
   }
 
-  // 7. Global Shortcuts (Ctrl+K, Escape, Tab trap)
+  // 7. Global Shortcuts (Theme T, Escape, Modal Tab Trap)
   document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      if (!commandOverlay?.classList.contains('open')) showCommands();
-      return;
-    }
-
     // Shortcut 'T' untuk ganti tema warna secara manual (hanya saat tidak mengetik)
     if (
       (e.key === 't' || e.key === 'T') &&
@@ -680,8 +536,6 @@ export function initPortfolioApp(): void {
     if (e.key === 'Escape') {
       if (overlayStack.length) {
         closeOverlay(overlayStack[overlayStack.length - 1]);
-      } else {
-        toggleMobileMenu(false);
       }
     }
 
@@ -713,13 +567,21 @@ export function initPortfolioApp(): void {
     fitPreviewsCached = m.fitProjectPreviews;
   });
 
-  // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Signal Pipeline, Project Filters)
+  // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Page Swarm, Lanyard, React Bits Ports, Signal Pipeline, Project Filters)
   initPointerSpotlight();
   initHeroRoleDock();
+  initPageSwarm();
+  initInteractiveLanyard(notify);
   initArchitectureWorkbench();
   initProjectFilterAndSkillBridge(showProjectDetail, () => {
     fitPreviewsCached?.();
   });
+  initMagnetElements();
+  initClickSpark();
+  initAnimatedContent();
+  initDecryptedText();
+  initEditorialMotion();
+  initCountUp();
 
   // 11. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
   document.querySelectorAll<HTMLButtonElement>('.project-details-toggle').forEach((btn) => {

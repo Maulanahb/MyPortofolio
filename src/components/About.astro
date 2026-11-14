@@ -1,8 +1,18 @@
 ---
 import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
+
+const loopSkillsMap = new Map<string, { iconId: string; name: string }>();
+for (const group of SKILL_GROUPS) {
+  for (const icon of group.icons ?? []) {
+    if (!loopSkillsMap.has(icon.iconId)) {
+      loopSkillsMap.set(icon.iconId, { iconId: icon.iconId, name: icon.name });
+    }
+  }
+}
+const loopSkills = Array.from(loopSkillsMap.values());
 ---
 
-<section class="section" id="tentang" aria-labelledby="about-title">
+<section class="section bg-blueprint-stage" id="tentang" aria-labelledby="about-title">
   <div class="shell">
     <div class="section-head">
     <div>
@@ -12,40 +22,47 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
   </div>
 
   <div class="about-grid">
-    <!-- Left Summary Card -->
-    <div class="about-badge" data-spotlight>
-      <div class="big-quote display">Analisis sistem sampai rilis aplikasi.</div>
+    <!-- Open editorial statement -->
+    <div class="about-badge" data-reveal>
+      <div class="big-quote display" data-scroll-float>
+        {['Analisis', 'sistem', 'sampai', 'rilis', 'aplikasi.'].map((word, idx, words) => (
+          <>
+            <span class="rb-float-word" style={`--rb-word-i: ${idx};`}>{word}</span>
+            {idx < words.length - 1 ? ' ' : ''}
+          </>
+        ))}
+      </div>
 
       <div class="about-meta-list">
         <div class="about-meta-item">
-          <span class="meta-label mono">Pendidikan</span>
+          <span class="meta-label mono" data-decrypt>Pendidikan</span>
           <strong>{SITE_CONFIG.program} · {SITE_CONFIG.campus}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">Semester</span>
+          <span class="meta-label mono" data-decrypt>Semester</span>
           <strong>{SITE_CONFIG.semester} · Angkatan 2024</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">Fokus</span>
+          <span class="meta-label mono" data-decrypt>Fokus</span>
           <strong>{SITE_CONFIG.role}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">Stack Utama</span>
+          <span class="meta-label mono" data-decrypt>Stack Utama</span>
           <strong>Laravel, React, Flutter, PostgreSQL</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">GitHub</span>
+          <span class="meta-label mono" data-decrypt>GitHub</span>
           <strong>github.com/{SITE_CONFIG.githubHandle}</strong>
         </div>
         <div class="about-meta-item">
-          <span class="meta-label mono">Status</span>
+          <span class="meta-label mono" data-decrypt>Status</span>
           <strong>{SITE_CONFIG.availability}</strong>
         </div>
       </div>
     </div>
 
     <!-- Right Narrative -->
-    <div class="about-copy" data-spotlight>
+    <div class="about-copy" data-reveal>
       <p>
         Saya {SITE_CONFIG.fullName}, mahasiswa semester 5 {SITE_CONFIG.program} di Politeknik Negeri Malang. Saya terbiasa memulai proyek dari analisis kebutuhan, menulis PRD, merancang ERD database, hingga mengimplementasikan aplikasinya.
       </p>
@@ -90,14 +107,53 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
       </div>
     </div>
 
+    <!-- React Bits LogoLoop: Continuous Interactive Tech Stack Marquee -->
+    <div class="logo-loop-shell" aria-label="Pita ikhtisar tech stack interaktif">
+      <div class="logo-loop-viewport">
+        <div class="logo-loop-track-wrap">
+          {[false, true].map(isClone => (
+            <div
+              class="logo-loop-track"
+              data-logo-loop-primary={!isClone ? '' : undefined}
+              data-logo-loop-clone={isClone ? '' : undefined}
+              aria-hidden={isClone ? 'true' : undefined}
+              role={!isClone ? 'list' : undefined}
+            >
+              {loopSkills.map(icon => (
+                <div class="logo-loop-item" role={!isClone ? 'listitem' : undefined}>
+                  <button
+                    type="button"
+                    class="logo-loop-chip"
+                    data-skill-id={icon.iconId}
+                    data-skill-name={icon.name}
+                    aria-pressed="false"
+                    tabindex={isClone ? -1 : undefined}
+                    aria-hidden={isClone ? 'true' : undefined}
+                  >
+                    <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <use href={`#tech-${icon.iconId}`} />
+                    </svg>
+                    <span>{icon.name}</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
     <div class="skill-groups si-skill-grid">
-      {SKILL_GROUPS.map(group => (
-        <article class={`skill-box ${group.proofs ? 'skill-card-wide' : ''}`} data-spotlight>
+      {SKILL_GROUPS.map((group, idx) => (
+        <article class={`skill-box ${group.proofs ? 'skill-card-wide' : ''}`} data-flowing-row data-reveal style={`--rb-list-i: ${idx};`}>
           <div class="skill-card-top">
+            <span class="skill-index-num mono" data-decrypt>{`0${idx + 1} // STACK`}</span>
             <h4 class="display">{group.title}</h4>
             <span class="skill-subtitle">{group.subtitle}</span>
+            <span class="skill-row-arrow mono" aria-hidden="true">↗</span>
           </div>
 
+          <div class="skill-row-body">
           {group.icons && group.icons.length > 0 && (
             <div class="skill-icon-grid" role="list" aria-label={group.title}>
               {group.icons.map(icon => (
@@ -140,6 +196,7 @@ import { SITE_CONFIG, SKILL_GROUPS } from '../data/projects';
               </div>
             </div>
           )}
+          </div>
         </article>
       ))}
     </div>

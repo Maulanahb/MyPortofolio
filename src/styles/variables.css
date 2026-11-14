@@ -52,6 +52,11 @@ body[data-palette='daylight'] {
   --ink: #1d1d1f;
   --muted: #6e6e73;
 
+  --reading-surface: rgba(245, 245, 247, 0.9);
+  --reading-muted: #484852;
+  --reading-line: rgba(29, 29, 31, 0.18);
+  --reading-line-strong: rgba(29, 29, 31, 0.3);
+
   --line: rgba(0, 0, 0, 0.08);
   --line-strong: rgba(0, 0, 0, 0.16);
 
@@ -69,14 +74,17 @@ body[data-palette='daylight'] {
   --shadow-hover: 0 14px 34px rgba(0, 0, 0, 0.09);
 
   /* Background Atmosphere & Surface Depth Tokens */
-  --bg-glow-1: rgba(0, 102, 204, 0.09);
-  --bg-glow-2: rgba(14, 116, 144, 0.06);
-  --bg-dot-color: rgba(29, 29, 31, 0.13);
-  --bg-dusk-band: #ebedf2;
-  --bg-dusk-muted: #55555a;
-  --bg-arc-line: rgba(29, 29, 31, 0.085);
-  --bg-horizon-rim: rgba(0, 102, 204, 0.24);
-  --bg-grain-opacity: 0.024;
+  --bg-glow-1: rgba(0, 102, 204, 0.2);
+  --bg-glow-2: rgba(14, 116, 144, 0.14);
+  --bg-glow-3: rgba(79, 70, 229, 0.11);
+  --bg-dot-color: rgba(29, 29, 31, 0.24);
+  --bg-rail-line: rgba(29, 29, 31, 0.13);
+  --bg-crosshair: rgba(0, 102, 204, 0.45);
+  --bg-dusk-band: rgba(176, 192, 224, 0.36);
+  --bg-dusk-muted: #4b4f58;
+  --bg-arc-line: rgba(29, 29, 31, 0.16);
+  --bg-horizon-rim: rgba(0, 102, 204, 0.38);
+  --bg-grain-opacity: 0.03;
   --bg-grain-blend: multiply;
 
   /* Typography */
@@ -104,6 +112,11 @@ body[data-palette='obsidian'] {
   --ink: #f5f5f7;
   --muted: #a1a1aa;
 
+  --reading-surface: rgba(9, 9, 11, 0.9);
+  --reading-muted: #c5c5ce;
+  --reading-line: rgba(245, 245, 247, 0.22);
+  --reading-line-strong: rgba(245, 245, 247, 0.3);
+
   --line: rgba(255, 255, 255, 0.1);
   --line-strong: rgba(255, 255, 255, 0.2);
 
@@ -121,14 +134,17 @@ body[data-palette='obsidian'] {
   --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.55);
 
   /* Background Atmosphere & Surface Depth Tokens */
-  --bg-glow-1: rgba(10, 132, 255, 0.16);
-  --bg-glow-2: rgba(20, 184, 166, 0.08);
-  --bg-dot-color: rgba(255, 255, 255, 0.12);
-  --bg-dusk-band: #101218;
+  --bg-glow-1: rgba(10, 132, 255, 0.3);
+  --bg-glow-2: rgba(20, 184, 166, 0.19);
+  --bg-glow-3: rgba(99, 102, 241, 0.2);
+  --bg-dot-color: rgba(255, 255, 255, 0.24);
+  --bg-rail-line: rgba(255, 255, 255, 0.12);
+  --bg-crosshair: rgba(56, 189, 248, 0.55);
+  --bg-dusk-band: rgba(28, 48, 96, 0.38);
   --bg-dusk-muted: #a1a1aa;
-  --bg-arc-line: rgba(255, 255, 255, 0.08);
-  --bg-horizon-rim: rgba(10, 132, 255, 0.56);
-  --bg-grain-opacity: 0.036;
+  --bg-arc-line: rgba(255, 255, 255, 0.16);
+  --bg-horizon-rim: rgba(10, 132, 255, 0.72);
+  --bg-grain-opacity: 0.042;
   --bg-grain-blend: screen;
 }
 
@@ -143,6 +159,11 @@ body[data-palette='graphite'] {
 
   --ink: #18181b;
   --muted: #52525b;
+
+  --reading-surface: rgba(234, 233, 228, 0.9);
+  --reading-muted: #45454d;
+  --reading-line: rgba(24, 24, 27, 0.18);
+  --reading-line-strong: rgba(24, 24, 27, 0.3);
 
   --line: rgba(24, 24, 27, 0.1);
   --line-strong: rgba(24, 24, 27, 0.18);
@@ -161,13 +182,16 @@ body[data-palette='graphite'] {
   --shadow-hover: 0 14px 34px rgba(24, 24, 27, 0.11);
 
   /* Background Atmosphere & Surface Depth Tokens */
-  --bg-glow-1: rgba(37, 99, 235, 0.08);
-  --bg-glow-2: rgba(120, 113, 108, 0.09);
-  --bg-dot-color: rgba(24, 24, 27, 0.14);
-  --bg-dusk-band: #e0dfd7;
-  --bg-dusk-muted: #4a4a52;
-  --bg-arc-line: rgba(24, 24, 27, 0.095);
-  --bg-horizon-rim: rgba(37, 99, 235, 0.24);
-  --bg-grain-opacity: 0.028;
+  --bg-glow-1: rgba(37, 99, 235, 0.18);
+  --bg-glow-2: rgba(13, 148, 136, 0.13);
+  --bg-glow-3: rgba(79, 70, 229, 0.11);
+  --bg-dot-color: rgba(24, 24, 27, 0.24);
+  --bg-rail-line: rgba(24, 24, 27, 0.13);
+  --bg-crosshair: rgba(37, 99, 235, 0.45);
+  --bg-dusk-band: rgba(196, 190, 166, 0.38);
+  --bg-dusk-muted: #45454d;
+  --bg-arc-line: rgba(24, 24, 27, 0.16);
+  --bg-horizon-rim: rgba(37, 99, 235, 0.36);
+  --bg-grain-opacity: 0.032;
   --bg-grain-blend: multiply;
 }

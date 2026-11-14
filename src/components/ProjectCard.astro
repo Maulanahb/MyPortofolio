@@ -15,6 +15,7 @@ const { project } = Astro.props;
   data-domains={project.domains.join(',')}
   data-skill-ids={project.skillIds.join(',')}
   data-spotlight
+  data-reveal
   style={`--vt-name: project-card-${project.id};`}
 >
   <div class={`project-art ${project.theme}`} data-art={project.id}>

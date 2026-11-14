@@ -7,6 +7,14 @@
  */
 
 import { PROJECTS, SKILL_CONTEXT_NOTES } from '../data/projects';
+import {
+  computeMagnetOffset,
+  createSparkBurst,
+  stepSparkParticles,
+  interpolateCountUp,
+  scrambleTextFrame,
+  type SparkParticle
+} from './reactbits-math';
 
 export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -151,6 +159,16 @@ export function initHeroRoleDock(): void {
   const tabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>('[data-role-tab]'));
   const panels = Array.from(document.querySelectorAll<HTMLElement>('[id^="hero-role-panel-"]'));
 
+  const positionFocus = () => {
+    const selected = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
+    if (!selected || !tablist.hasAttribute('data-true-focus')) return;
+    tablist.style.setProperty('--tf-x', `${selected.offsetLeft}px`);
+    tablist.style.setProperty('--tf-y', `${selected.offsetTop}px`);
+    tablist.style.setProperty('--tf-width', `${selected.offsetWidth}px`);
+    tablist.style.setProperty('--tf-height', `${selected.offsetHeight}px`);
+    tablist.dataset.focusReady = 'true';
+  };
+
   const selectRole = (selectedTab: HTMLButtonElement) => {
     const roleId = selectedTab.dataset.roleTab;
     if (!roleId) return;
@@ -158,6 +176,7 @@ export function initHeroRoleDock(): void {
     tabs.forEach(tab => {
       const active = tab === selectedTab;
       tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
       tab.toggleAttribute('focusgroupstart', active);
     });
 
@@ -171,6 +190,14 @@ export function initHeroRoleDock(): void {
         panel.removeAttribute('tabindex');
       }
     });
+
+    positionFocus();
+    tablist.dispatchEvent(
+      new CustomEvent('hero-role-change', {
+        bubbles: true,
+        detail: { roleId }
+      })
+    );
   };
 
   tabs.forEach(tab => {
@@ -186,6 +213,110 @@ export function initHeroRoleDock(): void {
   });
 
   bindTabKeyboard(tablist, tabs, selectRole);
+  tabs.forEach(tab => { tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1; });
+  positionFocus();
+  if (typeof ResizeObserver === 'function') {
+    const observer = new ResizeObserver(positionFocus);
+    observer.observe(tablist);
+    tabs.forEach(tab => observer.observe(tab));
+  } else {
+    window.addEventListener('resize', positionFocus, { passive: true });
+  }
+}
+
+/** Short, cancellable scrambles with the original text retained for assistive technology. */
+export function initDecryptedText(): void {
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const targets = new WeakMap<HTMLElement, string>();
+  const running = new Map<HTMLElement, { frame: number; finish: () => void }>();
+  const decrypt = (el: HTMLElement, duration: number) => {
+    running.get(el)?.finish();
+    const target = targets.get(el) ?? el.textContent ?? '';
+    targets.set(el, target);
+    if (media.matches || !target) return;
+
+    const source = document.createElement('span');
+    source.className = 'rb-decrypt-source';
+    source.textContent = target;
+    const display = document.createElement('span');
+    display.className = 'rb-decrypt-display';
+    display.setAttribute('aria-hidden', 'true');
+    el.classList.add('rb-decrypting');
+    el.replaceChildren(source, display);
+    const state = {
+      frame: 0,
+      finish: () => {
+        cancelAnimationFrame(state.frame);
+        el.textContent = target;
+        el.classList.remove('rb-decrypting');
+        running.delete(el);
+      }
+    };
+    running.set(el, state);
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - start) / duration);
+      if (media.matches || progress >= 1) return state.finish();
+      display.textContent = scrambleTextFrame(target, progress);
+      state.frame = requestAnimationFrame(tick);
+    };
+    display.textContent = scrambleTextFrame(target, 0);
+    state.frame = requestAnimationFrame(tick);
+  };
+
+  if (typeof IntersectionObserver === 'function') {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        decrypt(entry.target as HTMLElement, 320);
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll<HTMLElement>('[data-decrypt]').forEach(el => observer.observe(el));
+  }
+
+  document.addEventListener('hero-role-change', event => {
+    const { roleId } = (event as CustomEvent<{ roleId: string }>).detail;
+    const summary = document.getElementById(`hero-role-panel-${roleId}`)?.querySelector<HTMLElement>('[data-role-summary]');
+    if (summary) decrypt(summary, 240);
+  });
+  media.addEventListener('change', () => {
+    if (media.matches) [...running.values()].forEach(state => state.finish());
+  });
+}
+
+/** Word float fallback, staggered list entries, and viewport-aware timeline nodes. */
+export function initEditorialMotion(): void {
+  if (typeof IntersectionObserver !== 'function') return;
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const lists = document.querySelectorAll<HTMLElement>('[data-animated-list]');
+  const floats = document.querySelectorAll<HTMLElement>('[data-scroll-float]');
+  const supportsView = window.CSS?.supports('(animation-timeline: view()) and (animation-range: entry)');
+  const reveal = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-entered');
+      reveal.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+  lists.forEach(el => reveal.observe(el));
+  if (!supportsView) floats.forEach(el => reveal.observe(el));
+
+  const nodes = document.querySelectorAll<HTMLElement>('[data-timeline-node]');
+  const active = new IntersectionObserver(entries => {
+    entries.forEach(entry => entry.target.classList.toggle('is-timeline-active', entry.isIntersecting));
+  }, { rootMargin: '-15% 0px -35% 0px', threshold: 0.1 });
+  nodes.forEach(el => active.observe(el));
+
+  const syncMotion = () => {
+    document.documentElement.toggleAttribute('data-editorial-motion', !media.matches);
+    if (media.matches) {
+      lists.forEach(el => el.classList.add('is-entered'));
+      floats.forEach(el => el.classList.add('is-entered'));
+    }
+  };
+  syncMotion();
+  media.addEventListener('change', syncMotion);
 }
 
 /* --------------------------------------------------------------------------
@@ -516,7 +647,9 @@ export function initProjectFilterAndSkillBridge(
   const skillPillLabel = document.getElementById('project-skill-filter-label');
   const skillPillReset = document.getElementById('project-skill-filter-reset');
 
-  const skillChips = Array.from(document.querySelectorAll<HTMLButtonElement>('.skill-chip[data-skill-id]'));
+  const skillChips = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('.skill-chip[data-skill-id], .logo-loop-chip[data-skill-id]')
+  );
   const bridgeBar = document.getElementById('skill-bridge-bar');
   const bridgeTitle = document.getElementById('skill-bridge-title');
   const bridgeSummary = document.getElementById('skill-bridge-summary');
@@ -625,7 +758,7 @@ export function initProjectFilterAndSkillBridge(
       }
 
       inspectedSkill = { id: skillId, name: skillName };
-      skillChips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+      skillChips.forEach(c => c.setAttribute('aria-pressed', String(c.dataset.skillId === skillId)));
 
       const matchedProjects = PROJECTS.filter(p => p.skillIds.includes(skillId));
 
@@ -668,4 +801,1016 @@ export function initProjectFilterAndSkillBridge(
   });
 
   bridgeClearBtn?.addEventListener('click', closeSkillBridge);
+}
+
+/* --------------------------------------------------------------------------
+   7. FULL-PAGE BACKGROUND CHARCOAL UI CURSOR GRID (Zero Idle CPU)
+   -------------------------------------------------------------------------- */
+export const CURSOR_GRID_GAP = 28;
+export const CURSOR_GRID_RADIUS = 140;
+
+const CROSS_HALF_ARM_REST = 2.6;
+const CROSS_HALF_ARM_GROWTH = 3.2;
+const CROSS_STROKE_REST = 1.05;
+const CROSS_STROKE_GROWTH = 0.85;
+const HEAT_UP_RATE = 20;
+const COOL_DOWN_RATE = 3.4;
+const ANGLE_TRACK_RATE = 18;
+const ANGLE_RELAX_RATE = 4.2;
+const SETTLE_EPSILON = 0.004;
+const QUARTER_TURN = Math.PI * 0.5;
+
+export interface RgbaColor {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+export interface CursorGridLayout {
+  cols: number;
+  rows: number;
+  startX: number;
+  startY: number;
+}
+
+export interface CursorGridStepResult {
+  activeCount: number;
+  maxHeat: number;
+  moving: boolean;
+}
+
+export function computeCursorGridLayout(
+  width: number,
+  height: number,
+  gap = CURSOR_GRID_GAP
+): CursorGridLayout {
+  const safeGap = Math.max(8, gap);
+  const cols = Math.max(1, Math.floor(Math.max(0, width) / safeGap) + 1);
+  const rows = Math.max(1, Math.floor(Math.max(0, height) / safeGap) + 1);
+  const startX = (width - (cols - 1) * safeGap) * 0.5;
+  const startY = (height - (rows - 1) * safeGap) * 0.5;
+  return { cols, rows, startX, startY };
+}
+
+export function parseCssRgba(rawValue: string, fallback: RgbaColor): RgbaColor {
+  const val = rawValue.trim();
+  if (!val) return fallback;
+
+  if (val.startsWith('#')) {
+    const hex = val.slice(1);
+    if (hex.length === 3 || hex.length === 4) {
+      const r = parseInt(hex[0] + hex[0], 16);
+      const g = parseInt(hex[1] + hex[1], 16);
+      const b = parseInt(hex[2] + hex[2], 16);
+      const a = hex.length === 4 ? parseInt(hex[3] + hex[3], 16) / 255 : 1;
+      if (!Number.isNaN(r) && !Number.isNaN(g) && !Number.isNaN(b)) {
+        return { r, g, b, a };
+      }
+    } else if (hex.length === 6 || hex.length === 8) {
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      const a = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
+      if (!Number.isNaN(r) && !Number.isNaN(g) && !Number.isNaN(b)) {
+        return { r, g, b, a };
+      }
+    }
+    return fallback;
+  }
+
+  const rgbMatch = val.match(
+    /^rgba?\(\s*([\d.]+)\s*[,\s]\s*([\d.]+)\s*[,\s]\s*([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/i
+  );
+  if (rgbMatch) {
+    const r = Number(rgbMatch[1]);
+    const g = Number(rgbMatch[2]);
+    const b = Number(rgbMatch[3]);
+    let a = 1;
+    if (rgbMatch[4] !== undefined) {
+      a = rgbMatch[4].endsWith('%') ? parseFloat(rgbMatch[4]) / 100 : Number(rgbMatch[4]);
+    }
+    if (!Number.isNaN(r) && !Number.isNaN(g) && !Number.isNaN(b) && !Number.isNaN(a)) {
+      return { r, g, b, a };
+    }
+  }
+
+  return fallback;
+}
+
+export function shortestSymmetricAngleDiff(
+  from: number,
+  to: number,
+  symmetryStep = QUARTER_TURN
+): number {
+  let diff = (to - from) % symmetryStep;
+  if (diff < 0) diff += symmetryStep;
+  if (diff > symmetryStep * 0.5) diff -= symmetryStep;
+  return diff;
+}
+
+export function stepCursorGridState(
+  cellsX: Float32Array,
+  cellsY: Float32Array,
+  heats: Float32Array,
+  angles: Float32Array,
+  count: number,
+  pointerX: number,
+  pointerY: number,
+  radius: number,
+  dtSeconds: number
+): CursorGridStepResult {
+  const dt = Math.max(0.001, Math.min(0.05, dtSeconds));
+  const hasPointer = pointerX > -9000 && pointerY > -9000;
+  const radiusSq = radius * radius;
+  const alphaUp = 1 - Math.exp(-HEAT_UP_RATE * dt);
+  const alphaDown = 1 - Math.exp(-COOL_DOWN_RATE * dt);
+  const alphaAngleHot = 1 - Math.exp(-ANGLE_TRACK_RATE * dt);
+  const alphaAngleCool = 1 - Math.exp(-ANGLE_RELAX_RATE * dt);
+
+  let activeCount = 0;
+  let maxHeat = 0;
+  let moving = false;
+
+  for (let i = 0; i < count; i++) {
+    const cx = cellsX[i];
+    const cy = cellsY[i];
+    let targetHeat = 0;
+    let targetAngle = 0;
+
+    if (hasPointer) {
+      const dx = pointerX - cx;
+      const dy = pointerY - cy;
+      const distSq = dx * dx + dy * dy;
+      if (distSq < radiusSq) {
+        const dist = Math.sqrt(distSq);
+        const falloff = 1 - dist / radius;
+        targetHeat = Math.pow(falloff, 1.3);
+        if (distSq >= 1) {
+          targetAngle = Math.atan2(dy, dx);
+        } else {
+          targetAngle = angles[i];
+        }
+      }
+    }
+
+    const prevHeat = heats[i];
+    let nextHeat = prevHeat;
+    if (targetHeat > prevHeat) {
+      nextHeat = prevHeat + (targetHeat - prevHeat) * alphaUp;
+    } else if (prevHeat > targetHeat) {
+      nextHeat = prevHeat + (targetHeat - prevHeat) * alphaDown;
+    }
+
+    if (targetHeat === 0 && nextHeat < SETTLE_EPSILON) {
+      nextHeat = 0;
+    } else if (targetHeat > 0 && Math.abs(targetHeat - nextHeat) < 0.0015) {
+      nextHeat = targetHeat;
+    }
+
+    const prevAngle = angles[i];
+    let nextAngle = prevAngle;
+    const isTrackingPointer = targetHeat > 0.02;
+    const diff = shortestSymmetricAngleDiff(prevAngle, isTrackingPointer ? targetAngle : 0);
+
+    if (isTrackingPointer) {
+      if (Math.abs(diff) < 0.004) {
+        nextAngle = prevAngle + diff;
+      } else {
+        nextAngle = prevAngle + diff * alphaAngleHot;
+      }
+    } else if (nextHeat === 0 && Math.abs(diff) < 0.02) {
+      nextAngle = 0;
+    } else if (Math.abs(diff) >= 0.004) {
+      nextAngle = prevAngle + diff * alphaAngleCool;
+    } else {
+      nextAngle = 0;
+    }
+
+    heats[i] = nextHeat;
+    angles[i] = nextAngle;
+
+    if (nextHeat > 0) {
+      activeCount += 1;
+      if (nextHeat > maxHeat) maxHeat = nextHeat;
+    }
+
+    const heatDelta = Math.abs(targetHeat - nextHeat);
+    const remainingAngle = isTrackingPointer
+      ? Math.abs(shortestSymmetricAngleDiff(nextAngle, targetAngle))
+      : nextAngle === 0
+        ? 0
+        : Math.abs(shortestSymmetricAngleDiff(nextAngle, 0));
+
+    if (heatDelta > 0.0015 || (targetHeat === 0 && nextHeat > 0) || remainingAngle > 0.004) {
+      moving = true;
+    }
+  }
+
+  return { activeCount, maxHeat, moving };
+}
+
+function readCursorGridColors(): { rest: RgbaColor; accent: RgbaColor } {
+  const styles = window.getComputedStyle(document.body);
+  const restRaw = styles.getPropertyValue('--bg-dot-color');
+  const accentRaw = styles.getPropertyValue('--accent');
+  return {
+    rest: parseCssRgba(restRaw, { r: 29, g: 29, b: 31, a: 0.24 }),
+    accent: parseCssRgba(accentRaw, { r: 0, g: 102, b: 204, a: 1 })
+  };
+}
+
+/**
+ * Menginisialisasi Full-Page Background Charcoal UI `CursorGrid` (`#page-swarm-canvas`).
+ * Merender kisi micro-cross (`gap: 28px`) di belakang seluruh kartu konten; sel dalam radius
+ * `140px` kursor mouse menyala ke warna `--accent`, membesar, dan berputar menghadap kursor,
+ * lalu mendingin perlahan setelah kursor lewat hingga berhenti total (`0% Idle CPU`).
+ */
+export function initPageSwarm(): void {
+  const canvas = document.getElementById('page-swarm-canvas') as HTMLCanvasElement | null;
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const finePointerMq = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let colors = readCursorGridColors();
+
+  let cellCount = 0;
+  let cellsX = new Float32Array(0);
+  let cellsY = new Float32Array(0);
+  let heats = new Float32Array(0);
+  let angles = new Float32Array(0);
+
+  let pointerX = -9999;
+  let pointerY = -9999;
+  let rafId: number | null = null;
+  let lastFrameTime = 0;
+
+  const updateDatasetState = (state: 'active' | 'settled' | 'static', activeCount: number) => {
+    canvas.dataset.swarmPool = String(cellCount);
+    canvas.dataset.swarmActive = String(activeCount);
+    canvas.dataset.swarmState = state;
+  };
+
+  const renderGridFrame = () => {
+    ctx.clearRect(0, 0, width, height);
+    ctx.lineCap = 'round';
+
+    const { rest, accent } = colors;
+
+    // 1. Gambar seluruh sel istirahat sekaligus dalam 1 batch path demi efisiensi GPU/CPU
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(${rest.r}, ${rest.g}, ${rest.b}, ${rest.a})`;
+    ctx.lineWidth = CROSS_STROKE_REST;
+
+    for (let i = 0; i < cellCount; i++) {
+      if (heats[i] > 0) continue;
+      const cx = cellsX[i];
+      const cy = cellsY[i];
+      ctx.moveTo(cx - CROSS_HALF_ARM_REST, cy);
+      ctx.lineTo(cx + CROSS_HALF_ARM_REST, cy);
+      ctx.moveTo(cx, cy - CROSS_HALF_ARM_REST);
+      ctx.lineTo(cx, cy + CROSS_HALF_ARM_REST);
+    }
+    ctx.stroke();
+
+    // 2. Gambar sel aktif/mendingin yang menyala, membesar, dan berputar menghadap kursor
+    for (let i = 0; i < cellCount; i++) {
+      const h = heats[i];
+      if (h <= 0) continue;
+
+      const cx = cellsX[i];
+      const cy = cellsY[i];
+      const arm = CROSS_HALF_ARM_REST + h * CROSS_HALF_ARM_GROWTH;
+      const angle = angles[i];
+      const ca = Math.cos(angle) * arm;
+      const sa = Math.sin(angle) * arm;
+
+      const r = Math.round(rest.r + (accent.r - rest.r) * h);
+      const g = Math.round(rest.g + (accent.g - rest.g) * h);
+      const b = Math.round(rest.b + (accent.b - rest.b) * h);
+      const a = Math.min(0.95, rest.a + (0.92 - rest.a) * h);
+
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a.toFixed(3)})`;
+      ctx.lineWidth = CROSS_STROKE_REST + h * CROSS_STROKE_GROWTH;
+      ctx.moveTo(cx - ca, cy - sa);
+      ctx.lineTo(cx + ca, cy + sa);
+      ctx.moveTo(cx + sa, cy - ca);
+      ctx.lineTo(cx - sa, cy + ca);
+      ctx.stroke();
+    }
+  };
+
+  const allocateGridCells = () => {
+    const layout = computeCursorGridLayout(width, height, CURSOR_GRID_GAP);
+    cellCount = layout.cols * layout.rows;
+    cellsX = new Float32Array(cellCount);
+    cellsY = new Float32Array(cellCount);
+    heats = new Float32Array(cellCount);
+    angles = new Float32Array(cellCount);
+
+    let idx = 0;
+    for (let row = 0; row < layout.rows; row++) {
+      const y = layout.startY + row * CURSOR_GRID_GAP;
+      for (let col = 0; col < layout.cols; col++) {
+        cellsX[idx] = layout.startX + col * CURSOR_GRID_GAP;
+        cellsY[idx] = y;
+        idx += 1;
+      }
+    }
+  };
+
+  const syncCanvasDimensions = (): boolean => {
+    const nextW = Math.max(320, Math.round(window.innerWidth || document.documentElement.clientWidth || 1280));
+    const nextH = Math.max(240, Math.round(window.innerHeight || document.documentElement.clientHeight || 800));
+    const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
+    const nextBufW = Math.round(nextW * nextDpr);
+    const nextBufH = Math.round(nextH * nextDpr);
+
+    if (
+      nextW === width &&
+      nextH === height &&
+      canvas.width === nextBufW &&
+      canvas.height === nextBufH
+    ) {
+      return false;
+    }
+
+    width = nextW;
+    height = nextH;
+    dpr = nextDpr;
+    canvas.width = nextBufW;
+    canvas.height = nextBufH;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    allocateGridCells();
+    return true;
+  };
+
+  const settleImmediately = (state: 'settled' | 'static') => {
+    heats.fill(0);
+    angles.fill(0);
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    renderGridFrame();
+    updateDatasetState(state, 0);
+  };
+
+  const stepFrame = (now: number) => {
+    if (document.hidden || reducedMotionMq.matches || !finePointerMq.matches) {
+      settleImmediately(reducedMotionMq.matches || !finePointerMq.matches ? 'static' : 'settled');
+      return;
+    }
+
+    const dtSeconds = lastFrameTime > 0 ? (now - lastFrameTime) / 1000 : 0.016;
+    lastFrameTime = now;
+
+    const step = stepCursorGridState(
+      cellsX,
+      cellsY,
+      heats,
+      angles,
+      cellCount,
+      pointerX,
+      pointerY,
+      CURSOR_GRID_RADIUS,
+      dtSeconds
+    );
+
+    renderGridFrame();
+
+    if (!step.moving) {
+      rafId = null;
+      lastFrameTime = 0;
+      updateDatasetState('settled', step.activeCount);
+      return;
+    }
+
+    updateDatasetState('active', step.activeCount);
+    rafId = window.requestAnimationFrame(stepFrame);
+  };
+
+  const scheduleAnimation = () => {
+    if (reducedMotionMq.matches || !finePointerMq.matches || document.hidden) return;
+    if (rafId === null) {
+      lastFrameTime = performance.now();
+      rafId = window.requestAnimationFrame(stepFrame);
+    }
+  };
+
+  syncCanvasDimensions();
+  settleImmediately(reducedMotionMq.matches || !finePointerMq.matches ? 'static' : 'settled');
+
+  // Reaksi hanya untuk pointer mouse desktop (touch & reduced-motion tetap statis)
+  window.addEventListener(
+    'pointermove',
+    (ev: PointerEvent) => {
+      if (ev.pointerType === 'touch' || !finePointerMq.matches || reducedMotionMq.matches || document.hidden) {
+        return;
+      }
+      pointerX = ev.clientX;
+      pointerY = ev.clientY;
+      updateDatasetState('active', Number(canvas.dataset.swarmActive || 0));
+      scheduleAnimation();
+    },
+    { passive: true }
+  );
+
+  const handlePointerExit = () => {
+    pointerX = -9999;
+    pointerY = -9999;
+    if (rafId === null && !reducedMotionMq.matches && finePointerMq.matches && Number(canvas.dataset.swarmActive || 0) > 0) {
+      scheduleAnimation();
+    }
+  };
+
+  document.addEventListener('pointerleave', handlePointerExit, { passive: true });
+  window.addEventListener('blur', handlePointerExit, { passive: true });
+
+  // Sinkronisasi warna tema Daylight / Obsidian / Graphite
+  let paletteRaf: number | null = null;
+  const paletteObserver = new MutationObserver(() => {
+    colors = readCursorGridColors();
+    if (rafId === null) renderGridFrame();
+    if (paletteRaf !== null) cancelAnimationFrame(paletteRaf);
+    paletteRaf = requestAnimationFrame(() => {
+      paletteRaf = null;
+      colors = readCursorGridColors();
+      if (rafId === null) renderGridFrame();
+    });
+  });
+  paletteObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-palette']
+  });
+
+  // Sinkronisasi ukuran viewport & lifecycle tab
+  window.addEventListener(
+    'resize',
+    () => {
+      if (syncCanvasDimensions()) {
+        renderGridFrame();
+        const isStatic = reducedMotionMq.matches || !finePointerMq.matches;
+        updateDatasetState(isStatic ? 'static' : 'settled', 0);
+      }
+    },
+    { passive: true }
+  );
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      pointerX = -9999;
+      pointerY = -9999;
+      settleImmediately(reducedMotionMq.matches || !finePointerMq.matches ? 'static' : 'settled');
+    }
+  });
+
+  const handleEnvironmentChange = () => {
+    pointerX = -9999;
+    pointerY = -9999;
+    settleImmediately(reducedMotionMq.matches || !finePointerMq.matches ? 'static' : 'settled');
+  };
+
+  reducedMotionMq.addEventListener('change', handleEnvironmentChange);
+  finePointerMq.addEventListener('change', handleEnvironmentChange);
+}
+
+/* --------------------------------------------------------------------------
+   7. INTERACTIVE 2-STAGE 3D WEBGL LANYARD CONTROLLER (ReactBits Three.js Port)
+   Dynamically loads pure-Three.js rigid-body + 4-link woven strap engine with
+   LCP DOM fallback, reduced-motion fallback, 0% Idle CPU settle, and Stage 2
+   scroll-triggered mini hanging pass on desktop (> 1050px).
+   -------------------------------------------------------------------------- */
+export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
+  const heroPanel = document.getElementById('photo-panel');
+  const heroThreeStage = document.getElementById('hero-lanyard-three');
+  const heroFront = document.getElementById('hero-lanyard-front');
+  const heroBack = document.getElementById('hero-lanyard-back');
+  const heroFlipBtns = document.querySelectorAll<HTMLButtonElement>('[data-hero-flip]');
+
+  const floatingEl = document.getElementById('floating-lanyard');
+  const floatingThreeStage = document.getElementById('floating-lanyard-three');
+  const floatingCloseBtn = document.getElementById('floating-lanyard-close');
+
+  if (!heroPanel || !heroFront || !heroBack) return;
+
+  type LanyardModule = typeof import('./three-lanyard');
+  type LanyardHandle = import('./three-lanyard').ThreeLanyardHandle;
+
+  const reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktopMq = window.matchMedia('(min-width: 1051px)');
+  const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+
+  let modulePromise: Promise<LanyardModule> | null = null;
+  let heroHandle: LanyardHandle | null = null;
+  let floatingHandle: LanyardHandle | null = null;
+  let dismissedByUser = false;
+  let isHeroPastViewport = false;
+  let destroyed = false;
+
+  const loadEngine = (): Promise<LanyardModule> => {
+    if (!modulePromise) {
+      modulePromise = import('./three-lanyard');
+    }
+    return modulePromise;
+  };
+
+  const syncFlipState = (flipped: boolean) => {
+    heroPanel.dataset.lanyardFlipped = flipped ? 'true' : 'false';
+    heroFront.inert = flipped;
+    heroBack.inert = !flipped;
+    heroFlipBtns.forEach((btn) => {
+      btn.setAttribute('aria-pressed', String(flipped));
+    });
+  };
+
+  const mountHeroThree = async () => {
+    if (!heroThreeStage || reducedMotionMq.matches || heroHandle || destroyed) return;
+    try {
+      const { mountThreeLanyard } = await loadEngine();
+      if (reducedMotionMq.matches || heroHandle || destroyed) return;
+      const handle = mountThreeLanyard(heroThreeStage, {
+        variant: 'hero',
+        frontImage: '/foto-profil.webp',
+        orientation: 'portrait',
+        finish: 'holographic',
+        foilIntensity: 0.35,
+        cornerRadius: 0.3,
+        size: 0.64,
+        anchor: 'center',
+        strapLength: 0.42,
+        strapWidth: 0.65,
+        metal: 'silver',
+        gravity: 1,
+        damping: 0.55,
+        elasticity: 0.5,
+        breeze: 0.25,
+        interactive: true,
+        intro: true,
+        onReady: () => {
+          heroPanel.dataset.lanyardReady = 'true';
+        },
+        onNotify,
+        onDragChange: (dragging) => {
+          heroPanel.dataset.dragging = dragging ? 'true' : 'false';
+        },
+        onFlipChange: (flipped) => {
+          syncFlipState(flipped);
+        }
+      });
+      if (!handle) {
+        heroPanel.dataset.lanyardReady = 'pending';
+        return;
+      }
+      heroHandle = handle;
+      heroHandle.setVisible(!isHeroPastViewport);
+    } catch {
+      heroPanel.dataset.lanyardReady = 'pending';
+    }
+  };
+
+  const mountFloatingThree = async () => {
+    if (!floatingEl || !floatingThreeStage || reducedMotionMq.matches || floatingHandle || destroyed) return;
+    try {
+      const { mountThreeLanyard } = await loadEngine();
+      if (reducedMotionMq.matches || floatingHandle || destroyed) return;
+      const handle = mountThreeLanyard(floatingThreeStage, {
+        variant: 'mini',
+        frontImage: '/foto-profil.webp',
+        orientation: 'portrait',
+        finish: 'holographic',
+        foilIntensity: 0.28,
+        cornerRadius: 0.34,
+        size: 0.58,
+        anchor: 'center',
+        strapLength: 0.5,
+        strapWidth: 0.56,
+        metal: 'silver',
+        gravity: 1,
+        damping: 0.5,
+        elasticity: 0.52,
+        breeze: 0.3,
+        interactive: true,
+        intro: true,
+        onReady: () => {
+          floatingEl.dataset.lanyardReady = 'true';
+        },
+        onNotify,
+        onDragChange: (dragging) => {
+          floatingEl.dataset.dragging = dragging ? 'true' : 'false';
+        },
+        onFlipChange: (flipped) => {
+          floatingEl.dataset.lanyardFlipped = flipped ? 'true' : 'false';
+        }
+      });
+      if (!handle) {
+        floatingEl.dataset.lanyardReady = 'pending';
+        return;
+      }
+      floatingHandle = handle;
+      const isHanging = floatingEl.dataset.hanging === 'true';
+      floatingHandle.setVisible(isHanging);
+      if (isHanging) {
+        floatingHandle.reenter();
+      }
+    } catch {
+      floatingEl.dataset.lanyardReady = 'pending';
+    }
+  };
+
+  const syncFloatingVisibility = () => {
+    if (!floatingEl) return;
+    const shouldShow =
+      desktopMq.matches && !dismissedByUser && isHeroPastViewport && !reducedMotionMq.matches;
+    const wasHanging = floatingEl.dataset.hanging === 'true';
+
+    floatingEl.dataset.hanging = shouldShow ? 'true' : 'false';
+    floatingEl.inert = !shouldShow;
+    heroHandle?.setVisible(!isHeroPastViewport);
+
+    if (shouldShow) {
+      if (!floatingHandle) {
+        void mountFloatingThree();
+      } else {
+        floatingHandle.setVisible(true);
+        if (!wasHanging) {
+          floatingHandle.reenter();
+        }
+      }
+    } else {
+      floatingHandle?.setVisible(false);
+      floatingEl.dataset.dragging = 'false';
+    }
+  };
+
+  heroFlipBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (heroHandle && heroPanel.dataset.lanyardReady === 'true' && !reducedMotionMq.matches) {
+        heroHandle.flip();
+      } else {
+        syncFlipState(heroPanel.dataset.lanyardFlipped !== 'true');
+      }
+    });
+  });
+
+  if (!reducedMotionMq.matches) {
+    void mountHeroThree();
+  }
+
+  if (floatingEl) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        isHeroPastViewport = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        syncFloatingVisibility();
+      },
+      { threshold: 0 }
+    );
+    observer.observe(heroPanel);
+
+    desktopMq.addEventListener('change', syncFloatingVisibility);
+
+    floatingCloseBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissedByUser = true;
+      syncFloatingVisibility();
+    });
+
+    let prevScrollY = window.scrollY;
+    window.addEventListener(
+      'scroll',
+      () => {
+        const curScrollY = window.scrollY;
+        const delta = curScrollY - prevScrollY;
+        prevScrollY = curScrollY;
+        if (
+          floatingEl.dataset.hanging === 'true' &&
+          floatingEl.dataset.dragging !== 'true' &&
+          !reducedMotionMq.matches &&
+          Math.abs(delta) > 2
+        ) {
+          floatingHandle?.nudge(
+            clamp(-delta * 0.0035, -0.38, 0.32),
+            clamp(Math.abs(delta) * 0.004, 0, 0.32),
+            clamp(-delta * 0.005, -0.5, 0.5)
+          );
+        }
+      },
+      { passive: true }
+    );
+  }
+
+  // Sinkronisasi warna kartu & tali WebGL saat tema Daylight / Obsidian / Graphite berganti
+  let paletteRaf: number | null = null;
+  const paletteObserver = new MutationObserver(() => {
+    heroHandle?.refreshPalette();
+    floatingHandle?.refreshPalette();
+    if (paletteRaf !== null) cancelAnimationFrame(paletteRaf);
+    paletteRaf = requestAnimationFrame(() => {
+      paletteRaf = null;
+      heroHandle?.refreshPalette();
+      floatingHandle?.refreshPalette();
+    });
+  });
+  paletteObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-palette']
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const email = btn.dataset.copyEmail;
+      if (!email) return;
+      try {
+        await navigator.clipboard.writeText(email);
+        onNotify?.(`Email disalin: ${email}`);
+      } catch {
+        onNotify?.(`Email: ${email}`);
+      }
+    });
+  });
+
+  reducedMotionMq.addEventListener('change', () => {
+    if (reducedMotionMq.matches) {
+      heroHandle?.destroy();
+      heroHandle = null;
+      floatingHandle?.destroy();
+      floatingHandle = null;
+      heroPanel.dataset.lanyardReady = 'pending';
+      heroPanel.dataset.dragging = 'false';
+      if (floatingEl) {
+        floatingEl.dataset.lanyardReady = 'pending';
+        floatingEl.dataset.hanging = 'false';
+        floatingEl.inert = true;
+      }
+    } else {
+      void mountHeroThree();
+      syncFloatingVisibility();
+    }
+  });
+
+  window.addEventListener('pagehide', () => {
+    destroyed = true;
+    heroHandle?.destroy();
+    floatingHandle?.destroy();
+  });
+}
+
+/* --------------------------------------------------------------------------
+   9. REACT BITS VANILLA PORTS (Magnet, ClickSpark, AnimatedContent, CountUp)
+   -------------------------------------------------------------------------- */
+
+/**
+ * Attaches gentle cursor attraction (--mag-x / --mag-y) on desktop fine pointers.
+ */
+export function initMagnetElements(): void {
+  const finePointerMq = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-magnet]'));
+  if (!elements.length) return;
+
+  const resetMagnet = (el: HTMLElement) => {
+    el.style.removeProperty('--mag-x');
+    el.style.removeProperty('--mag-y');
+  };
+
+  elements.forEach((el) => {
+    el.addEventListener('pointermove', (ev: PointerEvent) => {
+      if (ev.pointerType === 'touch' || !finePointerMq.matches || reducedMotionMq.matches) {
+        resetMagnet(el);
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      const dx = ev.clientX - (rect.left + rect.width / 2);
+      const dy = ev.clientY - (rect.top + rect.height / 2);
+      const offset = computeMagnetOffset(dx, dy, 7, 5, true);
+      el.style.setProperty('--mag-x', `${offset.x.toFixed(2)}px`);
+      el.style.setProperty('--mag-y', `${offset.y.toFixed(2)}px`);
+    });
+
+    el.addEventListener('pointerleave', () => resetMagnet(el));
+    el.addEventListener('blur', () => resetMagnet(el));
+  });
+
+  const handleCapabilityChange = () => {
+    if (reducedMotionMq.matches || !finePointerMq.matches) {
+      elements.forEach(resetMagnet);
+    }
+  };
+  reducedMotionMq.addEventListener('change', handleCapabilityChange);
+  finePointerMq.addEventListener('change', handleCapabilityChange);
+}
+
+/**
+ * Renders transient radial click bursts on [data-spark] elements using a shared
+ * fixed canvas that runs animation frames ONLY while sparks are alive (0% Idle CPU).
+ */
+export function initClickSpark(): void {
+  const reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!document.body) return;
+
+  let canvas: HTMLCanvasElement | null = null;
+  let ctx: CanvasRenderingContext2D | null = null;
+  let sparks: SparkParticle[] = [];
+  let rafId: number | null = null;
+  let lastTime = 0;
+  let sparkColor = '#0066cc';
+
+  const ensureCanvas = (): boolean => {
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'rb-click-spark-canvas';
+      canvas.setAttribute('aria-hidden', 'true');
+      canvas.style.cssText =
+        'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:450;';
+      document.body.appendChild(canvas);
+      ctx = canvas.getContext('2d');
+    }
+    if (!ctx || !canvas) return false;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    if (canvas.width !== Math.floor(w * dpr) || canvas.height !== Math.floor(h * dpr)) {
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    return true;
+  };
+
+  const stopLoop = () => {
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    sparks = [];
+    if (ctx && canvas) {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  };
+
+  const renderFrame = (now: number) => {
+    if (reducedMotionMq.matches || document.hidden || !ctx || !canvas) {
+      stopLoop();
+      return;
+    }
+
+    const dtMs = lastTime > 0 ? Math.min(48, now - lastTime) : 16;
+    lastTime = now;
+
+    const result = stepSparkParticles(sparks, dtMs);
+    sparks = result.active;
+
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.strokeStyle = sparkColor;
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 1.75;
+
+    for (let i = 0; i < sparks.length; i++) {
+      const p = sparks[i];
+      const progress = p.life / p.durationMs;
+      const alpha = Math.max(0, 1 - progress);
+      const len = 8 * (1 - progress * 0.65);
+      const ex = p.x + Math.cos(p.angle) * len;
+      const ey = p.y + Math.sin(p.angle) * len;
+
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    if (result.anyAlive) {
+      rafId = window.requestAnimationFrame(renderFrame);
+    } else {
+      stopLoop();
+    }
+  };
+
+  document.addEventListener('click', (ev: MouseEvent) => {
+    if (reducedMotionMq.matches || document.hidden) return;
+    const target = (ev.target as Element | null)?.closest<HTMLElement>('[data-spark]');
+    if (!target || !ensureCanvas()) return;
+
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim();
+    if (accent) sparkColor = accent;
+
+    const rect = target.getBoundingClientRect();
+    const hasCoords = ev.clientX !== 0 || ev.clientY !== 0;
+    const cx = hasCoords ? ev.clientX : rect.left + rect.width / 2;
+    const cy = hasCoords ? ev.clientY : rect.top + rect.height / 2;
+
+    sparks.push(...createSparkBurst(cx, cy, 8, 92, 340));
+    if (rafId === null) {
+      lastTime = performance.now();
+      rafId = window.requestAnimationFrame(renderFrame);
+    }
+  });
+
+  reducedMotionMq.addEventListener('change', () => {
+    if (reducedMotionMq.matches) stopLoop();
+  });
+}
+
+/**
+ * Observes [data-reveal] containers ONLY as a progressive enhancement fallback
+ * when CSS scroll-driven `animation-timeline: view()` is unsupported.
+ */
+export function initAnimatedContent(): void {
+  if (prefersReducedMotion()) return;
+  const supportsViewTimeline =
+    typeof window.CSS?.supports === 'function' &&
+    window.CSS.supports('(animation-timeline: view()) and (animation-range: entry)');
+  if (supportsViewTimeline) return;
+
+  const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+  if (!targets.length || typeof IntersectionObserver !== 'function') return;
+
+  document.documentElement.dataset.revealFallback = 'true';
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        (entry.target as HTMLElement).classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.08, rootMargin: '0px 0px -28px 0px' }
+  );
+
+  targets.forEach((el) => observer.observe(el));
+}
+
+/**
+ * Animates factual counters [data-countup-target] once when entering viewport.
+ */
+export function initCountUp(): void {
+  const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-countup-target]'));
+  if (!elements.length) return;
+
+  const reducedMotionMq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const formatText = (el: HTMLElement, value: number) => {
+    const prefix = el.dataset.countupPrefix || '';
+    const suffix = el.dataset.countupSuffix || '';
+    return `${prefix}${value}${suffix}`;
+  };
+
+  if (reducedMotionMq.matches || typeof IntersectionObserver !== 'function') {
+    elements.forEach((el) => {
+      const target = Number(el.dataset.countupTarget);
+      if (Number.isFinite(target)) el.textContent = formatText(el, target);
+    });
+    return;
+  }
+
+  const DURATION_MS = 680;
+  const runCounter = (el: HTMLElement) => {
+    const target = Number(el.dataset.countupTarget);
+    const start = Number(el.dataset.countupStart ?? '0');
+    if (!Number.isFinite(target) || !Number.isFinite(start)) return;
+
+    const startTime = performance.now();
+    const tick = (now: number) => {
+      if (reducedMotionMq.matches) {
+        el.textContent = formatText(el, target);
+        return;
+      }
+      const progress = Math.min(1, (now - startTime) / DURATION_MS);
+      el.textContent = formatText(el, interpolateCountUp(start, target, progress));
+      if (progress < 1) {
+        window.requestAnimationFrame(tick);
+      } else {
+        el.textContent = formatText(el, target);
+      }
+    };
+    window.requestAnimationFrame(tick);
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        observer.unobserve(el);
+        runCounter(el);
+      });
+    },
+    { threshold: 0.35 }
+  );
+
+  elements.forEach((el) => observer.observe(el));
 }

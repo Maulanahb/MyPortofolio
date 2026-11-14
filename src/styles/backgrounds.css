@@ -1,6 +1,6 @@
 /* ==========================================================================
-   TRI-MODE BACKGROUND ATMOSPHERE & SECTION GROUNDS
-   Clean architectural depth across Daylight, Obsidian & Graphite
+   TRI-MODE BACKGROUND ATMOSPHERE & FULL-PAGE ARCHITECTURAL GROUNDS
+   Enhanced layered depth across Daylight, Obsidian & Graphite
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -18,91 +18,174 @@
   background-size: 240px 240px;
 }
 
-/* --------------------------------------------------------------------------
-   2. OPENING STAGE (Topglow + Center-Masked Architectural Frame + Ambient Mesh)
-   -------------------------------------------------------------------------- */
-.bg-opening-stage {
-  position: relative;
+.page-swarm-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Keep decoration outside the reading planes quieter without fading content. */
+.bg-opening-stage::before,
+.ambient-mesh,
+.bg-blueprint-stage::before,
+.bg-contour-stage::before,
+.bg-closing-arcs::before {
+  opacity: 0.55;
+}
+
+/* One stable plane per editorial section, independent of descendant reveals. */
+:where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell) {
+  --reading-edge: 16px;
+  --muted: var(--reading-muted);
+  --line: var(--reading-line);
+  --line-strong: var(--reading-line-strong);
   isolation: isolate;
-  z-index: 2;
+}
+
+:where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell)::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--reading-edge));
+  z-index: -1;
+  background: var(--reading-surface);
+  pointer-events: none;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent);
+  mask-image:
+    linear-gradient(to right, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@media (max-width: 860px) {
+  :where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell) {
+    --reading-edge: 8px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. FULL-PAGE ARCHITECTURAL RAILS & CROSSHAIR DIVIDERS (+ NODES)
+   -------------------------------------------------------------------------- */
+.page-stage-host {
+  position: relative;
   overflow-x: clip;
   --rail-inset: 24px;
   --rail-x: max(var(--rail-inset), calc(50% - 600px));
 }
 
-/* Un-masked top hairline highlight + top studio radial bloom */
+/* Continuous container-aligned vertical guide lines top-to-bottom */
+.page-stage-host::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    transparent var(--rail-x),
+    var(--bg-rail-line) var(--rail-x) calc(var(--rail-x) + 1px),
+    transparent calc(var(--rail-x) + 1px) calc(100% - var(--rail-x) - 1px),
+    var(--bg-rail-line) calc(100% - var(--rail-x) - 1px) calc(100% - var(--rail-x)),
+    transparent calc(100% - var(--rail-x))
+  );
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 48px), transparent);
+}
+
+/* Precision section hairline with + crosshair intersection markers on the rails */
+.page-stage-host .section-rule {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  height: 1px;
+  border: 0;
+  overflow: visible;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--line) 12%,
+    var(--line-strong) 50%,
+    var(--line) 88%,
+    transparent
+  );
+}
+
+.page-stage-host .section-rule::before,
+.page-stage-host .section-rule::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--bg-crosshair), var(--bg-crosshair)) 50% 50% / 9px 1px no-repeat,
+    linear-gradient(var(--bg-crosshair), var(--bg-crosshair)) 50% 50% / 1px 9px no-repeat;
+}
+
+.page-stage-host .section-rule::before {
+  left: var(--rail-x);
+  transform: translate(-50%, -50%);
+}
+
+.page-stage-host .section-rule::after {
+  right: var(--rail-x);
+  transform: translate(50%, -50%);
+}
+
+@media (max-width: 580px) {
+  .page-stage-host {
+    --rail-inset: 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. OPENING STAGE (Topglow Crown & Ambient Plumes)
+   -------------------------------------------------------------------------- */
+.bg-opening-stage {
+  position: relative;
+  overflow-x: clip;
+}
+
+/* Strong top horizon hairline + triple studio radial bloom */
 .bg-opening-stage::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: min(100%, 740px);
+  height: min(100%, 820px);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   background:
-    linear-gradient(90deg, transparent, var(--bg-horizon-rim) 50%, transparent) 50% 0 / 62% 1px no-repeat,
-    radial-gradient(62% 460px at 50% 0%, var(--bg-glow-1), transparent 76%),
-    radial-gradient(42% 360px at 84% 56px, var(--bg-glow-2), transparent 74%),
-    radial-gradient(110% 300px at 50% 0%, var(--bg-glow-2), transparent 80%);
-}
-
-/* Center-masked architectural container vertical rails & perimeter coordinate dot matrix */
-.bg-opening-stage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    linear-gradient(
-      to right,
-      transparent var(--rail-x),
-      var(--bg-arc-line) var(--rail-x) calc(var(--rail-x) + 1px),
-      transparent calc(var(--rail-x) + 1px) calc(100% - var(--rail-x) - 1px),
-      var(--bg-arc-line) calc(100% - var(--rail-x) - 1px) calc(100% - var(--rail-x)),
-      transparent calc(100% - var(--rail-x))
-    ),
-    radial-gradient(circle at 12px 12px, var(--bg-dot-color) 1.15px, transparent 1.9px) 50% 0 / 24px 24px;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent, #000 72px, #000 calc(100% - 140px), transparent),
-    radial-gradient(ellipse 68% 74% at 50% 42%, transparent 48%, #000 94%);
-  mask-image:
-    linear-gradient(to bottom, transparent, #000 72px, #000 calc(100% - 140px), transparent),
-    radial-gradient(ellipse 68% 74% at 50% 42%, transparent 48%, #000 94%);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-}
-
-@media (max-width: 767px) {
-  .bg-opening-stage::after {
-    opacity: 0.5;
-  }
-}
-
-@media (max-width: 580px) {
-  .bg-opening-stage {
-    --rail-inset: 16px;
-  }
+    linear-gradient(90deg, transparent, var(--bg-horizon-rim) 50%, transparent) 50% 0 / 78% 2px no-repeat,
+    radial-gradient(66% 520px at 50% 0%, var(--bg-glow-1), transparent 74%),
+    radial-gradient(46% 400px at 14% 16%, var(--bg-glow-2), transparent 72%),
+    radial-gradient(46% 400px at 86% 14%, var(--bg-glow-3), transparent 72%);
 }
 
 /* --------------------------------------------------------------------------
-   3. AMBIENT SCROLL-DRIVEN MESH (ZERO AUTONOMOUS LOOP)
+   4. AMBIENT SCROLL-DRIVEN PLUMES (Gutter-Framed Outer Glows)
    -------------------------------------------------------------------------- */
 .ambient-mesh {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .ambient-mesh::before,
 .ambient-mesh::after {
   content: '';
   position: absolute;
-  left: -25%;
-  right: -25%;
+  left: -12%;
+  right: -12%;
   top: 0;
   bottom: 0;
   pointer-events: none;
@@ -110,14 +193,15 @@
 
 .ambient-mesh::before {
   background:
-    radial-gradient(ellipse 32% 36% at 28% 42%, var(--bg-glow-1), transparent 72%),
-    radial-gradient(ellipse 24% 24% at 56% 74%, var(--bg-glow-2), transparent 72%);
+    radial-gradient(ellipse 40% 38% at 14% 28%, var(--bg-glow-1), transparent 70%),
+    radial-gradient(ellipse 36% 34% at 10% 72%, var(--bg-glow-3), transparent 72%);
 }
 
 .ambient-mesh::after {
   background:
-    radial-gradient(ellipse 28% 30% at 70% 36%, var(--bg-glow-2), transparent 72%),
-    radial-gradient(ellipse 22% 22% at 42% 28%, var(--bg-glow-1), transparent 72%);
+    radial-gradient(ellipse 40% 38% at 86% 24%, var(--bg-glow-2), transparent 70%),
+    radial-gradient(ellipse 46% 24% at 50% 56%, var(--bg-glow-1), transparent 74%),
+    radial-gradient(ellipse 34% 32% at 88% 72%, var(--bg-glow-3), transparent 72%);
 }
 
 /* Scroll-linked ambient depth (progressively enhanced, stationary at rest for WCAG 2.2.2) */
@@ -131,43 +215,80 @@
     .ambient-mesh::before {
       animation: ambientDriftA linear both;
       animation-timeline: scroll(root block);
-      animation-range: 0px 900px;
+      animation-range: 0px 1050px;
     }
 
     .ambient-mesh::after {
       animation: ambientDriftB linear both;
       animation-timeline: scroll(root block);
-      animation-range: 0px 900px;
+      animation-range: 0px 1050px;
     }
   }
 }
 
 @keyframes ambientDriftA {
   from {
-    transform: translate3d(-4%, 0, 0) skewX(-3deg) scaleY(0.97);
+    transform: translate3d(-4%, 0, 0) skewX(-3deg) scaleY(0.98);
   }
   to {
-    transform: translate3d(6%, 24px, 0) skewX(4deg) scaleY(1.04);
+    transform: translate3d(8%, 34px, 0) skewX(4deg) scaleY(1.05);
   }
 }
 
 @keyframes ambientDriftB {
   from {
-    transform: translate3d(5%, 0, 0) skewX(3deg) scaleY(1.03);
+    transform: translate3d(4%, 0, 0) skewX(3deg) scaleY(1.03);
   }
   to {
-    transform: translate3d(-6%, 20px, 0) skewX(-4deg) scaleY(0.95);
+    transform: translate3d(-8%, 30px, 0) skewX(-4deg) scaleY(0.96);
   }
 }
 
 /* --------------------------------------------------------------------------
-   4. DUSK BAND SECTION (#pekerjaan — Smoothstep Top/Bottom Melt)
+   5. EDITORIAL PRISM BEAM & STRUCTURAL SPINE STAGE (#tentang & #keahlian)
+   -------------------------------------------------------------------------- */
+.bg-blueprint-stage {
+  position: relative;
+  isolation: isolate;
+  z-index: 2;
+  overflow: clip;
+}
+
+.bg-blueprint-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(50% 44% at 90% 16%, var(--bg-glow-1), transparent 72%),
+    radial-gradient(46% 48% at 10% 78%, var(--bg-glow-3), transparent 74%),
+    linear-gradient(116deg, transparent 24%, var(--bg-glow-2) 48%, var(--bg-glow-1) 52%, transparent 72%),
+    linear-gradient(
+      to right,
+      transparent calc(50% - 0.5px),
+      var(--bg-rail-line) calc(50% - 0.5px) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 56px), transparent),
+    radial-gradient(ellipse 68% 76% at 50% 48%, rgba(0, 0, 0, 0.24) 28%, #000 84%);
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 56px), transparent),
+    radial-gradient(ellipse 68% 76% at 50% 48%, rgba(0, 0, 0, 0.24) 28%, #000 84%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* --------------------------------------------------------------------------
+   6. DUSK BAND SECTION (#pekerjaan — Smoothstep Top/Bottom Melt + Dual Aura)
    -------------------------------------------------------------------------- */
 .bg-dusk-band {
   position: relative;
   isolation: isolate;
   z-index: 2;
-  --dusk-edge: 88px;
+  overflow: clip;
+  --dusk-edge: 96px;
   --muted: var(--bg-dusk-muted);
   padding-block: 108px;
   background-color: transparent;
@@ -209,15 +330,79 @@
     linear-gradient(var(--bg-dusk-band), var(--bg-dusk-band));
 }
 
+.bg-dusk-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(54% 38% at 20% 22%, var(--bg-glow-1), transparent 72%),
+    radial-gradient(50% 42% at 84% 76%, var(--bg-glow-3), transparent 72%);
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 24px, #000 120px, #000 calc(100% - 120px), transparent),
+    radial-gradient(ellipse 68% 72% at 50% 52%, rgba(0, 0, 0, 0.2) 32%, #000 84%);
+  mask-image:
+    linear-gradient(to bottom, transparent 24px, #000 120px, #000 calc(100% - 120px), transparent),
+    radial-gradient(ellipse 68% 72% at 50% 52%, rgba(0, 0, 0, 0.2) 32%, #000 84%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
 @media (max-width: 580px) {
   .bg-dusk-band {
-    padding-block: 72px;
-    --dusk-edge: 56px;
+    padding-block: 44px;
+    --dusk-edge: 40px;
   }
 }
 
 /* --------------------------------------------------------------------------
-   5. CLOSING ARCS SECTION (#kontak — Concentric Perimeter Rings)
+   7. TECHNICAL CONTOUR STAGE (#pengalaman & #pendidikan)
+   -------------------------------------------------------------------------- */
+.bg-contour-stage {
+  position: relative;
+  isolation: isolate;
+  z-index: 2;
+  overflow: clip;
+}
+
+.bg-contour-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(46% 42% at 8% 22%, var(--bg-glow-2), transparent 72%),
+    radial-gradient(50% 44% at 92% 74%, var(--bg-glow-1), transparent 72%),
+    repeating-radial-gradient(
+      circle at 96% 18%,
+      transparent 0 63px,
+      var(--bg-arc-line) 63px 64px
+    ),
+    repeating-radial-gradient(
+      circle at 4% 82%,
+      transparent 0 63px,
+      var(--bg-arc-line) 63px 64px
+    );
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent, #000 64px, #000 calc(100% - 64px), transparent),
+    radial-gradient(ellipse 74% 82% at 50% 50%, rgba(0, 0, 0, 0.28) 32%, #000 86%);
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 64px, #000 calc(100% - 64px), transparent),
+    radial-gradient(ellipse 74% 82% at 50% 50%, rgba(0, 0, 0, 0.28) 32%, #000 86%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@media (max-width: 767px) {
+  .bg-dusk-band::before {
+    opacity: 0.9;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. CLOSING ARCS SECTION (#kontak — Stronger Concentric Perimeter Rings)
    -------------------------------------------------------------------------- */
 .bg-closing-arcs {
   position: relative;
@@ -233,23 +418,21 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(56% 58% at 50% 100%, var(--bg-glow-1), transparent 76%),
-    radial-gradient(34% 42% at 78% 100%, var(--bg-glow-2), transparent 76%),
-    repeating-radial-gradient(circle at 50% 132%, transparent 0 87px, var(--bg-arc-line) 87px 88px);
+    radial-gradient(64% 62% at 50% 100%, var(--bg-glow-1), transparent 74%),
+    radial-gradient(42% 48% at 84% 94%, var(--bg-glow-3), transparent 74%),
+    repeating-radial-gradient(circle at 50% 126%, transparent 0 70.5px, var(--bg-arc-line) 70.5px 72px);
   -webkit-mask-image:
-    linear-gradient(to bottom, transparent, #000 72px, #000 calc(100% - 72px), transparent),
-    radial-gradient(ellipse 88% 96% at 50% 100%, #000 35%, transparent 88%),
-    radial-gradient(ellipse 56% 62% at 50% 50%, transparent 40%, #000 90%);
+    linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 20px), transparent),
+    radial-gradient(ellipse 96% 92% at 50% 96%, #000 46%, rgba(0, 0, 0, 0.42) 76%, transparent 100%);
   mask-image:
-    linear-gradient(to bottom, transparent, #000 72px, #000 calc(100% - 72px), transparent),
-    radial-gradient(ellipse 88% 96% at 50% 100%, #000 35%, transparent 88%),
-    radial-gradient(ellipse 56% 62% at 50% 50%, transparent 40%, #000 90%);
+    linear-gradient(to bottom, transparent, #000 56px, #000 calc(100% - 20px), transparent),
+    radial-gradient(ellipse 96% 92% at 50% 96%, #000 46%, rgba(0, 0, 0, 0.42) 76%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
 }
 
 /* --------------------------------------------------------------------------
-   6. SITE FOOTER HORIZON DOME RIM
+   9. SITE FOOTER HORIZON DOME RIM
    -------------------------------------------------------------------------- */
 .site-footer-horizon {
   position: relative;
@@ -265,12 +448,12 @@
   height: 220px;
   left: 50%;
   translate: -50% 0;
-  bottom: -196px;
+  bottom: -194px;
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-  border-top: 1px solid var(--bg-horizon-rim);
-  box-shadow: 0 -10px 44px -6px var(--bg-horizon-rim);
-  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 28%, #000 72%, transparent 96%);
-  mask-image: linear-gradient(90deg, transparent 4%, #000 28%, #000 72%, transparent 96%);
+  border-top: 1.5px solid var(--bg-horizon-rim);
+  box-shadow: 0 -14px 52px -4px var(--bg-horizon-rim);
+  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 24%, #000 76%, transparent 96%);
+  mask-image: linear-gradient(90deg, transparent 4%, #000 24%, #000 76%, transparent 96%);
   pointer-events: none;
   z-index: 0;
 }
@@ -281,13 +464,19 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. FORCED COLORS & PRINT FALLBACKS
+   10. FORCED COLORS & PRINT FALLBACKS
    -------------------------------------------------------------------------- */
 @media (forced-colors: active), print {
   .page-atmosphere,
+  .page-swarm-canvas,
+  .page-stage-host::before,
+  .page-stage-host .section-rule::before,
+  .page-stage-host .section-rule::after,
   .bg-opening-stage::before,
-  .bg-opening-stage::after,
   .ambient-mesh,
+  .bg-blueprint-stage::before,
+  .bg-dusk-band::before,
+  .bg-contour-stage::before,
   .bg-closing-arcs::before,
   .site-footer-horizon::before {
     display: none;

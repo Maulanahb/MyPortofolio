@@ -329,7 +329,10 @@ export function fitProjectPreviews(): void {
     const computedStyle = window.getComputedStyle(artEl);
     const padLeft = parseFloat(computedStyle.paddingLeft) || 0;
     const padRight = parseFloat(computedStyle.paddingRight) || 0;
+    const padTop = parseFloat(computedStyle.paddingTop) || 0;
+    const padBottom = parseFloat(computedStyle.paddingBottom) || 0;
     const availW = artEl.clientWidth - padLeft - padRight;
+    const availH = artEl.clientHeight - padTop - padBottom;
     if (availW <= 0) return;
 
     // 1. Web Desktop Mockups (BawangHub, PBL-IVSS, CUCI.IN, AIaaS Keuangan)
@@ -341,7 +344,12 @@ export function fitProjectPreviews(): void {
       }
 
       const baseW = 470;
-      if (availW < baseW - 2) {
+      const naturalH = webApp.offsetHeight || 270;
+      const maxHeightScale =
+        isMobileViewport && !isInsideModal && availH > 60 ? availH / naturalH : 1;
+      const targetScale = Math.min(1, availW / baseW, maxHeightScale);
+
+      if (targetScale < 0.995) {
         webApp.style.transform = 'none';
         webApp.style.marginTop = '0px';
         webApp.style.marginBottom = '0px';
@@ -351,9 +359,11 @@ export function fitProjectPreviews(): void {
         webApp.style.maxWidth = 'none';
         webApp.style.flexShrink = '0';
 
-        const naturalH = webApp.offsetHeight || 270;
-        const scale = Math.max(0.45, Math.min(1, availW / baseW));
-        const hShrink = naturalH * (1 - scale);
+        const measuredH = webApp.offsetHeight || naturalH;
+        const heightBound =
+          isMobileViewport && !isInsideModal && availH > 60 ? availH / measuredH : 1;
+        const scale = Math.max(0.20, Math.min(1, availW / baseW, heightBound));
+        const hShrink = measuredH * (1 - scale);
         const wShrink = baseW * (1 - scale);
 
         webApp.style.transformOrigin = 'center center';
@@ -380,9 +390,11 @@ export function fitProjectPreviews(): void {
       // Lebar natural 2 HP berdampingan (172px + 14px gap + 172px + tombol fisik = 368px, tinggi = 358px)
       const baseW = 368;
       const naturalH = 358;
-      // Pada kartu proyek, batasi skala maksimum 0.85 agar 2 HP memiliki jarak aman dari badge atas/bawah
+      // Pada kartu proyek, batasi skala maksimum 0.85 dan patuhi availH di viewport sempit agar bebas tabrak badge atas
       const maxScale = isInsideModal ? 0.96 : 0.85;
-      const scale = Math.max(0.48, Math.min(maxScale, availW / baseW));
+      const heightBound =
+        isMobileViewport && !isInsideModal && availH > 60 ? availH / naturalH : maxScale;
+      const scale = Math.max(0.20, Math.min(maxScale, availW / baseW, heightBound));
 
       phoneWrap.style.width = `${baseW}px`;
       phoneWrap.style.maxWidth = 'none';
