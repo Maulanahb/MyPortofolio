@@ -13,6 +13,7 @@ import {
   stepSparkParticles,
   interpolateCountUp,
   scrambleTextFrame,
+  nextRotatingIndex,
   type SparkParticle
 } from './reactbits-math';
 
@@ -182,11 +183,13 @@ export function initHeroRoleDock(): void {
 
     panels.forEach(panel => {
       const match = panel.id === `hero-role-panel-${roleId}`;
+      panel.dataset.panelActive = match ? 'true' : 'false';
+      panel.setAttribute('aria-hidden', String(!match));
+      panel.inert = !match;
       if (match) {
         panel.removeAttribute('hidden');
         panel.setAttribute('tabindex', '0');
       } else {
-        panel.setAttribute('hidden', 'until-found');
         panel.removeAttribute('tabindex');
       }
     });
@@ -204,13 +207,16 @@ export function initHeroRoleDock(): void {
     tab.addEventListener('click', () => selectRole(tab));
   });
 
-  panels.forEach(panel => {
-    panel.addEventListener('beforematch', () => {
-      const roleId = panel.id.replace('hero-role-panel-', '');
-      const tab = tabs.find(t => t.dataset.roleTab === roleId);
-      if (tab) selectRole(tab);
+  // Ensure initial panel inert state aligns cleanly before interactions
+  const initialRoleId = tabs.find(t => t.getAttribute('aria-selected') === 'true')?.dataset.roleTab;
+  if (initialRoleId) {
+    panels.forEach(panel => {
+      const match = panel.id === `hero-role-panel-${initialRoleId}`;
+      panel.dataset.panelActive = match ? 'true' : 'false';
+      panel.setAttribute('aria-hidden', String(!match));
+      panel.inert = !match;
     });
-  });
+  }
 
   bindTabKeyboard(tablist, tabs, selectRole);
   tabs.forEach(tab => { tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1; });
@@ -275,13 +281,115 @@ export function initDecryptedText(): void {
     document.querySelectorAll<HTMLElement>('[data-decrypt]').forEach(el => observer.observe(el));
   }
 
+  // Hover & keyboard focus tactical shimmer on monospace step/chip labels
+  document.querySelectorAll<HTMLElement>('[data-decrypt-hover]').forEach(el => {
+    const triggerHoverDecrypt = () => {
+      if (!running.has(el)) decrypt(el, 220);
+    };
+    el.addEventListener('pointerenter', triggerHoverDecrypt);
+    el.addEventListener('focusin', triggerHoverDecrypt);
+  });
+
   document.addEventListener('hero-role-change', event => {
     const { roleId } = (event as CustomEvent<{ roleId: string }>).detail;
     const summary = document.getElementById(`hero-role-panel-${roleId}`)?.querySelector<HTMLElement>('[data-role-summary]');
     if (summary) decrypt(summary, 240);
   });
+
+  document.addEventListener('hf-stage-change', event => {
+    const { stageIdx } = (event as CustomEvent<{ stageIdx: number }>).detail;
+    const panel = document.getElementById(`hf-wb-${stageIdx}`);
+    const target = panel?.querySelector<HTMLElement>('[data-decrypt-stage]');
+    if (target && panel) {
+      const rect = panel.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        decrypt(target, 260);
+      }
+    }
+  });
+
   media.addEventListener('change', () => {
     if (media.matches) [...running.values()].forEach(state => state.finish());
+  });
+}
+
+/**
+ * React Bits RotatingText port: cycles overlapping subtitle roles inside a locked single-cell stack.
+ */
+export function initRotatingText(): void {
+  const containers = Array.from(document.querySelectorAll<HTMLElement>('[data-rotating-text]'));
+  if (!containers.length) return;
+
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const intervalMs = 2800;
+
+  containers.forEach(container => {
+    const items = Array.from(container.querySelectorAll<HTMLElement>('[data-rotating-item]'));
+    if (items.length <= 1) return;
+
+    let activeIdx = Math.max(0, items.findIndex(item => item.classList.contains('is-active')));
+    let timerId = 0;
+    let inViewport = true;
+
+    const syncItems = (nextIdx: number, previousIdx: number) => {
+      items.forEach((item, idx) => {
+        item.classList.toggle('is-active', idx === nextIdx);
+        item.classList.toggle('is-exiting', idx === previousIdx && idx !== nextIdx);
+      });
+      if (previousIdx !== nextIdx) {
+        window.setTimeout(() => {
+          items[previousIdx]?.classList.remove('is-exiting');
+        }, 360);
+      }
+    };
+
+    const advance = () => {
+      if (!inViewport || document.hidden) return;
+      const previousIdx = activeIdx;
+      activeIdx = nextRotatingIndex(activeIdx, items.length);
+      syncItems(activeIdx, previousIdx);
+    };
+
+    const stop = () => {
+      if (timerId) {
+        window.clearInterval(timerId);
+        timerId = 0;
+      }
+    };
+
+    const start = () => {
+      stop();
+      if (media.matches || !inViewport || document.hidden) return;
+      timerId = window.setInterval(advance, intervalMs);
+    };
+
+    syncItems(activeIdx, activeIdx);
+
+    if (typeof IntersectionObserver === 'function') {
+      const observer = new IntersectionObserver(
+        entries => {
+          const entry = entries[0];
+          if (!entry) return;
+          inViewport = entry.isIntersecting;
+          if (inViewport && !document.hidden) start();
+          else stop();
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(container);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (inViewport) start();
+    });
+
+    media.addEventListener('change', () => {
+      if (media.matches) stop();
+      else start();
+    });
+
+    start();
   });
 }
 
@@ -320,319 +428,7 @@ export function initEditorialMotion(): void {
 }
 
 /* --------------------------------------------------------------------------
-   5. SIGNAL-PULSE ARCHITECTURE WORKBENCH (#arsitektur)
-   -------------------------------------------------------------------------- */
-const RBAC_MATRIX: Record<string, Array<{ text: string; allowed: boolean }>> = {
-  admin: [
-    { text: '✓ users (Kelola Akun + Proteksi Self-Disable)', allowed: true },
-    { text: '✓ financial_reports (Index Komposit PostgreSQL)', allowed: true },
-    { text: '✓ orders & complaints (Audit Penuh)', allowed: true }
-  ],
-  kasir: [
-    { text: '✓ laundry_orders (Buat Nota & Update 4 Tahap)', allowed: true },
-    { text: '✓ payments (Catat Pelunasan & Cetak Struk)', allowed: true },
-    { text: '✕ users & financial_reports (Dibatasi Owner)', allowed: false }
-  ],
-  pelanggan: [
-    { text: '✓ public_tracking (Cek Status via Nomor Nota Tanpa Login)', allowed: true },
-    { text: '✓ complaints (Ajukan Keluhan Terkait Nota)', allowed: true },
-    { text: '✕ panel_admin & kasir_pos (Ditolak RBAC)', allowed: false }
-  ]
-};
-
-const AI_JSON_PRESETS = [
-  {
-    raw_input: 'Beli kopi 25rb kemarin',
-    type: 'expense',
-    amount: 25000,
-    category: 'Konsumsi',
-    relative_date: 'yesterday',
-    proxy: 'server-side-validated'
-  },
-  {
-    raw_input: 'Bayar listrik 320rb',
-    type: 'expense',
-    amount: 320000,
-    category: 'Utilitas & Tagihan',
-    relative_date: 'today',
-    proxy: 'server-side-validated'
-  },
-  {
-    raw_input: 'Terima proyek 3.5jt',
-    type: 'income',
-    amount: 3500000,
-    category: 'Honor Proyek',
-    relative_date: 'today',
-    proxy: 'server-side-validated'
-  }
-];
-
-export function initArchitectureWorkbench(): void {
-  const playerCard = document.querySelector<HTMLElement>('[data-hf-player]');
-  if (!playerCard) return;
-
-  const DURATION = 9000;
-  const STEP_STARTS = [0, 3000, 6000];
-
-  const playBtn = document.getElementById('hf-play-toggle');
-  const pauseIcon = document.getElementById('hf-icon-pause');
-  const playIcon = document.getElementById('hf-icon-play');
-  const playLabel = document.getElementById('hf-play-label');
-  const timecodeEl = document.getElementById('hf-timecode');
-  const scrubber = document.getElementById('hf-scrubber') as HTMLInputElement | null;
-  const progressEl = document.getElementById('hf-scrubber-progress');
-  const tablist = playerCard.querySelector<HTMLElement>('.hf-steps-tabs');
-
-  const nodes = Array.from(playerCard.querySelectorAll<HTMLElement>('[data-hf-node]'));
-  const connectors = Array.from(playerCard.querySelectorAll<HTMLElement>('[data-hf-connector]'));
-  const tabs = Array.from(playerCard.querySelectorAll<HTMLButtonElement>('[data-hf-step]'));
-  const panels = [0, 1, 2].map(i => document.getElementById(`hf-wb-${i}`)).filter((el): el is HTMLElement => Boolean(el));
-
-  const reduced = prefersReducedMotion();
-  let currentTime = 0;
-  let activeStageIdx = 0;
-  let userPaused = reduced;
-  let inViewport = true;
-  let lastFrame = performance.now();
-  let rafId = 0;
-
-  const isRunning = () => !userPaused && inViewport && !reduced;
-
-  const syncPlayControls = () => {
-    const runningNow = isRunning();
-    playerCard.dataset.playing = String(runningNow);
-    if (playBtn) playBtn.setAttribute('aria-pressed', String(!userPaused));
-    if (pauseIcon) pauseIcon.style.display = userPaused ? 'none' : 'block';
-    if (playIcon) playIcon.style.display = userPaused ? 'block' : 'none';
-    if (playLabel) playLabel.textContent = userPaused ? 'Putar' : 'Jeda';
-  };
-
-  const syncWorkbenchPanel = (stageIdx: number) => {
-    panels.forEach((panel, idx) => {
-      if (idx === stageIdx) {
-        panel.removeAttribute('hidden');
-        panel.setAttribute('tabindex', '0');
-      } else {
-        panel.setAttribute('hidden', 'until-found');
-        panel.removeAttribute('tabindex');
-      }
-    });
-  };
-
-  const renderFrame = (ms: number) => {
-    const clamped = Math.max(0, Math.min(DURATION, ms));
-    currentTime = clamped;
-    const progress = clamped / DURATION;
-
-    if (progressEl) progressEl.style.setProperty('--hf-progress', progress.toFixed(4));
-    if (scrubber && document.activeElement !== scrubber) {
-      scrubber.value = String(Math.round(clamped));
-    }
-    if (timecodeEl) {
-      timecodeEl.textContent = `${(clamped / 1000).toFixed(1).padStart(4, '0')}s / 09.0s`;
-    }
-
-    let nextIdx = 0;
-    if (clamped >= STEP_STARTS[2]) nextIdx = 2;
-    else if (clamped >= STEP_STARTS[1]) nextIdx = 1;
-
-    nodes.forEach((node, idx) => {
-      node.classList.toggle('is-active', idx === nextIdx);
-      node.classList.toggle('is-passed', idx < nextIdx);
-    });
-
-    connectors.forEach((conn, idx) => {
-      conn.classList.toggle('is-active', nextIdx > idx);
-      conn.classList.toggle('is-pulsing', nextIdx === idx && isRunning());
-    });
-
-    tabs.forEach((tab, idx) => {
-      const active = idx === nextIdx;
-      tab.classList.toggle('is-active', active);
-      tab.setAttribute('aria-selected', String(active));
-      tab.toggleAttribute('focusgroupstart', active);
-    });
-
-    if (nextIdx !== activeStageIdx) {
-      activeStageIdx = nextIdx;
-      syncWorkbenchPanel(nextIdx);
-    }
-  };
-
-  const tick = (now: number) => {
-    if (!isRunning()) {
-      rafId = 0;
-      return;
-    }
-    const delta = Math.min(now - lastFrame, 100);
-    lastFrame = now;
-    renderFrame((currentTime + delta) % DURATION);
-    rafId = window.requestAnimationFrame(tick);
-  };
-
-  const startLoop = () => {
-    syncPlayControls();
-    connectors.forEach((conn, idx) => {
-      conn.classList.toggle('is-pulsing', activeStageIdx === idx && isRunning());
-    });
-    if (isRunning() && !rafId) {
-      lastFrame = performance.now();
-      rafId = window.requestAnimationFrame(tick);
-    }
-  };
-
-  const jumpToStage = (idx: number, pauseOnInteract = false) => {
-    if (pauseOnInteract) userPaused = true;
-    renderFrame(STEP_STARTS[idx] ?? 0);
-    startLoop();
-  };
-
-  playBtn?.addEventListener('click', () => {
-    userPaused = !userPaused;
-    startLoop();
-  });
-
-  scrubber?.addEventListener('input', () => {
-    userPaused = true;
-    renderFrame(Number(scrubber.value));
-    startLoop();
-  });
-
-  nodes.forEach((node, idx) => {
-    node.addEventListener('click', () => jumpToStage(idx, true));
-    node.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        jumpToStage(idx, true);
-      }
-    });
-  });
-
-  tabs.forEach((tab, idx) => {
-    tab.addEventListener('click', () => jumpToStage(idx, true));
-  });
-
-  if (tablist) {
-    bindTabKeyboard(tablist, tabs, tab => {
-      const idx = tabs.indexOf(tab);
-      if (idx >= 0) jumpToStage(idx, true);
-    });
-  }
-
-  panels.forEach((panel, idx) => {
-    panel.addEventListener('beforematch', () => jumpToStage(idx, true));
-  });
-
-  // Auto-pause loop saat keluar viewport (hemat GPU & baterai)
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      entries => {
-        const entry = entries[0];
-        if (!entry) return;
-        inViewport = entry.isIntersecting;
-        startLoop();
-      },
-      { threshold: 0.1 }
-    );
-    io.observe(playerCard);
-  }
-
-  // Interactive Workbench Sub-controls: Panel 0 RBAC Matrix
-  const rbacButtons = Array.from(playerCard.querySelectorAll<HTMLButtonElement>('[data-rbac-role]'));
-  const rbacOutput = document.getElementById('hf-rbac-output');
-  rbacButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const role = btn.dataset.rbacRole || 'admin';
-      const rows = RBAC_MATRIX[role] || RBAC_MATRIX.admin;
-
-      rbacButtons.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('is-selected', active);
-        b.setAttribute('aria-pressed', String(active));
-      });
-
-      if (rbacOutput) {
-        rbacOutput.replaceChildren(
-          ...rows.map(item => {
-            const span = document.createElement('span');
-            span.className = `hf-perm ${item.allowed ? 'is-allow' : 'is-deny'}`;
-            span.textContent = item.text;
-            return span;
-          })
-        );
-      }
-      userPaused = true;
-      startLoop();
-    });
-  });
-
-  // Panel 1 AI JSON Preset Switcher
-  const aiButtons = Array.from(playerCard.querySelectorAll<HTMLButtonElement>('[data-ai-preset]'));
-  const aiOutput = document.getElementById('hf-ai-json-output')?.querySelector('code');
-  aiButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = Number(btn.dataset.aiPreset || 0);
-      const payload = AI_JSON_PRESETS[idx] || AI_JSON_PRESETS[0];
-
-      aiButtons.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('is-selected', active);
-        b.setAttribute('aria-pressed', String(active));
-      });
-
-      if (aiOutput) {
-        aiOutput.textContent = JSON.stringify(payload, null, 2);
-      }
-      userPaused = true;
-      startLoop();
-    });
-  });
-
-  // Panel 2 SQL Query Strategy Toggle
-  const sqlButtons = Array.from(playerCard.querySelectorAll<HTMLButtonElement>('[data-sql-mode]'));
-  const sqlLabel = document.getElementById('hf-sql-label');
-  const sqlBadge = document.getElementById('hf-sql-badge');
-  const sqlBar = document.getElementById('hf-sql-bar');
-  const sqlDesc = document.getElementById('hf-sql-desc');
-
-  sqlButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.sqlMode || 'matview';
-      sqlButtons.forEach(b => {
-        const active = b === btn;
-        b.classList.toggle('is-selected', active);
-        b.setAttribute('aria-pressed', String(active));
-      });
-
-      if (mode === 'matview') {
-        if (sqlLabel) sqlLabel.textContent = 'Materialized View PostgreSQL (Precomputed)';
-        if (sqlBadge) sqlBadge.textContent = 'Ringan Saat Read';
-        if (sqlBar) sqlBar.style.transform = 'scaleX(0.32)';
-        if (sqlDesc) {
-          sqlDesc.textContent =
-            'Data agregasi statistik Portal IVSS disiapkan lebih awal sehingga halaman dashboard tidak melakukan scan berulang.';
-        }
-      } else {
-        if (sqlLabel) sqlLabel.textContent = 'Standard Aggregation Query (COUNT/JOIN On-Demand)';
-        if (sqlBadge) sqlBadge.textContent = 'Hitung Ulang Setiap Request';
-        if (sqlBar) sqlBar.style.transform = 'scaleX(0.92)';
-        if (sqlDesc) {
-          sqlDesc.textContent =
-            'Setiap admin membuka dashboard, PostgreSQL menghitung ulang relasi tabel berita dan log aktivitas dari awal.';
-        }
-      }
-      userPaused = true;
-      startLoop();
-    });
-  });
-
-  syncWorkbenchPanel(0);
-  renderFrame(0);
-  startLoop();
-}
-
-/* --------------------------------------------------------------------------
-   6. PROJECT CATEGORY FILTERS (VIEW TRANSITIONS) & SKILL BRIDGE
+   5. PROJECT CATEGORY FILTERS (VIEW TRANSITIONS) & SKILL BRIDGE
    -------------------------------------------------------------------------- */
 export function initProjectFilterAndSkillBridge(
   onOpenProject: (key: string) => void,
@@ -1235,7 +1031,7 @@ export function initPageSwarm(): void {
   document.addEventListener('pointerleave', handlePointerExit, { passive: true });
   window.addEventListener('blur', handlePointerExit, { passive: true });
 
-  // Sinkronisasi warna tema Daylight / Obsidian / Graphite
+  // Sinkronisasi warna tema Daylight / Obsidian
   let paletteRaf: number | null = null;
   const paletteObserver = new MutationObserver(() => {
     colors = readCursorGridColors();
@@ -1333,10 +1129,10 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
   };
 
   const mountHeroThree = async () => {
-    if (!heroThreeStage || reducedMotionMq.matches || heroHandle || destroyed) return;
+    if (!heroThreeStage || heroHandle || destroyed) return;
     try {
       const { mountThreeLanyard } = await loadEngine();
-      if (reducedMotionMq.matches || heroHandle || destroyed) return;
+      if (heroHandle || destroyed) return;
       const handle = mountThreeLanyard(heroThreeStage, {
         variant: 'hero',
         frontImage: '/foto-profil.webp',
@@ -1378,10 +1174,10 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
   };
 
   const mountFloatingThree = async () => {
-    if (!floatingEl || !floatingThreeStage || reducedMotionMq.matches || floatingHandle || destroyed) return;
+    if (!floatingEl || !floatingThreeStage || floatingHandle || destroyed) return;
     try {
       const { mountThreeLanyard } = await loadEngine();
-      if (reducedMotionMq.matches || floatingHandle || destroyed) return;
+      if (floatingHandle || destroyed) return;
       const handle = mountThreeLanyard(floatingThreeStage, {
         variant: 'mini',
         frontImage: '/foto-profil.webp',
@@ -1428,8 +1224,7 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
 
   const syncFloatingVisibility = () => {
     if (!floatingEl) return;
-    const shouldShow =
-      desktopMq.matches && !dismissedByUser && isHeroPastViewport && !reducedMotionMq.matches;
+    const shouldShow = desktopMq.matches && !dismissedByUser && isHeroPastViewport;
     const wasHanging = floatingEl.dataset.hanging === 'true';
 
     floatingEl.dataset.hanging = shouldShow ? 'true' : 'false';
@@ -1454,7 +1249,7 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
   heroFlipBtns.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (heroHandle && heroPanel.dataset.lanyardReady === 'true' && !reducedMotionMq.matches) {
+      if (heroHandle && heroPanel.dataset.lanyardReady === 'true') {
         heroHandle.flip();
       } else {
         syncFlipState(heroPanel.dataset.lanyardFlipped !== 'true');
@@ -1462,9 +1257,7 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
     });
   });
 
-  if (!reducedMotionMq.matches) {
-    void mountHeroThree();
-  }
+  void mountHeroThree();
 
   if (floatingEl) {
     const observer = new IntersectionObserver(
@@ -1510,7 +1303,7 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
     );
   }
 
-  // Sinkronisasi warna kartu & tali WebGL saat tema Daylight / Obsidian / Graphite berganti
+  // Sinkronisasi warna kartu & tali WebGL saat tema Daylight / Obsidian berganti
   let paletteRaf: number | null = null;
   const paletteObserver = new MutationObserver(() => {
     heroHandle?.refreshPalette();
@@ -1542,22 +1335,8 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
   });
 
   reducedMotionMq.addEventListener('change', () => {
-    if (reducedMotionMq.matches) {
-      heroHandle?.destroy();
-      heroHandle = null;
-      floatingHandle?.destroy();
-      floatingHandle = null;
-      heroPanel.dataset.lanyardReady = 'pending';
-      heroPanel.dataset.dragging = 'false';
-      if (floatingEl) {
-        floatingEl.dataset.lanyardReady = 'pending';
-        floatingEl.dataset.hanging = 'false';
-        floatingEl.inert = true;
-      }
-    } else {
-      void mountHeroThree();
-      syncFloatingVisibility();
-    }
+    if (!heroHandle) void mountHeroThree();
+    syncFloatingVisibility();
   });
 
   window.addEventListener('pagehide', () => {

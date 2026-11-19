@@ -1,6 +1,6 @@
 /* ==========================================================================
-   TRI-MODE BACKGROUND ATMOSPHERE & FULL-PAGE ARCHITECTURAL GROUNDS
-   Enhanced layered depth across Daylight, Obsidian & Graphite
+   DUAL-MODE BACKGROUND ATMOSPHERE & FULL-PAGE ARCHITECTURAL GROUNDS
+   Enhanced layered depth across Daylight & Obsidian
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -25,47 +25,6 @@
   height: 100%;
   z-index: 1;
   pointer-events: none;
-}
-
-/* Keep decoration outside the reading planes quieter without fading content. */
-.bg-opening-stage::before,
-.ambient-mesh,
-.bg-blueprint-stage::before,
-.bg-contour-stage::before,
-.bg-closing-arcs::before {
-  opacity: 0.55;
-}
-
-/* One stable plane per editorial section, independent of descendant reveals. */
-:where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell) {
-  --reading-edge: 16px;
-  --muted: var(--reading-muted);
-  --line: var(--reading-line);
-  --line-strong: var(--reading-line-strong);
-  isolation: isolate;
-}
-
-:where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell)::before {
-  content: '';
-  position: absolute;
-  inset: calc(-1 * var(--reading-edge));
-  z-index: -1;
-  background: var(--reading-surface);
-  pointer-events: none;
-  -webkit-mask-image:
-    linear-gradient(to right, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent),
-    linear-gradient(to bottom, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent);
-  mask-image:
-    linear-gradient(to right, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent),
-    linear-gradient(to bottom, transparent, #000 var(--reading-edge), #000 calc(100% - var(--reading-edge)), transparent);
-  -webkit-mask-composite: source-in;
-  mask-composite: intersect;
-}
-
-@media (max-width: 860px) {
-  :where(.hero-main-panel, #tentang > .shell, #pengalaman > .shell, #pendidikan > .shell, #kontak > .shell) {
-    --reading-edge: 8px;
-  }
 }
 
 /* --------------------------------------------------------------------------

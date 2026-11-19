@@ -14,16 +14,17 @@ import {
   initHeroRoleDock,
   initPageSwarm,
   initInteractiveLanyard,
-  initArchitectureWorkbench,
   initProjectFilterAndSkillBridge,
   initMagnetElements,
   initClickSpark,
   initAnimatedContent,
   initDecryptedText,
+  initRotatingText,
   initEditorialMotion,
   initCountUp
 } from './motion';
 import { techIconIds } from '../data/tech-icon-ids';
+import { normalizePaletteId } from './reactbits-math';
 
 // State
 const overlayStack: HTMLElement[] = [];
@@ -129,13 +130,11 @@ export function showProjectDetail(key: string): void {
     if (sourceArt) {
       const clonedArt = sourceArt.cloneNode(true) as HTMLElement;
       clonedArt.removeAttribute('data-art');
+      delete clonedArt.dataset.switcherBound;
       detailPreview.appendChild(clonedArt);
 
-      const cuciinApp = clonedArt.querySelector<HTMLElement>('.app-cuciin');
-      import('./live-demo').then(({ switchCuciinSlide, fitProjectPreviews }) => {
-        if (cuciinApp) {
-          switchCuciinSlide(cuciinApp, 0);
-        }
+      import('./live-demo').then(({ initCuciinSwitchers, fitProjectPreviews }) => {
+        initCuciinSwitchers(detailPreview);
         requestAnimationFrame(() => {
           fitProjectPreviews();
         });
@@ -227,18 +226,24 @@ export function showProjectDetail(key: string): void {
   openOverlay(projectOverlay, closeBtn);
 }
 
-// Theme Palette Engine (Apple Daylight / Framer Obsidian / Graphite Studio)
+// Theme Palette Engine (Apple Daylight & Framer Obsidian)
 export const PALETTES = [
   { id: 'daylight', name: 'Daylight', themeColor: '#f5f5f7' },
-  { id: 'obsidian', name: 'Obsidian', themeColor: '#09090b' },
-  { id: 'graphite', name: 'Graphite', themeColor: '#eae9e4' }
+  { id: 'obsidian', name: 'Obsidian', themeColor: '#09090b' }
 ] as const;
 
 let currentPaletteIdx = 0;
 
 export function setPalette(paletteId: string, showNotification = false): void {
-  const validPalette = PALETTES.find(p => p.id === paletteId) || PALETTES[0];
-  document.documentElement.dataset.palette = validPalette.id;
+  const normalized = normalizePaletteId(paletteId);
+  const validPalette = PALETTES.find(p => p.id === normalized) || PALETTES[0];
+  const root = document.documentElement;
+  const isChanging = document.body.dataset.palette !== validPalette.id;
+  if (isChanging) {
+    root.classList.add('is-switching-palette');
+  }
+
+  root.dataset.palette = validPalette.id;
   document.body.dataset.palette = validPalette.id;
 
   try {
@@ -263,6 +268,12 @@ export function setPalette(paletteId: string, showNotification = false): void {
   const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   if (themeMeta) {
     themeMeta.content = validPalette.themeColor;
+  }
+
+  if (isChanging) {
+    // Flush computed styles before restoring hover transitions on the next animation frame
+    void root.offsetHeight;
+    requestAnimationFrame(() => root.classList.remove('is-switching-palette'));
   }
 
   if (showNotification) {
@@ -357,15 +368,16 @@ export function initPortfolioApp(): void {
   } catch {
     savedPalette = null;
   }
-  if (!savedPalette || !PALETTES.some(p => p.id === savedPalette)) {
-    savedPalette = 'daylight';
+  const resolvedPalette = normalizePaletteId(savedPalette);
+  if (savedPalette !== resolvedPalette) {
+    savedPalette = resolvedPalette;
     try {
-      localStorage.setItem('porto_palette', 'daylight');
+      localStorage.setItem('porto_palette', resolvedPalette);
     } catch {
       // Ignore storage write errors
     }
   }
-  setPalette(savedPalette, false);
+  setPalette(resolvedPalette, false);
 
   const themeSwitcher = document.getElementById('theme-switcher');
   const paletteButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-palette-option]')];
@@ -434,7 +446,6 @@ export function initPortfolioApp(): void {
     demoJumpBtn?.addEventListener('click', () => {
       const previewWrap = projectOverlay.querySelector<HTMLElement>('.dialog-preview-wrap');
       previewWrap?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-      notify('Klik menu, tab, atau kartu di dalam pratinjau aplikasi untuk mencoba demo interaktif!');
     });
   }
 
@@ -561,18 +572,17 @@ export function initPortfolioApp(): void {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // 9. Interactive Limited Live Demo for Project Previews (Code-split async chunk)
+  // 9. Editorial Poster Showcase Runtime (Code-split async chunk)
   import('./live-demo').then(m => {
-    m.initLiveDemo();
+    m.initLiveDemo(showProjectDetail);
     fitPreviewsCached = m.fitProjectPreviews;
   });
 
-  // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Page Swarm, Lanyard, React Bits Ports, Signal Pipeline, Project Filters)
+  // 10. Interactive Motion & Workbench Runtime (Spotlight, Role Dock, Page Swarm, Lanyard, React Bits Ports, Project Filters)
   initPointerSpotlight();
   initHeroRoleDock();
   initPageSwarm();
   initInteractiveLanyard(notify);
-  initArchitectureWorkbench();
   initProjectFilterAndSkillBridge(showProjectDetail, () => {
     fitPreviewsCached?.();
   });
@@ -580,29 +590,8 @@ export function initPortfolioApp(): void {
   initClickSpark();
   initAnimatedContent();
   initDecryptedText();
+  initRotatingText();
   initEditorialMotion();
   initCountUp();
-
-  // 11. Project Details Accordion (Slide-down toggle for PERAN, PROSES & DAMPAK)
-  document.querySelectorAll<HTMLButtonElement>('.project-details-toggle').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-      const targetId = btn.getAttribute('aria-controls');
-      const targetEl = targetId ? document.getElementById(targetId) : null;
-      const toggleText = btn.querySelector('.toggle-text');
-
-      if (!targetEl) return;
-
-      if (isExpanded) {
-        btn.setAttribute('aria-expanded', 'false');
-        targetEl.classList.remove('is-expanded');
-        if (toggleText) toggleText.textContent = 'Rincian Proses';
-      } else {
-        btn.setAttribute('aria-expanded', 'true');
-        targetEl.classList.add('is-expanded');
-        if (toggleText) toggleText.textContent = 'Tutup Rincian';
-      }
-    });
-  });
 }
 

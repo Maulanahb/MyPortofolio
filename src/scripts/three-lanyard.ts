@@ -285,21 +285,6 @@ const CANONICAL_PALETTES: Record<string, PaletteTokens> = {
     glass: 'rgba(20, 20, 23, 0.8)',
     success: '#22c55e',
     strapColor: '#20242f'
-  },
-  graphite: {
-    isDark: false,
-    paper: '#eae9e4',
-    paper2: '#f7f6f2',
-    surface3: '#dedcd3',
-    ink: '#18181b',
-    muted: '#52525b',
-    accent: '#2563eb',
-    accentSoft: 'rgba(37, 99, 235, 0.1)',
-    line: 'rgba(24, 24, 27, 0.1)',
-    lineStrong: 'rgba(24, 24, 27, 0.18)',
-    glass: 'rgba(247, 246, 242, 0.82)',
-    success: '#15803d',
-    strapColor: '#16181f'
   }
 };
 
@@ -1340,13 +1325,25 @@ const stepSimulation = (sim: SimulationState, dt: number, physics: PhysicsParams
   sim.calm = energy < 2e-4 ? sim.calm + dt : 0;
 };
 
-export function mountThreeLanyard(container: HTMLElement, options: ThreeLanyardOptions): ThreeLanyardHandle | null {
-  let renderer: THREE.WebGLRenderer;
-  try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  } catch {
-    return null;
+const createWebGLRenderer = (): THREE.WebGLRenderer | null => {
+  const attempts: THREE.WebGLRendererParameters[] = [
+    { antialias: true, alpha: true, powerPreference: 'high-performance' },
+    { antialias: true, alpha: true },
+    { alpha: true }
+  ];
+  for (const params of attempts) {
+    try {
+      return new THREE.WebGLRenderer(params);
+    } catch {
+      // Coba profil context WebGL berikutnya jika driver/GPU menolak konfigurasi ini
+    }
   }
+  return null;
+};
+
+export function mountThreeLanyard(container: HTMLElement, options: ThreeLanyardOptions): ThreeLanyardHandle | null {
+  const renderer = createWebGLRenderer();
+  if (!renderer) return null;
 
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -1376,8 +1373,15 @@ export function mountThreeLanyard(container: HTMLElement, options: ThreeLanyardO
 
   const anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const scene = new THREE.Scene();
-  const environment = buildEnvironment(renderer);
-  scene.environment = environment.texture;
+  let environment: THREE.WebGLRenderTarget | null = null;
+  try {
+    environment = buildEnvironment(renderer);
+    scene.environment = environment.texture;
+  } catch {
+    // Fallback pencahayaan lembut jika PMREMGenerator gagal pada driver GPU tertentu
+    const hemiLight = new THREE.HemisphereLight(0xf8fafc, 0x334155, 0.72);
+    scene.add(hemiLight);
+  }
 
   const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 200);
   const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
@@ -2185,7 +2189,7 @@ export function mountThreeLanyard(container: HTMLElement, options: ThreeLanyardO
       [bodyMesh, frontMesh, backMesh, ring, clampMesh, eyelet, band].forEach((mesh) => mesh.geometry?.dispose());
       [frontMaterial, backMaterial, edgeMaterial, metalMaterial, bandMaterial].forEach((m) => m.dispose());
       [frontTexture, backTexture, strapTexture, grain, weave].forEach((t) => t.dispose());
-      environment.dispose();
+      environment?.dispose();
       renderer.dispose();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     }

@@ -159,3 +159,67 @@ export function scrambleTextFrame(
     return pool[pick];
   }).join('');
 }
+
+/**
+ * Advances RotatingText word index cyclically, returning 0 on empty or invalid inputs.
+ */
+export function nextRotatingIndex(current: number, total: number): number {
+  if (!Number.isFinite(total) || total <= 1) return 0;
+  const count = Math.trunc(total);
+  const safeCurrent = Number.isFinite(current) ? Math.trunc(current) : 0;
+  return (((safeCurrent + 1) % count) + count) % count;
+}
+
+export type CanonicalPaletteId = 'daylight' | 'obsidian';
+
+/**
+ * Normalizes persisted palette values (including legacy 'graphite') to Daylight or Obsidian.
+ */
+export function normalizePaletteId(raw: string | null | undefined): CanonicalPaletteId {
+  return raw === 'obsidian' ? 'obsidian' : 'daylight';
+}
+
+export interface PosterTiltResult {
+  rotateX: number;
+  rotateY: number;
+  px: number;
+  py: number;
+}
+
+function cleanZero(val: number): number {
+  return Object.is(val, -0) || val === 0 ? 0 : val;
+}
+
+/**
+ * Computes bounded 3D card tilt and normalized pointer percentage for poster cards.
+ */
+export function computePosterTilt(
+  localX: number,
+  localY: number,
+  width: number,
+  height: number,
+  maxDeg = 4.5
+): PosterTiltResult {
+  if (
+    !Number.isFinite(localX) ||
+    !Number.isFinite(localY) ||
+    !Number.isFinite(width) ||
+    !Number.isFinite(height) ||
+    !Number.isFinite(maxDeg) ||
+    width <= 0 ||
+    height <= 0
+  ) {
+    return { rotateX: 0, rotateY: 0, px: 50, py: 50 };
+  }
+
+  const nx = clampValue(localX / width, 0, 1);
+  const ny = clampValue(localY / height, 0, 1);
+  const rotateY = cleanZero(Number(((nx - 0.5) * 2 * maxDeg).toFixed(2)));
+  const rotateX = cleanZero(Number(((0.5 - ny) * 2 * maxDeg).toFixed(2)));
+  return {
+    rotateX,
+    rotateY,
+    px: Math.round(nx * 100),
+    py: Math.round(ny * 100)
+  };
+}

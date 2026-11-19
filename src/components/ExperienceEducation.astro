@@ -8,12 +8,12 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
   <div class="shell">
     <div class="section-head">
     <div>
-      <h2 class="section-title display" id="exp-title">Pengalaman <span class="title-highlight">Proyek</span></h2>
-      <p class="section-subtitle">Peran sebagai system analyst, web developer, dan mobile developer di proyek tim maupun individu.</p>
+      <h2 class="section-title display" id="exp-title">Pengalaman <span class="title-highlight rb-gradient-text">Proyek</span></h2>
+      <p class="section-subtitle">Keterlibatan saya di analisis sistem, pengembangan web, dan aplikasi mobile bersama tim maupun secara mandiri.</p>
     </div>
   </div>
 
-  <div class="exp-grid">
+  <div class="exp-grid" data-spotlight>
     {EXPERIENCES.map((exp, idx) => (
       <article class="exp-card" data-animated-list data-timeline-node style={`--rb-list-i: ${idx};`}>
         <div class="exp-timeline-meta">
@@ -47,12 +47,12 @@ import { EXPERIENCES, EDUCATION_INFO, CERTIFICATIONS } from '../data/projects';
   <div class="shell">
     <div class="section-head">
     <div>
-      <h2 class="section-title display" id="edu-title">Pendidikan <span class="title-highlight">&amp; Sertifikasi</span></h2>
-      <p class="section-subtitle">Latar belakang pendidikan vokasi dan sertifikasi pendukung.</p>
+      <h2 class="section-title display" id="edu-title">Pendidikan <span class="title-highlight rb-gradient-text">&amp; Sertifikasi</span></h2>
+      <p class="section-subtitle">Pendidikan vokasi yang sedang ditempuh beserta sertifikasi pendukung selama masa kuliah.</p>
     </div>
   </div>
 
-  <div class="edu-credentials-grid">
+  <div class="edu-credentials-grid" data-spotlight>
     <!-- Open education record -->
     <article class="edu-main-card" data-reveal>
       <h3 class="edu-campus display">{EDUCATION_INFO.campus}</h3>

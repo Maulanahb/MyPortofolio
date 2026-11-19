@@ -5,39 +5,43 @@ const ROLE_LENSES = [
   {
     id: 'analyst',
     label: 'System Analyst',
-    summary: 'Project Charter, PRD terstruktur, pemodelan ERD, dan pembagian hak akses RBAC sebelum mulai ngoding.',
+    summary: 'Menyusun kebutuhan sistem, memetakan alur pengguna, merancang struktur data, dan mengatur hak akses tiap peran sebelum koding dimulai.',
     proofs: [
-      { id: 'cuciin', name: 'CUCI.IN · PRD & ERD' },
-      { id: 'aiaas', name: 'AIAAS · Kontrak JSON' }
+      { id: 'cuciin', name: 'CUCI.IN' },
+      { id: 'aiaas', name: 'AIAAS' }
     ]
   },
   {
     id: 'fullstack',
     label: 'Full-Stack Web',
-    summary: 'Aplikasi Laravel, React TypeScript, API proxy server-side, optimasi Materialized View PostgreSQL & PHPUnit CI.',
+    summary: 'Membangun aplikasi web dengan Laravel dan React, menjaga keamanan koneksi server, mempercepat pembacaan database, serta menyiapkan tes otomatis.',
     proofs: [
-      { id: 'bawanghub', name: 'BawangHub · React PWA' },
-      { id: 'ivss', name: 'Portal IVSS · PostgreSQL' }
+      { id: 'bawanghub', name: 'BawangHub' },
+      { id: 'ivss', name: 'Portal IVSS' }
     ]
   },
   {
     id: 'mobile',
     label: 'Mobile & AI',
-    summary: 'Aplikasi mobile Flutter dengan Riverpod, Midtrans Snap gateway, dan parser natural language berbasis Gemini API.',
+    summary: 'Mengembangkan aplikasi mobile di Flutter lengkap dengan pembayaran online otomatis dan asisten AI pencatat transaksi dari kalimat biasa.',
     proofs: [
-      { id: 'lapangku', name: 'Lapangku · Flutter' },
-      { id: 'aiaas', name: 'AIAAS · Gemini 2.5 Flash' }
+      { id: 'lapangku', name: 'Lapangku' },
+      { id: 'aiaas', name: 'AIAAS' }
     ]
   }
 ];
 const fullNameWords = SITE_CONFIG.fullName.trim().split(/\s+/);
-const roleWords = SITE_CONFIG.role.trim().split(/\s+/);
+const rotatingRoles = [
+  'System Analyst & Product Builder',
+  'Full-Stack Laravel & React Dev',
+  'Mobile Flutter & AI Developer'
+];
 ---
 <section class="hero" aria-labelledby="hero-title">
   <div class="shell">
     <div class="hero-grid">
-    <!-- Primary profile on the open canvas -->
-    <div class="hero-main-panel">
+    <!-- Primary profile architectural sheet -->
+    <div class="hero-main-panel" data-spotlight>
       <div class="hero-lead-content">
         <div class="hero-status-row" data-enter="1">
           <span class="status-pill rb-shiny-pill">
@@ -54,17 +58,22 @@ const roleWords = SITE_CONFIG.role.trim().split(/\s+/);
             </>
           ))}
           <span class="hero-name">
-            {roleWords.map((word, idx) => (
-              <>
-                <span class="rb-blur-word" style={`--rb-word-i: ${fullNameWords.length + idx};`}>{word}</span>
-                {idx < roleWords.length - 1 ? ' ' : ''}
-              </>
-            ))}
+            <span class="sr-only">{SITE_CONFIG.role}</span>
+            <span class="rb-rotating-wrap" data-rotating-text aria-hidden="true">
+              {rotatingRoles.map((roleTitle, idx) => (
+                <span
+                  class={`rb-rotating-item rb-gradient-text${idx === 0 ? ' is-active' : ''}`}
+                  data-rotating-item
+                >
+                  {roleTitle}
+                </span>
+              ))}
+            </span>
           </span>
         </h1>
 
         <p class="hero-desc" data-enter="3">
-          Mahasiswa D-IV Sistem Informasi Bisnis Polinema: analisis sistem, web, mobile, dan database.
+          Mahasiswa D-IV Sistem Informasi Bisnis di Polinema yang merancang sistem dari dokumen kebutuhan hingga rilis di web, mobile, dan database.
         </p>
 
         <div class="hero-actions" data-enter="3">
@@ -123,7 +132,9 @@ const roleWords = SITE_CONFIG.role.trim().split(/\s+/);
               role="tabpanel"
               id={`hero-role-panel-${lens.id}`}
               aria-labelledby={`hero-role-tab-${lens.id}`}
-              hidden={idx !== 0 ? 'until-found' : undefined}
+              data-panel-active={idx === 0 ? 'true' : 'false'}
+              aria-hidden={idx === 0 ? 'false' : 'true'}
+              inert={idx !== 0}
               tabindex={idx === 0 ? 0 : undefined}
             >
               <div class="hero-role-card">
@@ -131,7 +142,7 @@ const roleWords = SITE_CONFIG.role.trim().split(/\s+/);
                 <div class="hero-proof-links">
                   {lens.proofs.map(proof => (
                     <button type="button" class="hero-proof-chip mono" data-project={proof.id}>
-                      <span>{proof.name}</span>
+                      <span data-decrypt-hover>{proof.name}</span>
                       <span aria-hidden="true">↗</span>
                     </button>
                   ))}

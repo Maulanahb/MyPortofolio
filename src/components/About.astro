@@ -16,12 +16,12 @@ const loopSkills = Array.from(loopSkillsMap.values());
   <div class="shell">
     <div class="section-head">
     <div>
-      <h2 class="section-title display" id="about-title">Tentang <span class="title-highlight">Saya</span></h2>
-      <p class="section-subtitle">Profil akademik, keahlian teknis, dan fokus peran di sistem informasi.</p>
+      <h2 class="section-title display" id="about-title">Tentang <span class="title-highlight rb-gradient-text">Saya</span></h2>
+      <p class="section-subtitle">Latar belakang studi di Polinema, cara saya menyusun kebutuhan sistem, dan stack yang sehari-hari saya pakai.</p>
     </div>
   </div>
 
-  <div class="about-grid">
+  <div class="about-grid" data-spotlight>
     <!-- Open editorial statement -->
     <div class="about-badge" data-reveal>
       <div class="big-quote display" data-scroll-float>
@@ -64,11 +64,11 @@ const loopSkills = Array.from(loopSkillsMap.values());
     <!-- Right Narrative -->
     <div class="about-copy" data-reveal>
       <p>
-        Saya {SITE_CONFIG.fullName}, mahasiswa semester 5 {SITE_CONFIG.program} di Politeknik Negeri Malang. Saya terbiasa memulai proyek dari analisis kebutuhan, menulis PRD, merancang ERD database, hingga mengimplementasikan aplikasinya.
+        Saya {SITE_CONFIG.fullName}, mahasiswa semester 5 {SITE_CONFIG.program} di Politeknik Negeri Malang. Setiap proyek biasanya saya mulai dengan memahami alur pengguna, menyusun daftar kebutuhan sistem, lalu merancang struktur datanya sebelum masuk ke tahap koding.
       </p>
 
       <p>
-        Di pengembangan aplikasi, saya menggunakan Laravel, React, TypeScript, dan Flutter dengan PostgreSQL serta MySQL. Saat ini berstatus Open to Work untuk kesempatan magang, PKL, atau peran junior developer.
+        Saat membangun aplikasi, saya terbiasa memakai Laravel, React, TypeScript, dan Flutter dengan basis data PostgreSQL maupun MySQL. Saat ini saya terbuka untuk kesempatan magang, PKL, atau peran junior developer.
       </p>
 
       <div class="about-interest-pills" aria-label="Fokus bidang yang diminati">
@@ -143,7 +143,7 @@ const loopSkills = Array.from(loopSkillsMap.values());
       </div>
     </div>
 
-    <div class="skill-groups si-skill-grid">
+    <div class="skill-groups si-skill-grid" data-spotlight>
       {SKILL_GROUPS.map((group, idx) => (
         <article class={`skill-box ${group.proofs ? 'skill-card-wide' : ''}`} data-flowing-row data-reveal style={`--rb-list-i: ${idx};`}>
           <div class="skill-card-top">

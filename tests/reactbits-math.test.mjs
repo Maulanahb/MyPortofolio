@@ -6,7 +6,10 @@ import {
   stepSparkParticles,
   easeOutCubic,
   interpolateCountUp,
-  scrambleTextFrame
+  scrambleTextFrame,
+  nextRotatingIndex,
+  normalizePaletteId,
+  computePosterTilt
 } from '../src/scripts/reactbits-math.ts';
 
 test('computeMagnetOffset returns zero on center or inactive pointer', () => {
@@ -75,4 +78,34 @@ test('easeOutCubic and interpolateCountUp progress monotonically and clamp at en
   assert.ok(mid >= 0 && mid <= 5);
   assert.equal(interpolateCountUp(2020, 2024, 1.2), 2024);
   assert.equal(interpolateCountUp(3, 3, 0.5), 3);
+});
+
+test('nextRotatingIndex cycles smoothly and handles invalid or single-item inputs', () => {
+  assert.equal(nextRotatingIndex(0, 3), 1);
+  assert.equal(nextRotatingIndex(1, 3), 2);
+  assert.equal(nextRotatingIndex(2, 3), 0);
+  assert.equal(nextRotatingIndex(0, 1), 0);
+  assert.equal(nextRotatingIndex(0, 0), 0);
+  assert.equal(nextRotatingIndex(-1, 3), 0);
+  assert.equal(nextRotatingIndex(Number.NaN, 3), 1);
+});
+
+test('normalizePaletteId migrates graphite and invalid values cleanly to dual-theme daylight/obsidian', () => {
+  assert.equal(normalizePaletteId('obsidian'), 'obsidian');
+  assert.equal(normalizePaletteId('daylight'), 'daylight');
+  assert.equal(normalizePaletteId('graphite'), 'daylight');
+  assert.equal(normalizePaletteId(null), 'daylight');
+  assert.equal(normalizePaletteId('unknown'), 'daylight');
+});
+
+test('computePosterTilt bounds 3D card rotation and normalizes pointer coordinates', () => {
+  assert.deepEqual(computePosterTilt(0, 0, 0, 200, 5), { rotateX: 0, rotateY: 0, px: 50, py: 50 });
+  const center = computePosterTilt(200, 100, 400, 200, 4);
+  assert.deepEqual(center, { rotateX: 0, rotateY: 0, px: 50, py: 50 });
+
+  const corner = computePosterTilt(400, 0, 400, 200, 4);
+  assert.deepEqual(corner, { rotateX: 4, rotateY: 4, px: 100, py: 0 });
+
+  const clamped = computePosterTilt(-50, 300, 400, 200, 4);
+  assert.deepEqual(clamped, { rotateX: -4, rotateY: -4, px: 0, py: 100 });
 });

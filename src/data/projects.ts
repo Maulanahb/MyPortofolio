@@ -19,6 +19,9 @@ export interface ProjectItem {
   badge: string;
   projectType: string;
   title: string;
+  posterHeadline: string;
+  posterSubline: string;
+  cardMeta: string;
   description: string;
   category: string;
   role: string;
@@ -71,8 +74,8 @@ export const SITE_CONFIG: SiteConfig = {
   nim: "244107060133",
   role: "System Analyst & Web / Mobile Developer",
   photoQuote: "Whatever my boss wants me to be or do",
-  positioning: "Mahasiswa D-IV Sistem Informasi Bisnis di Politeknik Negeri Malang. Fokus pada analisis kebutuhan sistem, aplikasi web (Laravel & React), dan mobile (Flutter).",
-  tagline: "Merancang kebutuhan sistem, skema database, hingga implementasi aplikasi web dan mobile.",
+  positioning: "Mahasiswa D-IV Sistem Informasi Bisnis di Politeknik Negeri Malang yang terbiasa menyusun kebutuhan sistem hingga mengimplementasikannya ke aplikasi web (Laravel & React) dan mobile (Flutter).",
+  tagline: "Merancang kebutuhan sistem dan skema database hingga aplikasi web dan mobile siap dipakai.",
   campus: "Politeknik Negeri Malang (Polinema)",
   department: "Jurusan Teknologi Informasi (JTI)",
   program: "D-IV Sistem Informasi Bisnis",
@@ -99,24 +102,27 @@ export const PROJECTS: ProjectItem[] = [
     badge: "Kasir Laundry",
     projectType: "Proyek Tim · Laravel",
     title: "CUCI.IN",
+    posterHeadline: "Kasir Laundry & Cek Nota Instan",
+    posterSubline: "Kasir mencatat pesanan di meja depan, omzet langsung terpantau di dashboard admin, dan pelanggan cek progres cucian lewat nomor nota tanpa login.",
+    cardMeta: "Kasir Laundry & Lacak Nota · Laravel, PostgreSQL",
     description: "Sistem kasir laundry. Pelanggan bisa cek status cucian cukup dengan nomor nota, tanpa perlu login.",
     category: "Kasir Laundry & Cek Status",
-    role: "System analyst dan full-stack developer di tim 5 developer. Saya menulis Project Charter dan PRD, lalu membangun fitur cek status cucian, pembayaran, komplain, manajemen user, dan laporan keuangan.",
+    role: "System analyst dan full-stack developer di tim 5 developer. Saya menyusun dokumen kebutuhan sistem (PRD) dan rencana proyek, lalu membangun fitur cek status cucian, pembayaran, komplain, kelola akun, dan laporan keuangan.",
     problem: "Laundry kecil masih mencatat pesanan di buku. Pelanggan harus datang atau menelepon untuk tahu cuciannya sudah selesai, dan pemilik kesulitan merekap pemasukan tiap bulan.",
-    approach: "Kebutuhan tiga pengguna (admin, kasir, pelanggan) saya tulis dulu di PRD, baru dibangun dengan Laravel dan PostgreSQL. Setiap fitur utama punya feature test yang berjalan otomatis di GitHub Actions.",
+    approach: "Kebutuhan tiga pengguna (admin, kasir, pelanggan) saya susun lebih dulu dalam dokumen kebutuhan fitur sebelum dibangun memakai Laravel dan PostgreSQL. Setiap alur utama dilindungi tes otomatis di GitHub.",
     process: {
-      analysis: "Menyusun Project Charter, PRD, rencana biaya server (AWS Free Tier), dan target milestone bersama tim.",
-      design: "Merancang skema database, pembagian hak akses tiga role, dan design system untuk tampilan.",
-      implementation: "Membangun fitur cek nota, pembayaran, komplain, manajemen user, dan laporan, lengkap dengan test PHPUnit dan CI di GitHub Actions."
+      analysis: "Menyusun ruang lingkup proyek, daftar kebutuhan sistem, perkiraan biaya server (AWS Free Tier), dan target pengerjaan bersama tim.",
+      design: "Merancang struktur tabel database, aturan hak akses tiga peran pengguna, serta panduan visual antarmuka.",
+      implementation: "Membangun fitur cek nota, pembayaran, komplain, kelola akun, dan laporan, lengkap dengan uji fitur otomatis memakai PHPUnit."
     },
     impact: "Pelanggan bisa memantau cucian dari HP tanpa akun, kasir mencatat transaksi dan pembayaran di satu tempat, dan admin langsung melihat rekap pemasukan.",
     impactMetrics: [
-      "3 role pengguna: admin, kasir, dan pelanggan",
+      "3 peran pengguna: admin, kasir, dan pelanggan",
       "4 tahap status cucian yang bisa dicek dengan nomor nota",
-      "Laporan keuangan dipercepat dengan index komposit di PostgreSQL",
-      "Feature test PHPUnit jalan otomatis setiap push ke GitHub"
+      "Laporan keuangan dipercepat lewat pengaturan indeks data di PostgreSQL",
+      "Uji fitur otomatis (PHPUnit) berjalan setiap ada pembaruan kode"
     ],
-    artifacts: ["Project Charter & PRD", "Rencana biaya AWS", "Design System", "Skema database", "CI GitHub Actions"],
+    artifacts: ["Daftar Kebutuhan Sistem", "Rencana Biaya AWS", "Panduan Desain UI", "Struktur Database", "Uji Otomatis GitHub Actions"],
     highlights: [
       "Cek status cucian: pelanggan cukup memasukkan nomor nota",
       "Kasir dan pembayaran: transaksi kiloan atau satuan, status bayar tercatat",
@@ -138,6 +144,9 @@ export const PROJECTS: ProjectItem[] = [
     badge: "Web AI Agritech",
     projectType: "Proyek Individu · React & Gemini",
     title: "BAWANGHUB",
+    posterHeadline: "Asisten Tani Bawang Merah",
+    posterSubline: "Tanya AI soal budidaya dan hama, pantau tren harga pasar, lihat cuaca lokal Nganjuk, dan catat kas kebun di satu web PWA.",
+    cardMeta: "Aplikasi Pertanian & AI · React, Gemini AI",
     description: "Aplikasi web untuk petani bawang merah: tanya AI soal budidaya, pantau harga, cek cuaca, dan catat kas tani.",
     category: "Aplikasi Pertanian & Asisten AI",
     role: "Dikerjakan sendiri dari desain sampai deploy. Saya membangun tujuh halaman utama, menyimpan API key Gemini di server agar tidak bocor ke browser, dan men-deploy aplikasinya ke Google Cloud Run.",
@@ -177,6 +186,9 @@ export const PROJECTS: ProjectItem[] = [
     badge: "Booking Lapangan",
     projectType: "Proyek Tim · Flutter",
     title: "LAPANGKU",
+    posterHeadline: "Booking Lapangan & E-Ticket QR",
+    posterSubline: "Cari jadwal lapangan futsal atau mini soccer kosong, bayar lewat Midtrans, dan tunjukkan tiket QR saat tiba di lokasi.",
+    cardMeta: "Aplikasi Booking Olahraga · Flutter, Midtrans",
     description: "Aplikasi Flutter untuk booking lapangan olahraga, dengan pembayaran Midtrans dan dashboard pendapatan untuk pemilik GOR.",
     category: "Booking Lapangan & Midtrans",
     role: "Mobile developer di tim 4 developer. Saya menyiapkan struktur Firebase dan state management, membangun modul penyewa dan mitra GOR, memindahkan pembayaran ke Midtrans, dan membuat landing page-nya.",
@@ -217,30 +229,33 @@ export const PROJECTS: ProjectItem[] = [
     badge: "Portal Lab Riset",
     projectType: "Proyek Tim · PHP & PostgreSQL",
     title: "PORTAL LAB IVSS",
+    posterHeadline: "Portal Berita & Profil Riset Lab",
+    posterSubline: "Situs resmi Lab IVSS Polinema dengan panel berita admin, daftar anggota peneliti, profil fasilitas, dan ringkasan statistik cepat.",
+    cardMeta: "Portal Lab & Panel Berita · PHP 8, PostgreSQL",
     description: "Portal web Laboratorium IVSS JTI Polinema untuk berita kegiatan, profil peneliti, dan fasilitas lab.",
     category: "Portal Lab & Panel Berita",
-    role: "Full-stack developer di tim 5 developer. Saya membangun seluruh panel admin berita, mempercepat statistik dashboard dengan Materialized View, dan merapikan halaman login serta tampilan publik.",
+    role: "Full-stack developer di tim 5 developer. Saya membangun seluruh panel admin berita, mempercepat statistik dashboard dengan ringkasan data siap pakai (Materialized View), dan merapikan halaman login serta tampilan publik.",
     problem: "Informasi Lab IVSS tersebar dan tidak ada tempat resmi untuk mempublikasikan berita kegiatan, profil dosen dan mahasiswa riset, serta fasilitas lab.",
-    approach: "Portal PHP dan PostgreSQL dengan empat hak akses: pengunjung, admin lab, admin berita, dan kepala lab. Bagian saya adalah panel admin berita dan optimasi query dashboard.",
+    approach: "Portal PHP dan PostgreSQL dengan empat tingkat hak akses: pengunjung, admin lab, admin berita, dan kepala lab. Fokus utama saya adalah panel kelola berita serta percepatan muat halaman laporan statistik.",
     process: {
       analysis: "Membagi modul kerja tim untuk empat jenis pengguna dan menentukan kebutuhan pengelolaan berita.",
-      design: "Merancang tabel PostgreSQL dan Materialized View untuk statistik, serta layout sidebar dan kartu berita yang responsif.",
-      implementation: "Membangun CRUD berita, dashboard statistik, log aktivitas, profil, pagination dan filter, lalu menggabungkannya lewat pull request."
+      design: "Merancang struktur tabel PostgreSQL dan tabel ringkasan statistik siap pakai, serta tampilan menu samping dan kartu berita yang responsif.",
+      implementation: "Membangun fitur tulis-ubah-hapus berita, ringkasan statistik, catatan aktivitas admin, halaman, dan pencarian, lalu digabung lewat kolaborasi tim."
     },
     impact: "Lab IVSS punya satu portal resmi dengan empat hak akses. Admin berita bisa mengelola artikel sendiri, dan dashboard statistik memuat lebih cepat.",
     impactMetrics: [
-      "4 hak akses dalam satu portal",
-      "Panel admin berita saya kerjakan dari awal sampai selesai",
-      "Statistik dashboard diambil dari Materialized View PostgreSQL",
-      "Lebih dari 12 pull request digabung ke repositori tim"
+      "4 tingkat hak akses pengguna dalam satu portal",
+      "Panel kelola berita saya kerjakan dari awal hingga selesai",
+      "Statistik dashboard diringkas lebih awal di PostgreSQL agar cepat dibuka",
+      "Lebih dari 12 pembaruan fitur digabung bersama ke repositori tim"
     ],
-    artifacts: ["Panel admin berita", "Materialized View PostgreSQL", "Pembagian 4 hak akses", "Pull request tim"],
+    artifacts: ["Panel kelola berita", "Ringkasan statistik PostgreSQL", "Pembagian 4 hak akses", "Kolaborasi Pull Request"],
     highlights: [
       "Kelola berita: tulis, edit, hapus, cari, dan filter artikel",
-      "Dashboard cepat: ringkasan statistik dari Materialized View",
-      "Log aktivitas: setiap perubahan konten oleh admin tercatat",
-      "Login lebih aman: alur login dirapikan dan input divalidasi",
-      "Tampilan publik: header, navigasi, dan kartu berita yang responsif"
+      "Dashboard cepat: ringkasan statistik sudah disiapkan sebelumnya di database",
+      "Catatan aktivitas: setiap perubahan konten oleh admin terekam",
+      "Login lebih aman: alur masuk dirapikan dan input divalidasi",
+      "Tampilan publik: header, navigasi, dan kartu berita nyaman di HP"
     ],
     stack: ["PHP 8", "PostgreSQL", "JavaScript", "HTML & CSS", "RBAC"],
     domains: ["web"],
@@ -256,24 +271,27 @@ export const PROJECTS: ProjectItem[] = [
     badge: "Catatan Keuangan AI",
     projectType: "Proyek Individu · React & PHP",
     title: "AI FINANCE (AIAAS)",
+    posterHeadline: "Catat Keuangan Cukup Satu Kalimat",
+    posterSubline: "Ketik catatan harian seperti chat — misal 'beli kopi 25rb kemarin' — lalu AI mencatat kategori, saldo bersih, dan anggarannya.",
+    cardMeta: "Catat Keuangan Pakai Chat · React, PHP 8, Gemini",
     description: "Catatan keuangan otomatis yang memproses kalimat biasa (misal \"beli kopi 25rb kemarin\") menjadi transaksi terstruktur via Gemini 2.5 Flash.",
     category: "Catatan Keuangan Bahasa Alami",
-    role: "System analyst & full-stack developer (proyek individu). Saya menyusun PRD v1.1, merancang skema database & kontrak JSON, membangun frontend React TypeScript, serta REST API PHP 8 OOP.",
+    role: "Perancang sistem & pengembang aplikasi (proyek individu). Saya menyusun daftar kebutuhan fitur, merancang struktur database & format data AI, membangun antarmuka React TypeScript, serta layanan server PHP 8.",
     problem: "Banyak orang berhenti mencatat keuangan karena harus mengisi form berulang (tanggal, nominal, jenis, kategori) setiap kali berbelanja.",
-    approach: "Pengguna cukup mengetik satu kalimat bebas. Gemini API mengekstrak data menjadi JSON terstruktur sesuai kontrak PRD, lalu divalidasi dan disimpan lewat REST API PHP 8.",
+    approach: "Pengguna cukup mengetik satu kalimat bebas. Gemini AI mengubahnya menjadi data terstruktur yang dicek ulang oleh server sebelum disimpan aman ke database.",
     process: {
-      analysis: "Menulis PRD v1.1 berisi empat fitur inti (FT-01 hingga FT-04), kontrak payload JSON AI, error handling, dan target akurasi parsing.",
-      design: "Merancang skema database (transaksi, target tabungan, anggaran) dengan index komposit, serta antarmuka neobrutalist di React.",
-      implementation: "Membangun REST API PHP 8 OOP (pola Controller, Repository, Service) terintegrasi Gemini API, serta frontend Vite React TSX."
+      analysis: "Menyusun daftar kebutuhan fitur inti, format respons AI, serta penanganan jika input pengguna tidak lengkap atau salah ketik.",
+      design: "Merancang tabel transaksi, target tabungan, dan anggaran agar pencarian cepat, serta tampilan aplikasi di React.",
+      implementation: "Membangun backend PHP 8 OOP yang terhubung ke Gemini AI di server, serta antarmuka web di React TypeScript."
     },
     impact: "Mencatat transaksi cukup dalam satu kalimat tanpa form manual. Dilengkapi asisten AI untuk konsultasi arus kas, target tabungan, dan anggaran bulanan.",
     impactMetrics: [
-      "Input natural language dengan konversi singkatan nominal (rb, jt, k) & tanggal relatif",
-      "Format JSON terstandardisasi dengan validasi backend sebelum masuk database",
-      "Fitur lengkap: Overview arus kas, target tabungan, anggaran, dan asisten konsultasi AI",
-      "Arsitektur bersih: PHP 8 REST API (Controller-Repository-Service) & React TSX"
+      "Membaca kalimat sehari-hari termasuk singkatan (rb, jt, k) & tanggal relatif seperti 'kemarin'",
+      "Data AI divalidasi lebih dulu di server sebelum disimpan ke database",
+      "Fitur lengkap: Ringkasan arus kas, target tabungan, anggaran, dan tanya jawab AI",
+      "Pemisahan kode frontend (React) dan layanan backend PHP 8 yang rapi"
     ],
-    artifacts: ["PRD v1.1", "Skema Database & Index", "Kontrak Payload JSON AI", "REST API PHP 8 OOP"],
+    artifacts: ["Daftar Kebutuhan Sistem", "Struktur Database", "Format Data AI Tervalidasi", "Layanan Backend PHP 8"],
     highlights: [
       "Input kalimat cerdas: \"makan siang 45rb\" langsung jadi transaksi terarsip",
       "Konsultan finansial AI: menjawab kondisi tabungan dan sisa anggaran pengguna",
@@ -367,22 +385,22 @@ export const PROCESS_STEPS: ProcessStep[] = [
     sfx: "?",
     index: "01",
     title: "Analisis Sistem",
-    description: "Menentukan pengguna, kebutuhan, dan ruang lingkup fitur.",
-    deliverable: "Project Charter · PRD · Ruang Lingkup Sistem"
+    description: "Memahami calon pengguna, menyusun daftar kebutuhan sistem, dan membatasi ruang lingkup fitur.",
+    deliverable: "Alur Pengguna · Daftar Kebutuhan · Ruang Lingkup"
   },
   {
     sfx: "✦",
     index: "02",
     title: "Desain Database & UI",
-    description: "Merancang ERD, hak akses per peran, dan prototipe antarmuka.",
-    deliverable: "Skema Database · RBAC · Design System"
+    description: "Merancang struktur penyimpanan data, pembagian hak akses pengguna, serta rancangan tampilan.",
+    deliverable: "Struktur Data · Hak Akses · Desain Antarmuka"
   },
   {
     sfx: "!",
     index: "03",
     title: "Implementasi & Pengujian",
-    description: "Pengembangan via pull request, pengujian otomatis, lalu deploy.",
-    deliverable: "Git Pull Request · Automated Testing · Deployment"
+    description: "Membangun kode lewat review tim, menjalankan uji otomatis, lalu merilis aplikasi.",
+    deliverable: "Review Kode · Uji Otomatis · Rilis Aplikasi"
   }
 ];
 
@@ -407,17 +425,17 @@ export const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     title: "Analisis & Desain Sistem",
-    subtitle: "Dokumentasi kebutuhan, database, dan hak akses",
+    subtitle: "Daftar kebutuhan, struktur data, dan pembagian hak akses",
     icons: [
-      { name: "PRD & Charter", iconId: "prd" },
-      { name: "Database ERD", iconId: "erd" },
-      { name: "SQL Indexing", iconId: "matview" },
-      { name: "RBAC", iconId: "rbac" },
+      { name: "Kebutuhan Sistem", iconId: "prd" },
+      { name: "Struktur Database", iconId: "erd" },
+      { name: "Optimasi Query", iconId: "matview" },
+      { name: "Hak Akses (RBAC)", iconId: "rbac" },
       { name: "Odoo ERP", iconId: "odoo" },
       { name: "Power BI", iconId: "powerbi" },
-      { name: "JSON Schema", iconId: "ai-json" },
+      { name: "Format Data AI", iconId: "ai-json" },
       { name: "Data Mining", iconId: "datamining" },
-      { name: "Cloud Costing", iconId: "cloudcost" }
+      { name: "Estimasi Server", iconId: "cloudcost" }
     ]
   },
   {
@@ -453,13 +471,13 @@ export const EXPERIENCES: ExperienceItem[] = [
     type: "Proyek Tim · Laravel",
     role: "System Analyst & Full-Stack Developer",
     organization: "CUCI.IN — Kasir & Operasional Laundry",
-    summary: "Spesifikasi sistem dan modul inti kasir laundry dalam tim 5 orang.",
+    summary: "Merancang alur dan kebutuhan sistem sekaligus mengerjakan modul utama kasir laundry dalam tim berisi 5 orang.",
     contributions: [
-      "Project Charter, PRD, estimasi biaya server, dan design system.",
-      "Modul cek nota, transaksi, komplain, manajemen user, dan laporan keuangan.",
-      "PHPUnit dan CI GitHub Actions."
+      "Menyusun rencana proyek, daftar kebutuhan sistem, perkiraan biaya server, serta desain tampilan awal.",
+      "Membangun fitur cek nota publik, pencatatan transaksi, komplain, manajemen akun, dan laporan keuangan.",
+      "Memasang tes fitur otomatis (PHPUnit) serta pengecekan kode otomatis di GitHub."
     ],
-    resultHighlight: "Kasir 3 peran dan cek status cucian tanpa login."
+    resultHighlight: "Kasir berjalan untuk 3 peran pengguna dan pelanggan bisa melacak nota tanpa perlu login."
   },
   {
     id: "exp-aiaas-vibe",
@@ -467,13 +485,13 @@ export const EXPERIENCES: ExperienceItem[] = [
     type: "Proyek Individu · AI Integration",
     role: "Full-Stack Developer",
     organization: "AIaaS Keuangan & BawangHub",
-    summary: "Dua aplikasi web dengan Gemini API, dari perancangan hingga deploy.",
+    summary: "Membangun dua aplikasi web terintegrasi Gemini AI secara mandiri, mulai dari perancangan hingga rilis online.",
     contributions: [
-      "AIaaS Keuangan: PRD, skema database, dan parser kalimat ke transaksi.",
-      "BawangHub: PWA 7 halaman dengan prediksi harga dan info cuaca.",
-      "API key disimpan di server; aplikasi di-deploy ke Cloud Run."
+      "AIaaS Keuangan: menyusun kebutuhan sistem, merancang database, dan membuat fitur ubah kalimat biasa menjadi catatan transaksi.",
+      "BawangHub: membangun web ramah HP dengan 7 halaman yang memuat prediksi harga dan info cuaca.",
+      "Menyimpan kunci akses AI dengan aman di server serta merilis aplikasi ke layanan Google Cloud."
     ],
-    resultHighlight: "Dua aplikasi AI berjalan stabil di web."
+    resultHighlight: "Kedua aplikasi web berbasis AI berjalan stabil dengan validasi keamanan di server."
   },
   {
     id: "exp-lapangku-mobile",
@@ -481,13 +499,13 @@ export const EXPERIENCES: ExperienceItem[] = [
     type: "Proyek Tim · Flutter",
     role: "Mobile & Web Developer",
     organization: "Lapangku — Booking Lapangan Olahraga",
-    summary: "Aplikasi booking lapangan Flutter dan Firebase dalam tim 4 orang.",
+    summary: "Mengembangkan aplikasi pemesanan lapangan olahraga berbasis Flutter dan Firebase dalam tim 4 orang.",
     contributions: [
-      "Struktur Firestore dan state management Riverpod.",
-      "Integrasi Midtrans Snap dengan pembatalan otomatis 15 menit.",
-      "Pembuatan landing page produk."
+      "Menata struktur penyimpanan data di Firebase dan mengatur alur state aplikasi di Flutter.",
+      "Menyambungkan pembayaran online Midtrans dengan aturan batal otomatis jika lewat 15 menit.",
+      "Membangun halaman pengenalan produk untuk calon mitra pemilik lapangan dan penyewa."
     ],
-    resultHighlight: "Booking real-time dengan pembagian pendapatan mitra otomatis."
+    resultHighlight: "Pemesanan lapangan berjalan real-time dengan perhitungan otomatis bagi hasil mitra."
   },
   {
     id: "exp-ivss-web",
@@ -495,13 +513,13 @@ export const EXPERIENCES: ExperienceItem[] = [
     type: "Proyek Tim · Web & Database",
     role: "Web Developer",
     organization: "Portal Lab Riset IVSS Polinema",
-    summary: "Panel admin berita dan optimasi dashboard statistik dalam tim 5 orang.",
+    summary: "Mengembangkan halaman admin kelola berita serta merapikan kecepatan dashboard statistik lab dalam tim 5 orang.",
     contributions: [
-      "CRUD berita, log aktivitas, pencarian, dan paginasi.",
-      "Materialized View PostgreSQL untuk query dashboard.",
-      "Perbaikan alur login dan tampilan publik responsif."
+      "Membangun fitur tulis, edit, hapus, cari, dan saring berita beserta catatan aktivitas admin.",
+      "Menyiapkan ringkasan statistik di PostgreSQL agar dashboard cepat dimuat saat dibuka.",
+      "Memperbaiki alur login admin dan merapikan tampilan portal agar nyaman di layar ponsel."
     ],
-    resultHighlight: "Portal resmi lab dengan 4 tingkatan hak akses."
+    resultHighlight: "Portal resmi laboratorium aktif dipakai dengan pembagian 4 tingkatan hak akses."
   }
 ];
 

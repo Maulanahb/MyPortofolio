@@ -1,6 +1,6 @@
 /* ==========================================================================
-   COLOR TOKENS, DUAL/TRI-MODE THEMES & TYPOGRAPHY SYSTEM
-   Clean Product Showcase + Bento Grid + HyperFrames Motion
+   COLOR TOKENS, DUAL-MODE THEMES (DAYLIGHT & OBSIDIAN) & TYPOGRAPHY SYSTEM
+   Clean Product Showcase + Editorial Showcase
    ========================================================================== */
 
 @property --paper {
@@ -51,11 +51,6 @@ body[data-palette='daylight'] {
 
   --ink: #1d1d1f;
   --muted: #6e6e73;
-
-  --reading-surface: rgba(245, 245, 247, 0.9);
-  --reading-muted: #484852;
-  --reading-line: rgba(29, 29, 31, 0.18);
-  --reading-line-strong: rgba(29, 29, 31, 0.3);
 
   --line: rgba(0, 0, 0, 0.08);
   --line-strong: rgba(0, 0, 0, 0.16);
@@ -112,11 +107,6 @@ body[data-palette='obsidian'] {
   --ink: #f5f5f7;
   --muted: #a1a1aa;
 
-  --reading-surface: rgba(9, 9, 11, 0.9);
-  --reading-muted: #c5c5ce;
-  --reading-line: rgba(245, 245, 247, 0.22);
-  --reading-line-strong: rgba(245, 245, 247, 0.3);
-
   --line: rgba(255, 255, 255, 0.1);
   --line-strong: rgba(255, 255, 255, 0.2);
 
@@ -146,52 +136,4 @@ body[data-palette='obsidian'] {
   --bg-horizon-rim: rgba(10, 132, 255, 0.72);
   --bg-grain-opacity: 0.042;
   --bg-grain-blend: screen;
-}
-
-/* 3. GRAPHITE (Warm Titanium Neutral Mode) */
-body[data-palette='graphite'] {
-  color-scheme: light;
-
-  --paper: #eae9e4;
-  --paper-2: #f7f6f2;
-  --surface-3: #dedcd3;
-  --glass: rgba(247, 246, 242, 0.82);
-
-  --ink: #18181b;
-  --muted: #52525b;
-
-  --reading-surface: rgba(234, 233, 228, 0.9);
-  --reading-muted: #45454d;
-  --reading-line: rgba(24, 24, 27, 0.18);
-  --reading-line-strong: rgba(24, 24, 27, 0.3);
-
-  --line: rgba(24, 24, 27, 0.1);
-  --line-strong: rgba(24, 24, 27, 0.18);
-
-  --accent: #2563eb;
-  --accent-soft: rgba(37, 99, 235, 0.1);
-  --accent-strong: #1d4ed8;
-  --accent-ink: #ffffff;
-  --success: #15803d;
-  --badge-bg: #18181b;
-  --badge-ink: #f7f6f2;
-
-  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.05);
-  --shadow-md: 0 8px 24px rgba(24, 24, 27, 0.07);
-  --shadow-lg: 0 24px 60px rgba(24, 24, 27, 0.14);
-  --shadow-hover: 0 14px 34px rgba(24, 24, 27, 0.11);
-
-  /* Background Atmosphere & Surface Depth Tokens */
-  --bg-glow-1: rgba(37, 99, 235, 0.18);
-  --bg-glow-2: rgba(13, 148, 136, 0.13);
-  --bg-glow-3: rgba(79, 70, 229, 0.11);
-  --bg-dot-color: rgba(24, 24, 27, 0.24);
-  --bg-rail-line: rgba(24, 24, 27, 0.13);
-  --bg-crosshair: rgba(37, 99, 235, 0.45);
-  --bg-dusk-band: rgba(196, 190, 166, 0.38);
-  --bg-dusk-muted: #45454d;
-  --bg-arc-line: rgba(24, 24, 27, 0.16);
-  --bg-horizon-rim: rgba(37, 99, 235, 0.36);
-  --bg-grain-opacity: 0.032;
-  --bg-grain-blend: multiply;
 }
