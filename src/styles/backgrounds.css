@@ -423,7 +423,27 @@
 }
 
 /* --------------------------------------------------------------------------
-   10. FORCED COLORS & PRINT FALLBACKS
+   10. LAYOUT & PAINT CONTAINMENT FOR BELOW-THE-FOLD STAGES
+   -------------------------------------------------------------------------- */
+.bg-blueprint-stage,
+.bg-dusk-band,
+.bg-contour-stage,
+.bg-closing-arcs {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+@supports not (content-visibility: auto) {
+  .bg-blueprint-stage,
+  .bg-dusk-band,
+  .bg-contour-stage,
+  .bg-closing-arcs {
+    contain: layout style paint;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. FORCED COLORS & PRINT FALLBACKS
    -------------------------------------------------------------------------- */
 @media (forced-colors: active), print {
   .page-atmosphere,

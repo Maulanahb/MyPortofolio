@@ -234,56 +234,122 @@ export const PALETTES = [
 
 let currentPaletteIdx = 0;
 
-export function setPalette(paletteId: string, showNotification = false): void {
+export function setPalette(
+  paletteId: string,
+  showNotification = false,
+  origin?: { x: number; y: number }
+): void {
   const normalized = normalizePaletteId(paletteId);
   const validPalette = PALETTES.find(p => p.id === normalized) || PALETTES[0];
   const root = document.documentElement;
   const isChanging = document.body.dataset.palette !== validPalette.id;
-  if (isChanging) {
-    root.classList.add('is-switching-palette');
-  }
+  if (!isChanging) return;
 
-  root.dataset.palette = validPalette.id;
-  document.body.dataset.palette = validPalette.id;
+  const updateDOM = () => {
+    root.dataset.palette = validPalette.id;
+    document.body.dataset.palette = validPalette.id;
 
-  try {
-    localStorage.setItem('porto_palette', validPalette.id);
-  } catch {
-    // Ignore storage write errors in restricted browsing contexts
-  }
+    try {
+      localStorage.setItem('porto_palette', validPalette.id);
+    } catch {
+      // Ignore storage write errors in restricted browsing contexts
+    }
 
-  currentPaletteIdx = PALETTES.findIndex(p => p.id === validPalette.id);
+    currentPaletteIdx = PALETTES.findIndex(p => p.id === validPalette.id);
 
-  document.querySelectorAll<HTMLButtonElement>('[data-palette-option]').forEach(btn => {
-    const isActive = btn.dataset.paletteOption === validPalette.id;
-    btn.setAttribute('aria-checked', String(isActive));
-    btn.tabIndex = isActive ? 0 : -1;
-  });
+    document.querySelectorAll<HTMLButtonElement>('[data-palette-option]').forEach(btn => {
+      const isActive = btn.dataset.paletteOption === validPalette.id;
+      btn.setAttribute('aria-checked', String(isActive));
+      btn.tabIndex = isActive ? 0 : -1;
+    });
 
-  const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
-  if (colorSchemeMeta) {
-    colorSchemeMeta.content = validPalette.id === 'obsidian' ? 'dark' : 'light';
-  }
+    const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+    if (colorSchemeMeta) {
+      colorSchemeMeta.content = validPalette.id === 'obsidian' ? 'dark' : 'light';
+    }
 
-  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  if (themeMeta) {
-    themeMeta.content = validPalette.themeColor;
-  }
-
-  if (isChanging) {
-    // Flush computed styles before restoring hover transitions on the next animation frame
-    void root.offsetHeight;
-    requestAnimationFrame(() => root.classList.remove('is-switching-palette'));
-  }
+    const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.content = validPalette.themeColor;
+    }
+  };
 
   if (showNotification) {
     notify(`Tampilan: ${validPalette.name}`);
   }
+
+  // Type-safe View Transitions reference
+  const doc = document as Document & {
+    startViewTransition?: (callback: () => Promise<void> | void) => {
+      ready: Promise<void>;
+      finished: Promise<void>;
+    };
+  };
+
+  // If prefers-reduced-motion is active, apply immediately without animation
+  if (prefersReducedMotion()) {
+    updateDOM();
+    return;
+  }
+
+  // Fallback for browsers without View Transitions API
+  if (typeof doc.startViewTransition !== 'function') {
+    root.classList.add('is-theme-transitioning');
+    updateDOM();
+    window.setTimeout(() => {
+      root.classList.remove('is-theme-transitioning');
+    }, 380);
+    return;
+  }
+
+  // Smooth View Transition with gentle radial bloom if origin is available
+  const transition = doc.startViewTransition(() => {
+    updateDOM();
+  });
+
+  if (origin && typeof document.documentElement.animate === 'function') {
+    transition.ready
+      .then(() => {
+        const { x, y } = origin;
+        const endRadius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${endRadius}px at ${x}px ${y}px)`
+            ]
+          },
+          {
+            duration: 400,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            pseudoElement: '::view-transition-new(root)'
+          }
+        );
+      })
+      .catch(() => {
+        // Silently fall back to standard CSS fade
+      });
+  }
 }
 
-export function cyclePalette(manual = false): void {
+export function cyclePalette(manual = false, origin?: { x: number; y: number }): void {
   currentPaletteIdx = (currentPaletteIdx + 1) % PALETTES.length;
-  setPalette(PALETTES[currentPaletteIdx].id, manual);
+  let targetOrigin = origin;
+  if (!targetOrigin && manual) {
+    const switcher = document.getElementById('theme-switcher');
+    if (switcher) {
+      const rect = switcher.getBoundingClientRect();
+      targetOrigin = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      };
+    }
+  }
+  setPalette(PALETTES[currentPaletteIdx].id, manual, targetOrigin);
 }
 
 // Navigasi Smooth
@@ -297,7 +363,7 @@ export function goToSection(hash: string): void {
   document.getElementById('header-inner')?.classList.remove('is-expanded');
 }
 
-// Sticky Frosted Navbar & Scroll Spy
+// Sticky Frosted Navbar & Zero-Reflow Scroll Spy
 export function initStickyAdaptiveNavbar(): void {
   const header = document.getElementById('site-header');
   const nav = document.getElementById('nav');
@@ -310,37 +376,65 @@ export function initStickyAdaptiveNavbar(): void {
     .filter((sec): sec is HTMLElement => Boolean(sec));
 
   let ticking = false;
+  let measureRaf = 0;
+  let lastScrolled = header.classList.contains('is-scrolled');
+  let lastActiveId = '';
+  let sectionOffsets: Array<{ id: string; top: number }> = [];
+
   const ENTER_THRESHOLD = 40;
   const EXIT_THRESHOLD = 20;
 
+  const measureSectionOffsets = () => {
+    measureRaf = 0;
+    const scrollY = window.scrollY || window.pageYOffset;
+    sectionOffsets = sections.map(sec => ({
+      id: sec.id,
+      top: sec.getBoundingClientRect().top + scrollY
+    }));
+  };
+
+  const scheduleMeasure = () => {
+    if (!measureRaf) {
+      measureRaf = window.requestAnimationFrame(() => {
+        measureSectionOffsets();
+        updateHeaderState();
+      });
+    }
+  };
+
   const updateHeaderState = () => {
     const scrollY = window.scrollY || window.pageYOffset;
-    const isCurrentlyScrolled = header.classList.contains('is-scrolled');
 
-    if (!isCurrentlyScrolled && scrollY > ENTER_THRESHOLD) {
+    if (!lastScrolled && scrollY > ENTER_THRESHOLD) {
+      lastScrolled = true;
       header.classList.add('is-scrolled');
       header.setAttribute('data-scrolled', 'true');
-    } else if (isCurrentlyScrolled && scrollY <= EXIT_THRESHOLD) {
+    } else if (lastScrolled && scrollY <= EXIT_THRESHOLD) {
+      lastScrolled = false;
       header.classList.remove('is-scrolled');
       header.setAttribute('data-scrolled', 'false');
     }
 
+    if (!sectionOffsets.length) measureSectionOffsets();
+
     const scrollPos = scrollY + 150;
     let currentId = '';
 
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const sec = sections[i];
-      if (sec.getBoundingClientRect().top + scrollY <= scrollPos) {
-        currentId = sec.id;
+    for (let i = sectionOffsets.length - 1; i >= 0; i--) {
+      if (sectionOffsets[i].top <= scrollPos) {
+        currentId = sectionOffsets[i].id;
         break;
       }
     }
 
-    navLinks.forEach(link => {
-      const match = Boolean(currentId) && link.dataset.nav === currentId;
-      link.classList.toggle('active', match);
-      link.setAttribute('aria-current', match ? 'true' : 'false');
-    });
+    if (currentId !== lastActiveId) {
+      lastActiveId = currentId;
+      navLinks.forEach(link => {
+        const match = Boolean(currentId) && link.dataset.nav === currentId;
+        link.classList.toggle('active', match);
+        link.setAttribute('aria-current', match ? 'true' : 'false');
+      });
+    }
 
     ticking = false;
   };
@@ -356,6 +450,13 @@ export function initStickyAdaptiveNavbar(): void {
     { passive: true }
   );
 
+  window.addEventListener('resize', scheduleMeasure, { passive: true });
+  if (typeof ResizeObserver === 'function' && document.body) {
+    const ro = new ResizeObserver(scheduleMeasure);
+    ro.observe(document.body);
+  }
+
+  measureSectionOffsets();
   updateHeaderState();
 }
 

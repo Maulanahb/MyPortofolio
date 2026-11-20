@@ -9,7 +9,9 @@ import {
   scrambleTextFrame,
   nextRotatingIndex,
   normalizePaletteId,
-  computePosterTilt
+  computePosterTilt,
+  dampValue,
+  stepDamped2D
 } from '../src/scripts/reactbits-math.ts';
 
 test('computeMagnetOffset returns zero on center or inactive pointer', () => {
@@ -108,4 +110,28 @@ test('computePosterTilt bounds 3D card rotation and normalizes pointer coordinat
 
   const clamped = computePosterTilt(-50, 300, 400, 200, 4);
   assert.deepEqual(clamped, { rotateX: -4, rotateY: -4, px: 0, py: 100 });
+});
+
+test('dampValue approaches target exponentially and snaps cleanly within epsilon', () => {
+  const step1 = dampValue(0, 10, 12, 1 / 60);
+  assert.ok(step1 > 0 && step1 < 10);
+
+  // Frame-rate independence: two 120Hz steps equal one 60Hz step
+  const half1 = dampValue(0, 10, 12, 1 / 120);
+  const half2 = dampValue(half1, 10, 12, 1 / 120);
+  assert.ok(Math.abs(half2 - step1) < 1e-6);
+
+  // Settles cleanly to exact target when within epsilon
+  assert.equal(dampValue(9.999, 10, 12, 1 / 60, 0.005), 10);
+  assert.equal(dampValue(Number.NaN, 5, 12, 1 / 60), 5);
+});
+
+test('stepDamped2D glides smoothly and reports settled=true once converged', () => {
+  const mid = stepDamped2D(0, 0, 4, -4, 12, 1 / 60);
+  assert.equal(mid.settled, false);
+  assert.ok(mid.x > 0 && mid.x < 4);
+  assert.ok(mid.y < 0 && mid.y > -4);
+
+  const done = stepDamped2D(3.999, -3.999, 4, -4, 12, 1 / 60, 0.005);
+  assert.deepEqual(done, { x: 4, y: -4, settled: true });
 });

@@ -7,7 +7,7 @@
  * ==========================================================================
  */
 
-import { computePosterTilt } from './reactbits-math';
+import { computePosterTilt, stepDamped2D } from './reactbits-math';
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
@@ -80,39 +80,104 @@ function initPosterTiltAndSpotlight(): void {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   const cards = Array.from(document.querySelectorAll<HTMLElement>('#projects-grid .project-card'));
+  if (!cards.length) return;
+
+  const rectCache = new WeakMap<HTMLElement, DOMRect>();
+  const clearRectCache = () => {
+    cards.forEach((card) => rectCache.delete(card));
+  };
+  window.addEventListener('scroll', clearRectCache, { passive: true });
+  window.addEventListener('resize', clearRectCache, { passive: true });
+
   cards.forEach((card) => {
     let rafId = 0;
-    let lastX = 0;
-    let lastY = 0;
+    let lastTime = 0;
+    let hovering = false;
 
-    const applyTilt = () => {
-      rafId = 0;
-      const rect = card.getBoundingClientRect();
-      const tilt = computePosterTilt(lastX - rect.left, lastY - rect.top, rect.width, rect.height, 3.2);
-      card.style.setProperty('--tilt-x', `${tilt.rotateX}deg`);
-      card.style.setProperty('--tilt-y', `${tilt.rotateY}deg`);
-      card.style.setProperty('--spot-x', `${tilt.px}%`);
-      card.style.setProperty('--spot-y', `${tilt.py}%`);
+    let rx = 0;
+    let ry = 0;
+    let sx = 50;
+    let sy = 50;
+
+    let targetRx = 0;
+    let targetRy = 0;
+    let targetSx = 50;
+    let targetSy = 50;
+
+    const getCardRect = () => {
+      let rect = rectCache.get(card);
+      if (!rect) {
+        rect = card.getBoundingClientRect();
+        rectCache.set(card, rect);
+      }
+      return rect;
     };
+
+    const tick = (now: number) => {
+      const dt = lastTime > 0 ? Math.min(0.05, (now - lastTime) / 1000) : 1 / 60;
+      lastTime = now;
+
+      const lambda = hovering ? 12 : 8;
+      const tiltStep = stepDamped2D(rx, ry, targetRx, targetRy, lambda, dt, 0.01);
+      const spotStep = stepDamped2D(sx, sy, targetSx, targetSy, lambda, dt, 0.12);
+
+      rx = tiltStep.x;
+      ry = tiltStep.y;
+      sx = spotStep.x;
+      sy = spotStep.y;
+
+      card.style.setProperty('--tilt-x', `${rx.toFixed(2)}deg`);
+      card.style.setProperty('--tilt-y', `${ry.toFixed(2)}deg`);
+      card.style.setProperty('--spot-x', `${sx.toFixed(1)}%`);
+      card.style.setProperty('--spot-y', `${sy.toFixed(1)}%`);
+
+      if (tiltStep.settled && spotStep.settled) {
+        rafId = 0;
+        lastTime = 0;
+        if (!hovering) {
+          card.classList.remove('is-tilting');
+        }
+        return;
+      }
+
+      rafId = window.requestAnimationFrame(tick);
+    };
+
+    const ensureLoop = () => {
+      if (!rafId) {
+        lastTime = performance.now();
+        rafId = window.requestAnimationFrame(tick);
+      }
+    };
+
+    card.addEventListener('pointerenter', (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      hovering = true;
+      rectCache.set(card, card.getBoundingClientRect());
+      card.classList.add('is-tilting');
+    }, { passive: true });
 
     card.addEventListener('pointermove', (e: PointerEvent) => {
       if (e.pointerType !== 'mouse') return;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      hovering = true;
+      const rect = getCardRect();
+      const tilt = computePosterTilt(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height, 2.6);
+      targetRx = tilt.rotateX;
+      targetRy = tilt.rotateY;
+      targetSx = tilt.px;
+      targetSy = tilt.py;
       card.classList.add('is-tilting');
-      if (!rafId) rafId = window.requestAnimationFrame(applyTilt);
+      ensureLoop();
     }, { passive: true });
 
     card.addEventListener('pointerleave', () => {
-      if (rafId) {
-        window.cancelAnimationFrame(rafId);
-        rafId = 0;
-      }
-      card.classList.remove('is-tilting');
-      card.style.setProperty('--tilt-x', '0deg');
-      card.style.setProperty('--tilt-y', '0deg');
-      card.style.setProperty('--spot-x', '50%');
-      card.style.setProperty('--spot-y', '50%');
+      hovering = false;
+      rectCache.delete(card);
+      targetRx = 0;
+      targetRy = 0;
+      targetSx = 50;
+      targetSy = 50;
+      ensureLoop();
     }, { passive: true });
   });
 }

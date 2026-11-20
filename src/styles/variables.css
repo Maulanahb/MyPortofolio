@@ -29,9 +29,14 @@
   initial-value: #004999;
 }
 
-/* Root Color-Scheme Sync */
+/* Root Color-Scheme Sync & Unified Motion Tokens */
 :root {
   color-scheme: light;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.18s;
+  --dur-med: 0.28s;
+  --dur-slow: 0.52s;
 }
 
 :root:has(> head > meta[name='color-scheme'][content='dark']),

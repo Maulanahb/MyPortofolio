@@ -124,11 +124,75 @@ section[id],
   left: 16px;
 }
 
-/* Atomic palette switch prevents asymmetric background/ink transition lag on chips and header */
-html.is-switching-palette :not(.theme-switch-thumb),
-html.is-switching-palette *::before,
-html.is-switching-palette *::after {
-  transition-property: none !important;
+/* -------------------------------------------------------------------------
+   View Transitions API for Soft Theme Switching (Dark <-> Light)
+   Menggantikan harsh instant blink dengan transisi cross-dissolve & radial bloom
+   ------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.38s;
+  animation-timing-function: var(--ease-smooth, cubic-bezier(0.16, 1, 0.3, 1));
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation-name: vt-theme-fade-out;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  animation-name: vt-theme-fade-in;
+  z-index: 2;
+}
+
+@keyframes vt-theme-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-theme-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Isolasi thumb switch agar meluncur mulus tanpa terpotong snapshot root */
+::view-transition-group(theme-switch-thumb) {
+  animation-duration: 0.28s;
+  animation-timing-function: var(--ease-out-quint, cubic-bezier(0.22, 1, 0.36, 1));
+  z-index: 9999;
+}
+
+/* Fallback transisi halus untuk peramban yang belum mendukung View Transitions */
+html.is-theme-transitioning,
+html.is-theme-transitioning body,
+html.is-theme-transitioning #site-header,
+html.is-theme-transitioning .hero-main-panel,
+html.is-theme-transitioning .project-card,
+html.is-theme-transitioning .nav {
+  transition: background-color 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.36s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.36s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Motion Reduction Compliance */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  html.is-theme-transitioning,
+  html.is-theme-transitioning * {
+    transition: none !important;
+  }
 }
 
 /* Motion Reduction Compliance (Opt-in keyframes & gentle cross-dissolve fallback) */

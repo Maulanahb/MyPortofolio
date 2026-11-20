@@ -14,6 +14,7 @@ import {
   interpolateCountUp,
   scrambleTextFrame,
   nextRotatingIndex,
+  stepDamped2D,
   type SparkParticle
 } from './reactbits-math';
 
@@ -116,16 +117,25 @@ export function initPointerSpotlight(): void {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   let activeCard: HTMLElement | null = null;
+  let activeRect: DOMRect | null = null;
   let lastX = 0;
   let lastY = 0;
   let rafId = 0;
 
+  const invalidateRect = () => {
+    activeRect = null;
+  };
+  window.addEventListener('scroll', invalidateRect, { passive: true });
+  window.addEventListener('resize', invalidateRect, { passive: true });
+
   const commitPosition = () => {
     rafId = 0;
     if (!activeCard) return;
-    const rect = activeCard.getBoundingClientRect();
-    const x = Math.round(lastX - rect.left);
-    const y = Math.round(lastY - rect.top);
+    if (!activeRect) {
+      activeRect = activeCard.getBoundingClientRect();
+    }
+    const x = Math.round(lastX - activeRect.left);
+    const y = Math.round(lastY - activeRect.top);
     activeCard.style.setProperty('--mx', `${x}px`);
     activeCard.style.setProperty('--my', `${y}px`);
   };
@@ -137,9 +147,13 @@ export function initPointerSpotlight(): void {
       const target = (e.target as HTMLElement | null)?.closest<HTMLElement>('[data-spotlight]');
       if (!target) {
         activeCard = null;
+        activeRect = null;
         return;
       }
-      activeCard = target;
+      if (target !== activeCard) {
+        activeCard = target;
+        activeRect = null;
+      }
       lastX = e.clientX;
       lastY = e.clientY;
       if (!rafId) {
@@ -415,6 +429,17 @@ export function initEditorialMotion(): void {
     entries.forEach(entry => entry.target.classList.toggle('is-timeline-active', entry.isIntersecting));
   }, { rootMargin: '-15% 0px -35% 0px', threshold: 0.1 });
   nodes.forEach(el => active.observe(el));
+
+  // Pause offscreen gradient text background-position animation to avoid unnecessary main-thread paints
+  const gradients = document.querySelectorAll<HTMLElement>('.rb-gradient-text');
+  if (gradients.length) {
+    const gradObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        (entry.target as HTMLElement).dataset.gradientPaused = entry.isIntersecting ? 'false' : 'true';
+      });
+    }, { threshold: 0.01 });
+    gradients.forEach(el => gradObserver.observe(el));
+  }
 
   const syncMotion = () => {
     document.documentElement.toggleAttribute('data-editorial-motion', !media.matches);
@@ -848,10 +873,44 @@ export function initPageSwarm(): void {
   let rafId: number | null = null;
   let lastFrameTime = 0;
 
+  const offscreenRestCanvas = document.createElement('canvas');
+  const offscreenRestCtx = offscreenRestCanvas.getContext('2d');
+  let restBufferReady = false;
+
   const updateDatasetState = (state: 'active' | 'settled' | 'static', activeCount: number) => {
     canvas.dataset.swarmPool = String(cellCount);
     canvas.dataset.swarmActive = String(activeCount);
     canvas.dataset.swarmState = state;
+  };
+
+  const rebuildRestBuffer = () => {
+    if (!offscreenRestCtx || width <= 0 || height <= 0) {
+      restBufferReady = false;
+      return;
+    }
+    const bufW = Math.round(width * dpr);
+    const bufH = Math.round(height * dpr);
+    if (offscreenRestCanvas.width !== bufW || offscreenRestCanvas.height !== bufH) {
+      offscreenRestCanvas.width = bufW;
+      offscreenRestCanvas.height = bufH;
+    }
+    offscreenRestCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    offscreenRestCtx.clearRect(0, 0, width, height);
+    offscreenRestCtx.lineCap = 'round';
+    offscreenRestCtx.beginPath();
+    offscreenRestCtx.strokeStyle = `rgba(${colors.rest.r}, ${colors.rest.g}, ${colors.rest.b}, ${colors.rest.a})`;
+    offscreenRestCtx.lineWidth = CROSS_STROKE_REST;
+
+    for (let i = 0; i < cellCount; i++) {
+      const cx = cellsX[i];
+      const cy = cellsY[i];
+      offscreenRestCtx.moveTo(cx - CROSS_HALF_ARM_REST, cy);
+      offscreenRestCtx.lineTo(cx + CROSS_HALF_ARM_REST, cy);
+      offscreenRestCtx.moveTo(cx, cy - CROSS_HALF_ARM_REST);
+      offscreenRestCtx.lineTo(cx, cy + CROSS_HALF_ARM_REST);
+    }
+    offscreenRestCtx.stroke();
+    restBufferReady = true;
   };
 
   const renderGridFrame = () => {
@@ -860,29 +919,37 @@ export function initPageSwarm(): void {
 
     const { rest, accent } = colors;
 
-    // 1. Gambar seluruh sel istirahat sekaligus dalam 1 batch path demi efisiensi GPU/CPU
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(${rest.r}, ${rest.g}, ${rest.b}, ${rest.a})`;
-    ctx.lineWidth = CROSS_STROKE_REST;
-
-    for (let i = 0; i < cellCount; i++) {
-      if (heats[i] > 0) continue;
-      const cx = cellsX[i];
-      const cy = cellsY[i];
-      ctx.moveTo(cx - CROSS_HALF_ARM_REST, cy);
-      ctx.lineTo(cx + CROSS_HALF_ARM_REST, cy);
-      ctx.moveTo(cx, cy - CROSS_HALF_ARM_REST);
-      ctx.lineTo(cx, cy + CROSS_HALF_ARM_REST);
+    // 1. Blit seluruh sel istirahat dari offscreen buffer (1 operasi GPU/2D cepat)
+    if (restBufferReady) {
+      ctx.drawImage(offscreenRestCanvas, 0, 0, width, height);
+    } else {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(${rest.r}, ${rest.g}, ${rest.b}, ${rest.a})`;
+      ctx.lineWidth = CROSS_STROKE_REST;
+      for (let i = 0; i < cellCount; i++) {
+        if (heats[i] > 0) continue;
+        const cx = cellsX[i];
+        const cy = cellsY[i];
+        ctx.moveTo(cx - CROSS_HALF_ARM_REST, cy);
+        ctx.lineTo(cx + CROSS_HALF_ARM_REST, cy);
+        ctx.moveTo(cx, cy - CROSS_HALF_ARM_REST);
+        ctx.lineTo(cx, cy + CROSS_HALF_ARM_REST);
+      }
+      ctx.stroke();
     }
-    ctx.stroke();
 
-    // 2. Gambar sel aktif/mendingin yang menyala, membesar, dan berputar menghadap kursor
+    // 2. Gambar hanya sel aktif/mendingin yang menyala, membesar, dan berputar menghadap kursor
+    const erasePad = CROSS_HALF_ARM_REST + 1.4;
     for (let i = 0; i < cellCount; i++) {
       const h = heats[i];
       if (h <= 0) continue;
 
       const cx = cellsX[i];
       const cy = cellsY[i];
+      if (restBufferReady) {
+        ctx.clearRect(cx - erasePad, cy - erasePad, erasePad * 2, erasePad * 2);
+      }
+
       const arm = CROSS_HALF_ARM_REST + h * CROSS_HALF_ARM_GROWTH;
       const angle = angles[i];
       const ca = Math.cos(angle) * arm;
@@ -946,6 +1013,7 @@ export function initPageSwarm(): void {
     canvas.height = nextBufH;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     allocateGridCells();
+    rebuildRestBuffer();
     return true;
   };
 
@@ -1035,11 +1103,13 @@ export function initPageSwarm(): void {
   let paletteRaf: number | null = null;
   const paletteObserver = new MutationObserver(() => {
     colors = readCursorGridColors();
+    rebuildRestBuffer();
     if (rafId === null) renderGridFrame();
     if (paletteRaf !== null) cancelAnimationFrame(paletteRaf);
     paletteRaf = requestAnimationFrame(() => {
       paletteRaf = null;
       colors = readCursorGridColors();
+      rebuildRestBuffer();
       if (rafId === null) renderGridFrame();
     });
   });
@@ -1280,23 +1350,30 @@ export function initInteractiveLanyard(onNotify?: (msg: string) => void): void {
     });
 
     let prevScrollY = window.scrollY;
+    let scrollNudgeRaf = 0;
+    const applyScrollNudge = () => {
+      scrollNudgeRaf = 0;
+      const curScrollY = window.scrollY;
+      const delta = curScrollY - prevScrollY;
+      prevScrollY = curScrollY;
+      if (
+        floatingEl.dataset.hanging === 'true' &&
+        floatingEl.dataset.dragging !== 'true' &&
+        !reducedMotionMq.matches &&
+        Math.abs(delta) > 1.5
+      ) {
+        floatingHandle?.nudge(
+          clamp(-delta * 0.0028, -0.32, 0.28),
+          clamp(Math.abs(delta) * 0.0032, 0, 0.26),
+          clamp(-delta * 0.004, -0.42, 0.42)
+        );
+      }
+    };
     window.addEventListener(
       'scroll',
       () => {
-        const curScrollY = window.scrollY;
-        const delta = curScrollY - prevScrollY;
-        prevScrollY = curScrollY;
-        if (
-          floatingEl.dataset.hanging === 'true' &&
-          floatingEl.dataset.dragging !== 'true' &&
-          !reducedMotionMq.matches &&
-          Math.abs(delta) > 2
-        ) {
-          floatingHandle?.nudge(
-            clamp(-delta * 0.0035, -0.38, 0.32),
-            clamp(Math.abs(delta) * 0.004, 0, 0.32),
-            clamp(-delta * 0.005, -0.5, 0.5)
-          );
+        if (!scrollNudgeRaf) {
+          scrollNudgeRaf = window.requestAnimationFrame(applyScrollNudge);
         }
       },
       { passive: true }
@@ -1359,32 +1436,117 @@ export function initMagnetElements(): void {
   const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-magnet]'));
   if (!elements.length) return;
 
-  const resetMagnet = (el: HTMLElement) => {
-    el.style.removeProperty('--mag-x');
-    el.style.removeProperty('--mag-y');
+  const rectCache = new WeakMap<HTMLElement, DOMRect>();
+  const clearCache = () => {
+    elements.forEach((el) => rectCache.delete(el));
   };
+  window.addEventListener('scroll', clearCache, { passive: true });
+  window.addEventListener('resize', clearCache, { passive: true });
+
+  const stopControllers: Array<() => void> = [];
 
   elements.forEach((el) => {
-    el.addEventListener('pointermove', (ev: PointerEvent) => {
-      if (ev.pointerType === 'touch' || !finePointerMq.matches || reducedMotionMq.matches) {
-        resetMagnet(el);
+    let rafId = 0;
+    let lastTime = 0;
+    let hovering = false;
+    let curX = 0;
+    let curY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    const resetImmediate = () => {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
+      lastTime = 0;
+      hovering = false;
+      curX = 0;
+      curY = 0;
+      targetX = 0;
+      targetY = 0;
+      el.classList.remove('is-magnet-active');
+      el.style.removeProperty('--mag-x');
+      el.style.removeProperty('--mag-y');
+    };
+    stopControllers.push(resetImmediate);
+
+    const tick = (now: number) => {
+      const dt = lastTime > 0 ? Math.min(0.05, (now - lastTime) / 1000) : 1 / 60;
+      lastTime = now;
+
+      const step = stepDamped2D(curX, curY, targetX, targetY, hovering ? 14 : 9, dt, 0.04);
+      curX = step.x;
+      curY = step.y;
+
+      if (curX === 0 && curY === 0) {
+        el.style.removeProperty('--mag-x');
+        el.style.removeProperty('--mag-y');
+      } else {
+        el.style.setProperty('--mag-x', `${curX.toFixed(2)}px`);
+        el.style.setProperty('--mag-y', `${curY.toFixed(2)}px`);
+      }
+
+      if (step.settled) {
+        rafId = 0;
+        lastTime = 0;
+        if (!hovering) {
+          el.classList.remove('is-magnet-active');
+        }
         return;
       }
-      const rect = el.getBoundingClientRect();
+      rafId = window.requestAnimationFrame(tick);
+    };
+
+    const ensureLoop = () => {
+      if (!rafId) {
+        lastTime = performance.now();
+        rafId = window.requestAnimationFrame(tick);
+      }
+    };
+
+    el.addEventListener('pointerenter', (ev: PointerEvent) => {
+      if (ev.pointerType === 'touch' || !finePointerMq.matches || reducedMotionMq.matches) return;
+      hovering = true;
+      rectCache.set(el, el.getBoundingClientRect());
+      el.classList.add('is-magnet-active');
+    }, { passive: true });
+
+    el.addEventListener('pointermove', (ev: PointerEvent) => {
+      if (ev.pointerType === 'touch' || !finePointerMq.matches || reducedMotionMq.matches) {
+        resetImmediate();
+        return;
+      }
+      hovering = true;
+      let rect = rectCache.get(el);
+      if (!rect) {
+        rect = el.getBoundingClientRect();
+        rectCache.set(el, rect);
+      }
       const dx = ev.clientX - (rect.left + rect.width / 2);
       const dy = ev.clientY - (rect.top + rect.height / 2);
-      const offset = computeMagnetOffset(dx, dy, 7, 5, true);
-      el.style.setProperty('--mag-x', `${offset.x.toFixed(2)}px`);
-      el.style.setProperty('--mag-y', `${offset.y.toFixed(2)}px`);
-    });
+      const offset = computeMagnetOffset(dx, dy, 6.5, 5, true);
+      targetX = offset.x;
+      targetY = offset.y;
+      el.classList.add('is-magnet-active');
+      ensureLoop();
+    }, { passive: true });
 
-    el.addEventListener('pointerleave', () => resetMagnet(el));
-    el.addEventListener('blur', () => resetMagnet(el));
+    const releaseMagnet = () => {
+      hovering = false;
+      rectCache.delete(el);
+      targetX = 0;
+      targetY = 0;
+      ensureLoop();
+    };
+
+    el.addEventListener('pointerleave', releaseMagnet, { passive: true });
+    el.addEventListener('blur', releaseMagnet);
   });
 
   const handleCapabilityChange = () => {
     if (reducedMotionMq.matches || !finePointerMq.matches) {
-      elements.forEach(resetMagnet);
+      stopControllers.forEach((fn) => fn());
     }
   };
   reducedMotionMq.addEventListener('change', handleCapabilityChange);

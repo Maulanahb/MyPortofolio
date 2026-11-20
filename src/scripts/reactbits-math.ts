@@ -223,3 +223,48 @@ export function computePosterTilt(
     py: Math.round(ny * 100)
   };
 }
+
+export interface Damped2DStep {
+  x: number;
+  y: number;
+  settled: boolean;
+}
+
+/**
+ * Frame-rate-independent exponential smoothing toward target, snapping cleanly within epsilon.
+ */
+export function dampValue(
+  current: number,
+  target: number,
+  lambda: number,
+  dtSeconds: number,
+  epsilon = 0.002
+): number {
+  if (!Number.isFinite(target)) return 0;
+  if (!Number.isFinite(current)) return target;
+  if (!Number.isFinite(lambda) || lambda <= 0 || !Number.isFinite(dtSeconds) || dtSeconds <= 0) {
+    return current;
+  }
+  const safeDt = Math.min(0.1, dtSeconds);
+  const alpha = 1 - Math.exp(-lambda * safeDt);
+  const next = current + (target - current) * alpha;
+  return Math.abs(target - next) <= epsilon ? cleanZero(target) : cleanZero(next);
+}
+
+/**
+ * Advances a 2D coordinate with exponential damping and reports when both axes have settled.
+ */
+export function stepDamped2D(
+  cx: number,
+  cy: number,
+  tx: number,
+  ty: number,
+  lambda: number,
+  dtSeconds: number,
+  epsilon = 0.002
+): Damped2DStep {
+  const x = dampValue(cx, tx, lambda, dtSeconds, epsilon);
+  const y = dampValue(cy, ty, lambda, dtSeconds, epsilon);
+  const settled = x === cleanZero(tx) && y === cleanZero(ty);
+  return { x, y, settled };
+}
